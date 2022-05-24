@@ -3,6 +3,8 @@
 }
 
 .cart-main {
+  display: flex;
+  justify-content: space-between;
   margin: 35px 0;
 }
 
@@ -44,6 +46,10 @@
   padding: 20px;
 }
 
+.right-side {
+  width: 600px;
+}
+
 .cart-side {
   min-width: 320px;
   background-color: antiquewhite;
@@ -51,6 +57,10 @@
 
 .min-width {
   width: 100%;
+}
+
+.menu-side {
+  width: 330px;
 }
 
 .button-div {

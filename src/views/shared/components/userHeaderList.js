@@ -6,7 +6,7 @@ export const userHeaderList = `
       <a class="navbar-item " href="#">
         주문조회
       </a>
-      <a class="navbar-item is-active" href="#">
+      <a class="navbar-item is-active" href="/user-profile">
         회원정보
       </a>
     </div>
