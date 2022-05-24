@@ -10,7 +10,7 @@ export class CategoryModel {
         return createdNewCategory;
     }
 
-    // 모든 document 출력
+    // 모든 카테고리 출력
     async findAll() {
         const categories = await Category.find({});
         return categories;
