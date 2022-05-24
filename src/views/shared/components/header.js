@@ -10,7 +10,6 @@ import { userHeaderList } from '/userHeaderList.js';
   2) localStorage 내 role 값이 admin이 아니면 userHeader
 */
 
-
 const isLogin = localStorage.getItem('token') ? true : false;
 const isAdmin = false; // 수정 필요
 
@@ -21,7 +20,7 @@ const notLoginHeaderList = `
 
 let navBarList = '';
 
-if(isLogin) {
+if (isLogin) {
   navBarList = isAdmin ? adminHeaderList : userHeaderList;
 } else {
   navBarList = notLoginHeaderList;
@@ -29,8 +28,8 @@ if(isLogin) {
 
 /*
 const firstList = isLogin
-   ? `<li><a class="logout" href="#logout" role="button">로그아웃</a></li>`
-   : `<li><a href="/login">로그인</a></li>`;
+    ? `<li><a class="logout" href="#logout" role="button">로그아웃</a></li>`
+    : `<li><a href="/login">로그인</a></li>`;
 
 const secondList = isLogin
   ? `    
