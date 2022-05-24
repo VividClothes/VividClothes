@@ -4,7 +4,7 @@
 
 import * as Api from '/api.js';
 import { randomId } from '/useful-functions.js';
-import { header } from '../shared/header.js';
+import { header } from '/header.js';
 
 addAllElements();
 addAllEvents();
