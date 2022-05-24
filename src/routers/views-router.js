@@ -11,11 +11,14 @@ viewsRouter.use('/register', serveStatic('register'));
 viewsRouter.use('/login', serveStatic('login'));
 viewsRouter.use('/cart', serveStatic('cart'));
 
-// ../views/public 내의 정적 파일들(로고) 쓸 수 있게 함 
-viewsRouter.use('/', express.static(path.join(__dirname, '../views/public')));
+// ../views/images 내의 이미지 파일들을 쓸 수 있게 함 
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/images')));
 
-// views 내의 api.js, useful-functions.js 등을 쓸 수 있게 함.
-viewsRouter.use('/', express.static(path.join(__dirname, '../views/utils')));
+// ../views/utils 내의 api.js, useful-functions.js 등을 쓸 수 있게 함.
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/utils')));
+
+// ../views/components 내의 파일들을 쓸 수 있게 함.
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/components')));
 
 // views폴더 내의 ${resource} 폴더 내의 모든 파일을 웹에 띄우며,
 // 이 때 ${resource}.html 을 기본 파일로 설정함.
