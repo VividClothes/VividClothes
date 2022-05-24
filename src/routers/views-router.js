@@ -11,8 +11,11 @@ viewsRouter.use('/register', serveStatic('register'));
 viewsRouter.use('/login', serveStatic('login'));
 viewsRouter.use('/cart', serveStatic('cart'));
 
-// views 폴더의 최상단 파일인 rabbit.png, api.js 등을 쓸 수 있게 함
-viewsRouter.use('/', serveStatic(''));
+// ../views/public 내의 정적 파일들(로고) 쓸 수 있게 함 
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/public')));
+
+// views 내의 api.js, useful-functions.js 등을 쓸 수 있게 함.
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/utils')));
 
 // views폴더 내의 ${resource} 폴더 내의 모든 파일을 웹에 띄우며,
 // 이 때 ${resource}.html 을 기본 파일로 설정함.
