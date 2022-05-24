@@ -50,6 +50,8 @@ header.innerHTML = `
   </nav>
 `;
 
+export const babo = 'babo';
+
 const logoutButton = header.querySelector('.logout');
 
 if (logoutButton) {
