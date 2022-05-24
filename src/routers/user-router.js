@@ -3,6 +3,7 @@ import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
 import { loginRequired } from '../middlewares';
 import { userService } from '../services';
+import { userModel } from '../db/models/user-model';
 
 const userRouter = Router();
 
@@ -53,9 +54,10 @@ userRouter.post('/login', async function (req, res, next) {
 
     // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
     const userToken = await userService.getUserToken({ email, password });
-
+    const user = await userModel.findByEmail(email);
+    const role = user.role;
     // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
-    res.status(200).json(userToken);
+    res.status(200).send({ userToken, role });
   } catch (error) {
     next(error);
   }
