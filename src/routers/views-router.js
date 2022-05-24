@@ -9,6 +9,7 @@ const viewsRouter = express.Router();
 viewsRouter.use('/', serveStatic('home'));
 viewsRouter.use('/register', serveStatic('register'));
 viewsRouter.use('/login', serveStatic('login'));
+viewsRouter.use('/cart', serveStatic('cart'));
 
 // ../views/public 내의 정적 파일들(로고) 쓸 수 있게 함 
 viewsRouter.use('/', express.static(path.join(__dirname, '../views/public')));

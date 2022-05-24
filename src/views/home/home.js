@@ -4,6 +4,7 @@
 
 import * as Api from '/api.js';
 import { randomId } from '/useful-functions.js';
+import { header } from '../shared/header.js';
 
 // 요소(element), input 혹은 상수
 const landingDiv = document.querySelector('#landingDiv');
@@ -16,6 +17,7 @@ addAllEvents();
 async function addAllElements() {
   insertTextToLanding();
   insertTextToGreeting();
+  insertHeader();
 }
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
@@ -40,6 +42,10 @@ function insertTextToGreeting() {
       <h1>반갑습니다! 자바스크립트 파일에서 삽입되었습니다.</h1>
     `
   );
+}
+
+function insertHeader() {
+  document.body.insertAdjacentElement('afterbegin', header);
 }
 
 function alertLandingText() {
