@@ -143,5 +143,21 @@ userRouter.patch(
     }
   }
 );
-
+// 사용자 정보 삭제 사용자는 개인 페이지에서 자신의 회원 정보를 삭제(탈퇴)할 수 있다.
+userRouter.delete('/users/:userId', async (req, res, next) => {
+  try {
+    const { userId } = req.body;
+    if (!userId) {
+      return res.status(400);
+    }
+    userModel.delete(userId);
+    res.status(203);
+  } catch (error) {
+    next(error);
+  }
+});
 export { userRouter };
+
+//validation 에러 수정
+// mongo db 확인
+//delete postman 확인
