@@ -30,7 +30,13 @@ categoryRouter.post('/register', async (req, res, next) => {
 
 // 전체 카테고리 조회
 categoryRouter.get('/list', async (req, res, next) => {
+    try {
+        const categories = await categoryService.getCategories();
 
+        res.send(200).json(categories);
+    } catch (error) {
+        next(error)
+    }
 })
 
 // 특정 카테고리 조회
@@ -50,12 +56,35 @@ categoryRouter.get('/:categoryName', async (req, res, next) => {
 
 // 카테고리명 수정
 categoryRouter.post('/update/:categoryId', async (req, res, next) => {
+    try {
+        // req의 params과 body에서 데이터 가져옴
+        const { categoryId } = req.params;
+        const { categoryName } = req.body;
 
+        // 위 데이터로 카테고리 정보 수정
+        const category = await categoryService.setCategory(categoryId, {
+            categoryName
+        });
+
+        res.send(200).json(category);
+    } catch (error) {
+        next(error)
+    }
 })
 
 // 카테고리 삭제
 categoryRouter.delete('/delete/:categoryId', async (req, res, next) => {
-    
+    try {
+        // req의 params에서 데이터 가져옴
+        const { categoryId } = req.params;
+
+        // 카테고리 정보 삭제
+        const category = await categoryService.deleteCategory(categoryId);
+
+        res.send(200).json(category);
+    } catch (error) {
+        next(error)
+    }
 })
 
 export { categoryRouter };
