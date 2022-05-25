@@ -1,25 +1,21 @@
 export const userHeaderList = `
 <li>
+  <a class="navbar-item" href="/user-profile">회원정보</a>
+</li>
+<li>
   <div class="navbar-item has-dropdown is-hoverable">
-    <a class="navbar-link  is-active">계정관리</a>
+    <a class="navbar-link  is-active">마이페이지</a>
     <div class="navbar-dropdown ">
-      <a class="navbar-item " href="#">
+      <a class="navbar-item " href="/user-order">
         주문조회
       </a>
-      <a class="navbar-item is-active" href="/user-profile">
-        회원정보
+      <a class="navbar-item is-active" href="/cart">
+        장바구니
       </a>
     </div>
   </div>
 </li>
-<li>
-  <a href="/cart" aria-current="page">
-    <span class="icon">
-      <i class="fas fa-cart-shopping"></i>
-    </span>
-    <span>카트</span>
-  </a>
-</li>
+
 <li>
   <a class="logout" href="#logout" role="button">로그아웃</a>
 </li>`;
