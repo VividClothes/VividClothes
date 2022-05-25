@@ -1,7 +1,35 @@
+import { adminHeaderList } from '/adminHeaderList.js';
+import { userHeaderList } from '/userHeaderList.js';
+
+/* 
+1. 로그인 안함
+-> Nav bar에 로그인, 회원가입만 표시
+
+2. 로그인 함
+  1) localStorage 내 role 값이 admin이면 adminHeader
+  2) localStorage 내 role 값이 admin이 아니면 userHeader
+*/
+
 const isLogin = localStorage.getItem('token') ? true : false;
+const isAdmin = false; // 수정 필요
+
+const notLoginHeaderList = `
+<li><a href="/login">로그인</a></li>
+<li><a href="/register">회원가입</a></li>
+`;
+
+let navBarList = '';
+
+if (isLogin) {
+  navBarList = isAdmin ? adminHeaderList : userHeaderList;
+} else {
+  navBarList = notLoginHeaderList;
+}
+
+/*
 const firstList = isLogin
-  ? `<li><a class="logout" href="#logout" role="button">로그아웃</a></li>`
-  : `<li><a href="/login">로그인</a></li>`;
+    ? `<li><a class="logout" href="#logout" role="button">로그아웃</a></li>`
+    : `<li><a href="/login">로그인</a></li>`;
 
 const secondList = isLogin
   ? `    
@@ -14,6 +42,7 @@ const secondList = isLogin
     </a>
   </li>`
   : ``;
+*/
 
 export const header = document.createElement('header');
 header.innerHTML = `    
@@ -40,9 +69,7 @@ header.innerHTML = `
 
         <div class="navbar-end breadcrumb my-auto" aria-label="breadcrumbs">
           <ul id="navbar">
-            ${firstList}
-            <li><a href="/register">회원가입</a></li>
-            ${secondList}
+            ${navBarList}
           </ul>
         </div>
       </div>
