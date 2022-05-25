@@ -26,23 +26,6 @@ if (isLogin) {
   navBarList = notLoginHeaderList;
 }
 
-/*
-const firstList = isLogin
-    ? `<li><a class="logout" href="#logout" role="button">로그아웃</a></li>`
-    : `<li><a href="/login">로그인</a></li>`;
-
-const secondList = isLogin
-  ? `    
-  <li>
-    <a href="/cart" aria-current="page">
-      <span class="icon">
-        <i class="fas fa-cart-shopping"></i>
-      </span>
-      <span>카트</span>
-    </a>
-  </li>`
-  : ``;
-*/
 
 export const header = document.createElement('header');
 header.innerHTML = `    
