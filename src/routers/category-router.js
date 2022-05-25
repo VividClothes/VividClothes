@@ -35,7 +35,7 @@ categoryRouter.get('/list', async (req, res, next) => {
 
         res.send(200).json(categories);
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
@@ -50,7 +50,7 @@ categoryRouter.get('/:categoryName', async (req, res, next) => {
 
         res.send(200).json(category);
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
@@ -68,7 +68,7 @@ categoryRouter.post('/update/:categoryId', async (req, res, next) => {
 
         res.send(200).json(category);
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
@@ -83,7 +83,7 @@ categoryRouter.delete('/delete/:categoryId', async (req, res, next) => {
 
         res.send(200).json(category);
     } catch (error) {
-        next(error)
+        next(error);
     }
 })
 
