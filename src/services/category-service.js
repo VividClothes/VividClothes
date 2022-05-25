@@ -15,6 +15,7 @@ class CategoryService {
     // 전체 카테고리 조회
     async getCategories() {
         const categories = await this.categoryModel.findAll();
+
         return categories;
     }
 
@@ -30,10 +31,20 @@ class CategoryService {
 
         return category;
     }
-    
+
     // 카테고리명 수정
+    async setCategory(categoryId, update) {
+        const category = await this.categoryModel.update({ categoryId, update })
+
+        return category
+    }
 
     // 카테고리 삭제
+    async deleteCategory(categoryId) {
+        const category = await this.categoryModel.delete(categoryId)
+
+        return category
+    }
 }
 
 const categoryService = new CategoryService(categoryModel);
