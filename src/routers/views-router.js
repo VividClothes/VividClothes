@@ -20,6 +20,15 @@ viewsRouter.use(
   express.static(path.join(__dirname, '../views/shared/images'))
 );
 
+viewsRouter.use('/cart', serveStatic('cart'));
+viewsRouter.use('/user-profile', serveStatic('user-profile'));
+
+// ../views/images 내의 이미지 파일들을 쓸 수 있게 함
+viewsRouter.use(
+  '/',
+  express.static(path.join(__dirname, '../views/shared/images'))
+);
+
 // ../views/utils 내의 api.js, useful-functions.js 등을 쓸 수 있게 함.
 viewsRouter.use(
   '/',
