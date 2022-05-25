@@ -11,7 +11,7 @@ import { userHeaderList } from '/userHeaderList.js';
 */
 
 const isLogin = localStorage.getItem('token') ? true : false;
-const isAdmin = false; // 수정 필요
+const isAdmin = localStorage.getItem('role') === 'admin-user' ? true : false; 
 
 const notLoginHeaderList = `
 <li><a href="/login">로그인</a></li>
