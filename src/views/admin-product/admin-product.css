@@ -157,8 +157,19 @@ hr {
   transform: scale(1.1);
 }
 
+.title-2 {
+  font-size: 2.5rem;
+  font-weight: 600;
+}
+
 .grid-img:hover ~ .buynow {
   visibility: visible;
   opacity: 1;
   transform: scale(1.2);
+}
+
+.flex-div {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }

@@ -88,7 +88,7 @@ header.innerHTML = `
     top: 0;
     left: 0;
     height: 100vh;
-    width: 270px;
+    width: 250px;
     background-color: #363636;
     z-index: 999;
     visibility: hidden;
@@ -214,7 +214,7 @@ async function createCategoryLists() {
   const categoryLists = categories
     .map(({ categoryName }) => {
       return `<li>
-          <a class="link color-whitesmoke" href=/products/?category=${categoryName}>
+          <a class="link color-whitesmoke" href=/products?category=${categoryName}>
             <span class="link-text">${categoryName}</span>
           </a>
         </li>`;
