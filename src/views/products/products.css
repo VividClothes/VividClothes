@@ -1,0 +1,20 @@
+.products-layout {
+  display: flex;
+  width: 100%;
+  padding: 120px;
+}
+
+.empty-space {
+  width: 30%;
+  background-color: rgb(33, 164, 164);
+}
+
+.content-space {
+  width: 100%;
+  background-color: bisque;
+}
+
+.main-content {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+}
