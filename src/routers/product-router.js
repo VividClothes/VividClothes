@@ -59,15 +59,13 @@ productRouter.get('/list', async (req, res, next) => {
 })
 
 // 카테고리별 상품 조회
-productRouter.get('/category/:categoryName', async (req, res, next) => {
+productRouter.get('/category/:categoryId', async (req, res, next) => {
     try {
         // req의 params에서 데이터 가져옴
-        const { categoryName } = req.params;
+        const { categoryId } = req.params;
 
-        // 카테고리명을 기준으로 Categories DB 조회
-        const findCategory = await categoryService.getCategoryByName(categoryName);
-        // 조회된 데이터(categoryModel)를 기준으로 Products DB 조회
-        const products = await productService.getProductByCategory(findCategory);
+        // categoryId를 기준으로 Products DB 조회
+        const products = await productService.getProductByCategory(categoryId);
 
         res.status(200).json(products);
     } catch (error) {
@@ -91,8 +89,16 @@ productRouter.get('/:productId', async (req, res, next) => {
 })
 
 // 상품 정보 수정 - 일단 이미지 제외하고 구현
-productRouter.post('/update/:productId', async (req, res, next) => {
+productRouter.patch('/update/:productId', async (req, res, next) => {
     try {
+        // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
+        // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
+        if (is.emptyObject(req.body)) {
+            throw new Error(
+                'headers의 Content-Type을 application/json으로 설정해주세요'
+            );
+        }
+
         // req의 params와 body에서 데이터 가져옴
         const { productId } = req.params;
         const { productName, price, info, size, color } = req.body;

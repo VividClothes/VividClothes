@@ -28,22 +28,13 @@ export class OrderModel {
         return order;
     }
     
-    // 주문 취소
-    async update({ orderId, update }) {
+    // 주문 취소 - 삭제
+    async delete(orderId) {
         const filter = { _id: orderId };
-        const option = { returnOriginal: false };
         
-        const updatedOrder = await Order.findOneAndUpdate(filter, update, option);
-        return updatedOrder;
+        const deleteedOrder = await Order.findOneAndDelete(filter);
+        return deleteedOrder;
     }
-
-    // // 상품 정보 삭제
-    // async delete(productId) {
-    //     const filter = { _id: productId };
-
-    //     const deleteProduct = await Product.findOneAndDelete(filter);
-    //     return deleteProduct;
-    // }
 }
 
 const orderModel = new OrderModel();
