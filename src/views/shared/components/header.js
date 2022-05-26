@@ -179,7 +179,6 @@ const hamburgerMenu = header.querySelector('.hamburger-menu');
 const sidebar = header.querySelector('.sidebar');
 const closeButton = header.querySelector('.close-button');
 
-export const categoryHash = {};
 createCategoryLists();
 
 if (logoutButton) {
@@ -213,8 +212,7 @@ async function createCategoryLists() {
 
   const categoryContainer = header.querySelector('.root-category');
   const categoryLists = categories
-    .map(({ _id, categoryName }) => {
-      categoryHash[categoryName] = _id;
+    .map(({ categoryName }) => {
       return `<li>
           <a class="link color-whitesmoke" href=/products/?category=${categoryName}>
             <span class="link-text">${categoryName}</span>

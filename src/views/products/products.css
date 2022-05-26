@@ -14,7 +14,46 @@
   background-color: bisque;
 }
 
-.main-content {
+.grid {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
+  column-gap: 16px;
+  padding: 16px;
+}
+
+@media (min-width: 768px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 960px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1200px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+  }
+}
+
+.col {
+  background-color: pink;
+  margin-bottom: 16px;
+  padding: 16px;
+}
+
+.img-container {
+  width: 100%;
+}
+
+.grid-img {
+  display: block;
+  width: 100%;
+  height: 225px;
+  object-fit: cover;
 }
