@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>쇼핑-n팀</title>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="cart.css" />
+    <script src="cart.js" type="module" defer></script>
+  </head>
+  <body>
+    <!-- 헤더 -->
+
+    <div class="cart-status-container">
+      <span class="title is-2">👜 장바구니 </span>
+      <section class="cart-main">
+        <div class="card min-height min-width">
+          <div class="cart-upper">
+            <span class="width-s">제품 상세</span>
+            <span class="width-r">수량</span>
+            <span class="width-r">가격</span>
+            <span class="width-r">합계</span>
+          </div>
+          <div class="cart-bottom">
+            <div class="width-s"></div>
+            <div class="width-r"></div>
+            <div class="width-r"></div>
+            <div class="width-r"></div>
+          </div>
+        </div>
+      </section>
+      <div class="card">
+        <header class="card-header">
+          <p class="card-header-title">결제정보</p>
+        </header>
+        <div class="card-content">
+          <div class="content min-height2"></div>
+        </div>
+      </div>
+      <div class="button-div">
+        <button class="button is-link is-light purchase">구매 하기</button>
+      </div>
+    </div>
+  </body>
+</html>
