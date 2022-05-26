@@ -2,7 +2,7 @@ import { body } from 'express-validator';
 
 // 유효성 검사 에러
 const validate = (req, res, next) => {
-  const errors = validationResult(req);
+  const errors = body(req);
   if (errors.isEmpty()) {
     return next();
   }
@@ -16,10 +16,6 @@ export const validateCredential = [
     .normalizeEmail()
     .notEmpty()
     .withMessage('invalid email'),
-  //   body('password') //
-  //     .trim()
-  //     .isLength({ min: 5 })
-  //     .withMessage('비밀번호는 5글자 이상이어야 합니다.'),
   validate,
 ];
 // signup 유효성 검사

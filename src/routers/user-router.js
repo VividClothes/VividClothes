@@ -3,7 +3,7 @@ import is from '@sindresorhus/is';
 // 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
 import { loginRequired } from '../middlewares';
 import { userService } from '../services';
-import { userModel } from '../db/models/user-model';
+
 import * as userValidator from '../middlewares/user-validator';
 const userRouter = Router();
 
@@ -60,17 +60,19 @@ userRouter.post(
       const password = req.body.password;
 
       // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-      const userToken = await userService.getUserToken({ email, password });
-      const user = await userModel.findByEmail(email);
-      const role = user.role;
+      const { userToken, role } = await userService.getUserToken({
+        email,
+        password,
+      });
+
       // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
-      res.status(200).send({ userToken, role });
+      res.status(200).json({ userToken, role });
     } catch (error) {
       next(error);
     }
   }
 );
-
+//userToken안에 role 넣어주기
 // 전체 유저 목록을 가져옴 (배열 형태임)
 // 미들웨어로 loginRequired 를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
 userRouter.get('/userlist', loginRequired, async function (req, res, next) {
@@ -146,18 +148,19 @@ userRouter.patch(
 // 사용자 정보 삭제 사용자는 개인 페이지에서 자신의 회원 정보를 삭제(탈퇴)할 수 있다.
 userRouter.delete('/users/:userId', async (req, res, next) => {
   try {
-    const { userId } = req.body;
+    // if (is.emptyObject(req.body)) {
+    //   throw new Error(
+    //     'headers의 Content-Type을 application/json으로 설정해주세요'
+    //   );
+    // }
+    const { userId } = req.params;
     if (!userId) {
       return res.status(400);
     }
-    userModel.delete(userId);
-    res.status(203);
+    const deleteUserInfo = await userService.deleteUser(userId);
+    res.status(204).json(deleteUserInfo); //no content
   } catch (error) {
     next(error);
   }
 });
 export { userRouter };
-
-//validation 에러 수정
-// mongo db 확인
-//delete postman 확인

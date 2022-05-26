@@ -61,6 +61,7 @@ class UserService {
 
     if (!isPasswordCorrect) {
       throw new Error(
+        403,
         '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
       );
     }
@@ -69,9 +70,9 @@ class UserService {
     const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
 
     // 2개 프로퍼티를 jwt 토큰에 담음
-    const token = jwt.sign({ userId: user._id, role: user.role }, secretKey);
-
-    return { token };
+    const token = jwt.sign({ userId: user._id }, secretKey);
+    // token.role = user.role
+    return { token, role: user.role };
   }
 
   // 사용자 목록을 받음.
@@ -125,6 +126,13 @@ class UserService {
     });
 
     return user;
+  }
+  async deleteUser(userId) {
+    let user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    }
+    return await this.userModel.delete(userId);
   }
 }
 
