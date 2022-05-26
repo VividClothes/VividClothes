@@ -23,8 +23,10 @@ function loginRequired(req, res, next) {
 
     const userId = jwtDecoded.userId;
 
+    //role 값 가져오기
     // 라우터에서 req.currentUserId를 통해 유저의 id에 접근 가능하게 됨
     req.currentUserId = userId;
+    //req role 값 담아주기
 
     next();
   } catch (error) {
