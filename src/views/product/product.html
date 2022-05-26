@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>쇼핑-데모</title>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <!-- bulma css 관련 -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- 구글 OAuth -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <!-- 카카오 OAuth -->
+    <script src="https://developers.kakao.com/sdk/js/kakao.js"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="product.css" />
+    <script src="product.js" type="module" defer></script>
+  </head>
+  <body>
+    <div class="article-container">
+        <div class="image-container"></div>
+        <div class="info-container">
+            <div class="product-name-container">
+                <span class="product-name">바코드 후드</span>
+            </div>
+            <div class="product-info-container">
+                <span class="product-info">유니크한 디자인의 후드티셔츠입니다.</span>
+            </div>
+            <hr class="horizen">
+            <div class="product-price-container">
+                <span class="price-kor">가격</span>
+                <span class="price-text">20000</span>원
+            </div>
+            <div class="product-size-container">
+                <span class="size-kor">사이즈</span>
+                <span class="size-text">Free</span>
+            </div>
+            <div class="product-color-container">
+                <span class="color-kor">색상</span>
+                <span class="color-text">Black</span>
+            </div>
+            <hr class="horizen">
+            <div class="product-quantity-container">
+                <span class="quantity-kor">수량</span>
+                <span class="quantity-container">
+                    <input class="quantity" value="1" type="text">
+                    <a href="#" class="quantity-wrap up-button">
+                        <img src="/btn_count_up.gif" alt="수량증가">
+                    </a>
+                    <a href="#" class="quantity-wrap down-button">
+                        <img src="/btn_count_down.gif" alt="수량감소">
+                    </a>
+                </span>
+            </div>
+            <hr class="horizen">
+            <div class="total-price-container">
+                <span class="total-price-kor">총 상품 금액</span>
+                <span class="total-price-text">20000원</span>
+            </div>
+            <div class="buy-container">
+                <span class="buy-text">BUY IT NOW</span>
+            </div>
+            <div class="cart-container">
+                <span class="cart-text">ADD TO CART</span>
+            </div>
+        </div>
+    </div>
+  </body>
+</html>
