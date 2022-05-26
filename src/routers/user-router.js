@@ -72,7 +72,7 @@ userRouter.post(
     }
   }
 );
-//userToken안에 role 넣어주기
+
 // 전체 유저 목록을 가져옴 (배열 형태임)
 // 미들웨어로 loginRequired 를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
 userRouter.get('/userlist', loginRequired, async function (req, res, next) {
@@ -82,6 +82,19 @@ userRouter.get('/userlist', loginRequired, async function (req, res, next) {
 
     // 사용자 목록(배열)을 JSON 형태로 프론트에 보냄
     res.status(200).json(users);
+  } catch (error) {
+    next(error);
+  }
+});
+
+//특정 유저
+userRouter.get('/userlist/:userId', async (req, res, next) => {
+  try {
+    // req의 params에서 데이터 가져옴
+    const { userId } = req.params;
+    const user = await userService.getUserById(userId);
+
+    res.status(200).json(user);
   } catch (error) {
     next(error);
   }
@@ -148,16 +161,21 @@ userRouter.patch(
 // 사용자 정보 삭제 사용자는 개인 페이지에서 자신의 회원 정보를 삭제(탈퇴)할 수 있다.
 userRouter.delete('/users/:userId', async (req, res, next) => {
   try {
-    // if (is.emptyObject(req.body)) {
-    //   throw new Error(
-    //     'headers의 Content-Type을 application/json으로 설정해주세요'
-    //   );
-    // }
+    const currentPassword = req.body.currentPassword;
+
+    // currentPassword 없을 시, 진행 불가
+    if (!currentPassword) {
+      throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
+    }
+
+    const userInfoRequired = { userId, currentPassword };
+
     const { userId } = req.params;
+
     if (!userId) {
       return res.status(400);
     }
-    const deleteUserInfo = await userService.deleteUser(userId);
+    const deleteUserInfo = await userService.deleteUser(userInfoRequired);
     res.status(204).json(deleteUserInfo); //no content
   } catch (error) {
     next(error);
