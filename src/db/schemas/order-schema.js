@@ -7,11 +7,17 @@ const OrderSchema = new Schema(
             ref: 'userModel',
             required: true,
         },
-        productId: {
-            type: [Schema.Types.ObjectId],
-            ref: 'categoryModel',
-            required: true,
+        products: [new Schema({
+            product: {
+                type: [Schema.Types.ObjectId],
+                ref: 'categoryModel',
+                required: true,
+            },
+            quantity: Number
         },
+        {
+            _id: false,
+        })],
         priceTotal: {
             type: Number,
             required: true,

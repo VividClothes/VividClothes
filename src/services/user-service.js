@@ -61,6 +61,7 @@ class UserService {
 
     if (!isPasswordCorrect) {
       throw new Error(
+        403,
         '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
       );
     }
@@ -70,7 +71,7 @@ class UserService {
 
     // 2개 프로퍼티를 jwt 토큰에 담음
     const token = jwt.sign({ userId: user._id }, secretKey);
-    
+
     return { token, role: user.role };
   }
 
@@ -78,6 +79,18 @@ class UserService {
   async getUsers() {
     const users = await this.userModel.findAll();
     return users;
+  }
+
+  //특정 유저
+  async getUserById(userId) {
+    // 우선 해당 id의 유저가 db에 있는지 확인
+    let user = await this.userModel.findById(userId);
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    }
+    return await this.userModel.findById({ userId });
   }
 
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.
@@ -125,6 +138,25 @@ class UserService {
     });
 
     return user;
+  }
+  async deleteUser(userInfoRequired) {
+    let user = await this.userModel.findById(userId);
+    if (!user) {
+      throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    }
+    const { userId, currentPassword } = userInfoRequired;
+    const correctPasswordHash = user.password;
+    const isPasswordCorrect = await bcrypt.compare(
+      currentPassword,
+      correctPasswordHash
+    );
+
+    if (!isPasswordCorrect) {
+      throw new Error(
+        '현재 비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
+      );
+    }
+    return await this.userModel.delete(userId);
   }
 }
 
