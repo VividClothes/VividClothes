@@ -212,14 +212,13 @@ async function createCategoryLists() {
 
   const categoryContainer = header.querySelector('.root-category');
   const categoryLists = categories
-    .map(
-      (category) => `
-        <li>
-          <a class="link color-whitesmoke" href=/products/?category=${category.categoryName}>
-            <span class="link-text">${category.categoryName}</span>
+    .map(({ categoryName }) => {
+      return `<li>
+          <a class="link color-whitesmoke" href=/products/?category=${categoryName}>
+            <span class="link-text">${categoryName}</span>
           </a>
-        </li>`
-    )
+        </li>`;
+    })
     .join('');
 
   categoryContainer.innerHTML = `${categoryLists}`;
