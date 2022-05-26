@@ -1,12 +1,17 @@
 import * as Api from '/api.js';
 import { randomId } from '/useful-functions.js';
-import { header } from '/header.js';
 
 addAllElements();
 
 async function addAllElements() {
+  insertTextToLanding();
+
   insertHeader();
   homeImageEvents();
+}
+
+function alertLandingText() {
+  alert('n팀 쇼핑몰입니다. 안녕하세요.');
 }
 
 function insertHeader() {
