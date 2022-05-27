@@ -1,4 +1,5 @@
 import { productModel } from '../db';
+import { categoryService, imageService } from './index'
 
 class ProductService {
     constructor(productModel) {
@@ -7,6 +8,9 @@ class ProductService {
 
     // 상품 등록
     async addProduct(productInfo) {
+        // 입력된 카테고리를 카테고리 DB에서 검색 후 변수에 할당
+        productInfo.category = await categoryService.getCategoryByName(productInfo.category);
+
         const createdNewProduct = await this.productModel.create(productInfo);
 
         return createdNewProduct;
@@ -47,6 +51,17 @@ class ProductService {
 
     // 상품 정보 수정
     async setProduct(productId, update) {
+        // 입력된 카테고리를 카테고리 DB에서 검색 후 변수에 할당
+        update.category = await categoryService.getCategoryByName(update.category);
+
+        // 기존 imagePath와 비교해 삭제된 이미지는 s3에서도 삭제
+        const originalproduct = await this.getProductById(productId);
+        originalproduct.imagePath.forEach(path => {
+            if (!update.imagePath.includes(path)) {
+                imageService.imageDelete([path]);
+            }
+        });
+
         const product = await this.productModel.update({ productId, update });
 
         return product;
@@ -55,6 +70,7 @@ class ProductService {
     // 상품 정보 삭제
     async deleteProduct(productId) {
         const product = await this.productModel.delete(productId);
+        imageService.imageDelete(product.imagePath);
 
         return product;
     }

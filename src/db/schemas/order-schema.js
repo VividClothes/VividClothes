@@ -4,13 +4,13 @@ const OrderSchema = new Schema(
     {
         orderer: {
             type: Schema.Types.ObjectId,
-            ref: 'userModel',
+            ref: 'users',
             required: true,
         },
         products: [new Schema({
             product: {
                 type: [Schema.Types.ObjectId],
-                ref: 'categoryModel',
+                ref: 'products',
                 required: true,
             },
             quantity: Number
@@ -20,6 +20,10 @@ const OrderSchema = new Schema(
         })],
         priceTotal: {
             type: Number,
+            required: true,
+        },
+        recipient: {
+            type: String,
             required: true,
         },
         address: {
@@ -37,9 +41,10 @@ const OrderSchema = new Schema(
             type: String,
             required: true,
         },
-        option: {
+        state: {
             type: String,
-            required: false,
+            enum: ['상품 준비중', '상품 배송중', '배송 완료'],
+            default: '상품 준비중'
         },
     },
     {
