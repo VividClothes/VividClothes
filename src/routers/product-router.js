@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 import { loginRequired, userRoleCheck } from '../middlewares';
-import { imageService, productService, categoryService } from '../services';
+import { productService } from '../services';
 
 const productRouter = Router();
 
@@ -19,13 +19,8 @@ productRouter.post('/register',
                     'headers의 Content-Type을 application/json으로 설정해주세요'
                 );
             }
-
-            // 입력된 카테고리를 카테고리 DB에서 검색 후 변수에 할당
-            const findCategory = await categoryService.getCategoryByName(req.body.category);
-            const category = findCategory;
-
             // req.body에서 데이터 가져와 변수에 할당
-            const { productName, price, imagePath, info, size, color } = req.body;
+            const { productName, category, price, imagePath, info, size, color } = req.body;
 
             // 위 데이터를 상품 db에 추가하기
             const newProduct = await productService.addProduct({
@@ -104,19 +99,7 @@ productRouter.put('/update/:productId',
 
             // req의 params와 body에서 데이터 가져옴
             const { productId } = req.params;
-            const { productName, price, imagePath, info, size, color } = req.body;
-
-            // 입력된 카테고리를 카테고리 DB에서 검색 후 변수에 할당
-            const findCategory = await categoryService.getCategoryByName(req.body.category);
-            const category = findCategory;
-
-            // 기존 imagePath와 비교해 삭제된 이미지는 s3에서도 삭제
-            const product = await productService.getProductById(productId);
-            product.imagePath.forEach(path => {
-                if (!imagePath.includes(path)) {
-                    imageService.imageDelete([path]);
-                }
-            });
+            const { productName, category, price, imagePath, info, size, color } = req.body;
 
             // 데이터를 상품 db에 반영하기
             const updateProduct = await productService.setProduct(productId, {
@@ -146,7 +129,6 @@ productRouter.delete('/delete/:productId',
             const { productId } = req.params;
 
             const deleteProduct = await productService.deleteProduct(productId);
-            imageService.imageDelete(deleteProduct.imagePath);
 
             res.status(200).json(deleteProduct);
         } catch (error) {
