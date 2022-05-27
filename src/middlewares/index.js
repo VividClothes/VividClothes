@@ -4,3 +4,5 @@
 export * from './error-handler';
 export * from './login-required';
 export * from './image-handler';
+export * from './user-validator';
+export * from './userRole-check';
