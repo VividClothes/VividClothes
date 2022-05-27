@@ -1,5 +1,5 @@
 import * as Api from '/api.js';
-import { addCommas } from '/useful-functions.js';
+import { addCommas, convertToNumber } from '/useful-functions.js';
 import { header } from '/header.js';
 
 /***************************헤더 내용**********************************/
@@ -34,6 +34,9 @@ const totalPriceText = document.querySelector('.total-price-text');
 const quantity = document.querySelector('.quantity');
 const upButton = document.querySelector('.up-button');
 const downButton = document.querySelector('.down-button');
+
+const buyButton = document.querySelector('.buy-container');
+const cartButton = document.querySelector('.cart-container');
 /*********************************************************************/
 
 
@@ -112,6 +115,74 @@ const downButton = document.querySelector('.down-button');
 
         if (!quantityNum) {
             totalPriceText.textContent = 0;
+        }
+    })
+    /*************************************************************/
+
+
+
+    /********************BUY IT NOW 클릭 이벤트********************/
+    buyButton.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const hashedEmail = localStorage.getItem('hashedEmail');
+        
+        // 로그인 안했으면 로그인으로 이동
+        if (!hashedEmail) {
+            window.location.href = '/login';
+        }
+
+        // indexedDB에 삽입할 요소
+        const data = {
+            productId: result._id,
+            imagePath: result.imagePath[0],
+            productName: result.productName,
+            color: result.option.size[0],
+            size: result.option.color[0],
+            quantity: Number(quantity.textContent),
+            totalPrice: convertToNumber(totalPriceText.textContent)
+        }
+        //indexedDB order 요소 삭제 후 저장
+        const onRequest = indexedDB.open(hashedEmail, 1);
+        onRequest.onsuccess = async () => {
+            const db = onRequest.result;
+            const transaction = db.transaction('order', 'readwrite');
+            await transaction.objectStore('order').clear();
+            await transaction.objectStore('order').add(data);
+        }
+    })
+    /*************************************************************/
+
+
+
+    /*******************ADD TO CART 클릭 이벤트********************/
+    cartButton.addEventListener('click', (e) => {
+        e.preventDefault();
+
+        const hashedEmail = localStorage.getItem('hashedEmail');
+        
+        // 로그인 안했으면 로그인으로 이동
+        if (!hashedEmail) {
+            window.location.href = '/login';
+        }
+
+        // indexedDB에 삽입할 요소
+        const data = {
+            productId: result._id,
+            imagePath: result.imagePath[0],
+            productName: result.productName,
+            color: result.option.size[0],
+            size: result.option.color[0],
+            quantity: Number(quantity.textContent),
+            totalPrice: convertToNumber(totalPriceText.textContent)
+        }
+        //indexedDB order 요소 추가 저장
+        const onRequest = indexedDB.open(hashedEmail, 1);
+        
+        onRequest.onsuccess = async () => {
+            const db = onRequest.result;
+            const transaction = db.transaction('cart', 'readwrite');
+            await transaction.objectStore('cart').add(data);
         }
     })
     /*************************************************************/
