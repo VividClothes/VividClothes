@@ -6,9 +6,7 @@ const Order = model('orders', OrderSchema);
 export class OrderModel {
     // 주문 추가
     async create(orderInfo) {
-        const createdNewOrder = await Order.create(orderInfo)
-            .populate('orderer')
-            .populate('products.product');
+        const createdNewOrder = await Order.create(orderInfo);
 
         return createdNewOrder;
     }
@@ -16,8 +14,24 @@ export class OrderModel {
     // 모든 주문 조회
     async findAll() {
         const orders = await Order.find({})
-            .populate('orderer')
-            .populate('products.product');
+            .populate([
+                {
+                    path: 'orderer',
+                    select: [
+                        'email',
+                        'fullName',
+                        'phoneNumber'
+                    ]
+                },
+                {
+                    path: 'products.product',
+                    select: [
+                        'productName',
+                        'price',
+                        'option'
+                    ]
+                }
+            ]);
 
         return orders;
     }
@@ -25,8 +39,24 @@ export class OrderModel {
     // 유저별 주문 조회
     async findByUser(userId) {
         const orders = await Order.find({ orderer: userId })
-            .populate('orderer')
-            .populate('products.product');
+            .populate([
+                {
+                    path: 'orderer',
+                    select: [
+                        'email',
+                        'fullName',
+                        'phoneNumber'
+                    ]
+                },
+                {
+                    path: 'products.product',
+                    select: [
+                        'productName',
+                        'price',
+                        'option'
+                    ]
+                }
+            ]);
 
         return orders;
     }
@@ -34,8 +64,24 @@ export class OrderModel {
     // objectId를 이용해 특정 주문 조회
     async findById(orderId) {
         const order = await Order.findOne({ _id: orderId })
-            .populate('orderer')
-            .populate('products.product');
+            .populate([
+                {
+                    path: 'orderer',
+                    select: [
+                        'email',
+                        'fullName',
+                        'phoneNumber'
+                    ]
+                },
+                {
+                    path: 'products.product',
+                    select: [
+                        'productName',
+                        'price',
+                        'option'
+                    ]
+                }
+            ]);
 
         return order;
     }
@@ -44,9 +90,7 @@ export class OrderModel {
     async delete(orderId) {
         const filter = { _id: orderId };
 
-        const deleteedOrder = await Order.findOneAndDelete(filter)
-            .populate('orderer')
-            .populate('products.product');
+        const deleteedOrder = await Order.findOneAndDelete(filter);
 
         return deleteedOrder;
     }
