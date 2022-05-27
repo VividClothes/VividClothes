@@ -94,6 +94,23 @@ orderRouter.get('/:orderId',
         }
     })
 
+orderRouter.patch('/update/:orderId',
+    loginRequired,
+    userRoleCheck,
+    async (req, res, next) => {
+        try {
+            // req에서 데이터 가져옴
+            const { orderId } = req.params;
+            const stateCode = Number(req.body.stateCode);
+
+            const updateOrder = await orderService.updateOrder(orderId, stateCode);
+
+            res.status(201).json(updateOrder);
+        } catch (error) {
+            next(error);
+        }
+    })
+
 // 주문 정보 삭제 - 주문 취소
 orderRouter.delete('/cancel/:orderId',
     loginRequired,
