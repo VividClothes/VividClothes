@@ -55,7 +55,7 @@ class ProductService {
         update.category = await categoryService.getCategoryByName(update.category);
 
         // 기존 imagePath와 비교해 삭제된 이미지는 s3에서도 삭제
-        const originalproduct = await productService.getProductById(productId);
+        const originalproduct = await this.getProductById(productId);
         originalproduct.imagePath.forEach(path => {
             if (!update.imagePath.includes(path)) {
                 imageService.imageDelete([path]);
