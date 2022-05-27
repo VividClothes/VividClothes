@@ -1,14 +1,13 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
 import { loginRequired } from '../middlewares';
-import { productService, categoryService } from '../services';
-import { imageUpload, imageDelete } from '../middlewares'
+import { imageService, productService, categoryService } from '../services';
 
 const productRouter = Router();
 
 // 상품 등록 api
-// 로그인한 유저 확인하는 미들웨어와 s3에 이미지 파일 등록하는 미들웨어 추가
-productRouter.post('/register', loginRequired, imageUpload.array('image'), async (req, res, next) => {
+// 로그인한 유저 확인하는 미들웨어 추가
+productRouter.post('/register', loginRequired, async (req, res, next) => {
     try {
         // 현재 로그인한 유저가 관리자가 아니라면 에러 발생
         if (req.userRole != 'admin-user') {
@@ -29,11 +28,8 @@ productRouter.post('/register', loginRequired, imageUpload.array('image'), async
         const findCategory = await categoryService.getCategoryByName(req.body.category);
         const category = findCategory;
 
-        // req.files에서 이미지 경로만 가져옴
-        const imagePath = req.files.map(image => image.location);
-
         // req.body에서 데이터 가져와 변수에 할당
-        const { productName, price, info, size, color } = req.body;
+        const { productName, price, imagePath, info, size, color } = req.body;
 
         // 위 데이터를 상품 db에 추가하기
         const newProduct = await productService.addProduct({
@@ -96,7 +92,7 @@ productRouter.get('/:productId', async (req, res, next) => {
     }
 })
 
-// 상품 정보 수정 - 일단 이미지 제외하고 구현
+// 상품 정보 수정
 productRouter.put('/update/:productId', loginRequired, async (req, res, next) => {
     try {
         // 현재 로그인한 유저가 관리자가 아니라면 에러 발생
@@ -116,17 +112,26 @@ productRouter.put('/update/:productId', loginRequired, async (req, res, next) =>
 
         // req의 params와 body에서 데이터 가져옴
         const { productId } = req.params;
-        const { productName, price, info, size, color } = req.body;
+        const { productName, price, imagePath, info, size, color } = req.body;
 
         // 입력된 카테고리를 카테고리 DB에서 검색 후 변수에 할당
         const findCategory = await categoryService.getCategoryByName(req.body.category);
         const category = findCategory;
+
+        // 기존 imagePath와 비교해 삭제된 이미지는 s3에서도 삭제
+        const product = await productService.getProductById(productId);
+        product.imagePath.forEach(path => {
+            if(!imagePath.includes(path)){
+                imageService.imageDelete([path]);
+            }
+        });
 
         // 데이터를 상품 db에 반영하기
         const updateProduct = await productService.setProduct(productId, {
             productName,
             category,
             price,
+            imagePath,
             info,
             option: {
                 size,
@@ -141,7 +146,7 @@ productRouter.put('/update/:productId', loginRequired, async (req, res, next) =>
 })
 
 // 상품 정보 삭제
-productRouter.delete('/delete/:productId', loginRequired, imageDelete, async (req, res, next) => {
+productRouter.delete('/delete/:productId', loginRequired, async (req, res, next) => {
     try {
         // 현재 로그인한 유저가 관리자가 아니라면 에러 발생
         if (req.userRole != 'admin-user') {
@@ -153,6 +158,7 @@ productRouter.delete('/delete/:productId', loginRequired, imageDelete, async (re
         const { productId } = req.params;
 
         const deleteProduct = await productService.deleteProduct(productId);
+        imageService.imageDelete(deleteProduct.imagePath);
 
         res.status(200).json(deleteProduct);
     } catch (error) {
