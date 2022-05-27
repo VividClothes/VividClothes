@@ -2,6 +2,7 @@ import { userModel } from '../db';
 
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 
 class UserService {
   // 본 파일의 맨 아래에서, new UserService(userModel) 하면, 이 함수의 인자로 전달됨
@@ -65,7 +66,10 @@ class UserService {
         '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
       );
     }
-    const hashedEmail = await bcrypt.hash(user.email, 10);
+
+    // 이메일 헤시값
+    const hashedEmail = crypto.createHash('sha256').update(email).digest('base64');
+
     // 로그인 성공 -> JWT 웹 토큰 생성
     const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
 
