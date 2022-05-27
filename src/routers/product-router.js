@@ -1,14 +1,22 @@
 import { Router } from 'express';
 import is from '@sindresorhus/is';
+import { loginRequired } from '../middlewares';
 import { productService, categoryService } from '../services';
 import { imageUpload, imageDelete } from '../middlewares'
 
 const productRouter = Router();
 
 // 상품 등록 api
-// s3에 이미지 파일 등록하는 미들웨어 추가
-productRouter.post('/register', imageUpload.array('image'), async (req, res, next) => {
+// 로그인한 유저 확인하는 미들웨어와 s3에 이미지 파일 등록하는 미들웨어 추가
+productRouter.post('/register', loginRequired, imageUpload.array('image'), async (req, res, next) => {
     try {
+        // 현재 로그인한 유저가 관리자가 아니라면 에러 발생
+        if (req.userRole != 'admin-user') {
+            throw new Error(
+                '관리자가 아닙니다. 다시 로그인해 주세요.'
+            );
+        }
+
         // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
         // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
         if (is.emptyObject(req.body)) {
@@ -89,8 +97,15 @@ productRouter.get('/:productId', async (req, res, next) => {
 })
 
 // 상품 정보 수정 - 일단 이미지 제외하고 구현
-productRouter.patch('/update/:productId', async (req, res, next) => {
+productRouter.put('/update/:productId', loginRequired, async (req, res, next) => {
     try {
+        // 현재 로그인한 유저가 관리자가 아니라면 에러 발생
+        if (req.userRole != 'admin-user') {
+            throw new Error(
+                '관리자가 아닙니다. 다시 로그인해 주세요.'
+            );
+        }
+
         // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
         // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
         if (is.emptyObject(req.body)) {
@@ -126,8 +141,15 @@ productRouter.patch('/update/:productId', async (req, res, next) => {
 })
 
 // 상품 정보 삭제
-productRouter.delete('/delete/:productId', imageDelete, async (req, res, next) => {
+productRouter.delete('/delete/:productId', loginRequired, imageDelete, async (req, res, next) => {
     try {
+        // 현재 로그인한 유저가 관리자가 아니라면 에러 발생
+        if (req.userRole != 'admin-user') {
+            throw new Error(
+                '관리자가 아닙니다. 다시 로그인해 주세요.'
+            );
+        }
+
         const { productId } = req.params;
 
         const deleteProduct = await productService.deleteProduct(productId);
