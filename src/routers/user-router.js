@@ -61,13 +61,13 @@ userRouter.post(
       const password = req.body.password;
 
       // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-      const { token, role } = await userService.getUserToken({
+      const { token, userRole, hashedEmail } = await userService.getUserToken({
         email,
         password,
       });
-
+      console.log(hashedEmail);
       // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
-      res.status(200).json({ token, role });
+      res.status(200).json({ token, userRole, hashedEmail });
     } catch (error) {
       next(error);
     }
