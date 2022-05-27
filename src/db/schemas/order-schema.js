@@ -4,13 +4,13 @@ const OrderSchema = new Schema(
     {
         orderer: {
             type: Schema.Types.ObjectId,
-            ref: 'userModel',
+            ref: 'users',
             required: true,
         },
         products: [new Schema({
             product: {
                 type: [Schema.Types.ObjectId],
-                ref: 'categoryModel',
+                ref: 'products',
                 required: true,
             },
             quantity: Number

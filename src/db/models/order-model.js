@@ -6,33 +6,48 @@ const Order = model('orders', OrderSchema);
 export class OrderModel {
     // 주문 추가
     async create(orderInfo) {
-        const createdNewOrder = await Order.create(orderInfo);
+        const createdNewOrder = await Order.create(orderInfo)
+            .populate('orderer')
+            .populate('products.product');
+
         return createdNewOrder;
     }
 
     // 모든 주문 조회
     async findAll() {
-        const orders = await Order.find({});
+        const orders = await Order.find({})
+            .populate('orderer')
+            .populate('products.product');
+
         return orders;
     }
 
     // 유저별 주문 조회
     async findByUser(userId) {
-        const orders = await Order.find({ orderer: userId });
+        const orders = await Order.find({ orderer: userId })
+            .populate('orderer')
+            .populate('products.product');
+
         return orders;
     }
 
     // objectId를 이용해 특정 주문 조회
     async findById(orderId) {
-        const order = await Order.findOne({ _id: orderId });
+        const order = await Order.findOne({ _id: orderId })
+            .populate('orderer')
+            .populate('products.product');
+
         return order;
     }
-    
+
     // 주문 취소 - 삭제
     async delete(orderId) {
         const filter = { _id: orderId };
-        
-        const deleteedOrder = await Order.findOneAndDelete(filter);
+
+        const deleteedOrder = await Order.findOneAndDelete(filter)
+            .populate('orderer')
+            .populate('products.product');
+
         return deleteedOrder;
     }
 }
