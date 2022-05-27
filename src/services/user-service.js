@@ -65,7 +65,7 @@ class UserService {
         '비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
       );
     }
-
+    const hashedEmail = await bcrypt.hash(user.email, 10);
     // 로그인 성공 -> JWT 웹 토큰 생성
     const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
 
@@ -74,8 +74,8 @@ class UserService {
       { userId: user._id, userRole: user.role },
       secretKey
     );
-
-    return { token };
+    const userRole = user.role;
+    return { token, userRole, hashedEmail };
   }
 
   // 사용자 목록을 받음.
