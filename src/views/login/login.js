@@ -60,18 +60,18 @@ async function handleSubmit(e) {
     const onRequest = indexedDB.open(hashedEmail, 1);
 
     onRequest.onsuccess = () => {
-      alert('indexedDB onsuccess');
+      //alert('indexedDB onsuccess');
     }
 
     onRequest.onupgradeneeded = (e) => {
-      alert('indexedDB onupgradeneeded');
+      //alert('indexedDB onupgradeneeded');
       const db = onRequest.result;
       db.createObjectStore('order', { keyPath: 'productId'});
       db.createObjectStore('cart', { keyPath: 'productId'});
     }
 
     onRequest.onerror = () => {
-      alert('Error creating or accessing db')
+      //alert('Error creating or accessing db')
     }
 
 
