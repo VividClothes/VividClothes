@@ -22,6 +22,10 @@ const OrderSchema = new Schema(
             type: Number,
             required: true,
         },
+        recipient: {
+            type: String,
+            required: true,
+        },
         address: {
             type: new Schema({
                 postalCode: String,
@@ -37,9 +41,10 @@ const OrderSchema = new Schema(
             type: String,
             required: true,
         },
-        option: {
+        state: {
             type: String,
-            required: false,
+            enum: ['상품 준비중', '상품 배송중', '배송 완료'],
+            default: '상품 준비중'
         },
     },
     {

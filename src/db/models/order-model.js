@@ -86,13 +86,22 @@ export class OrderModel {
         return order;
     }
 
+    async update(orderId, update) {
+        const filter = { _id: orderId };
+        const option = { returnOriginal: false };
+
+        const updateOrder = await Order.findOneAndUpdate(filter, update, option);
+
+        return updateOrder;
+    }
+
     // 주문 취소 - 삭제
     async delete(orderId) {
         const filter = { _id: orderId };
 
-        const deleteedOrder = await Order.findOneAndDelete(filter);
+        const deleteOrder = await Order.findOneAndDelete(filter);
 
-        return deleteedOrder;
+        return deleteOrder;
     }
 }
 

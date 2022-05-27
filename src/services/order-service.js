@@ -75,6 +75,19 @@ class OrderService {
         return order;
     }
 
+    async updateOrder(orderId, stateCode) {
+        const state = ['상품 준비중', '상품 배송중', '배송 완료'];
+        if (stateCode < 0 || stateCode > 2) {
+            throw new Error(
+                '유효하지 않은 상태코드입니다. 올바른 상태코드를 입력해주세요.'
+            )
+        }
+
+        const updateOrder = await this.orderModel.update(orderId, { state: state[stateCode] });
+
+        return updateOrder;
+    }
+
     // 주문 정보 삭제 - 주문 취소
     async deleteOrder(userRole, userId, orderId) {
         // id를 기준으로 DB에서 주문 내역 조회
