@@ -72,7 +72,7 @@ class UserService {
     // 2개 프로퍼티를 jwt 토큰에 담음
     const token = jwt.sign({ userId: user._id }, secretKey);
 
-    return { token, role: user.role };
+    return { token };
   }
 
   // 사용자 목록을 받음.
@@ -90,7 +90,7 @@ class UserService {
     if (!user) {
       throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
     }
-    return await this.userModel.findById({ userId });
+    return await user;
   }
 
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.

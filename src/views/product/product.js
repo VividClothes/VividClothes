@@ -69,6 +69,11 @@ const downButton = document.querySelector('.down-button');
             quantity.value = quantityNum;
             totalPriceText.textContent = addCommas(quantityNum * result.price);
         }
+
+        if (!quantityNum) {
+            quantity.value = 1;
+            totalPriceText.textContent = addCommas(result.price);
+        }
     })
 
     // 수량 감소 버튼
@@ -84,6 +89,11 @@ const downButton = document.querySelector('.down-button');
             quantity.value = quantityNum;
             totalPriceText.textContent = addCommas(quantityNum * result.price);
         }
+
+        if (!quantityNum) {
+            quantity.value = 1;
+            totalPriceText.textContent = addCommas(result.price);
+        }
     })
     /*************************************************************/
 
@@ -98,6 +108,10 @@ const downButton = document.querySelector('.down-button');
             totalPriceText.textContent = addCommas(result.price);
         } else { 
             totalPriceText.textContent = addCommas(quantityNum * result.price);
+        }
+
+        if (!quantityNum) {
+            totalPriceText.textContent = 0;
         }
     })
     /*************************************************************/
