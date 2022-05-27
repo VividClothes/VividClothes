@@ -54,6 +54,27 @@ async function handleSubmit(e) {
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
     localStorage.setItem('hashedEmail', hashedEmail);
+
+
+    // indexedDB 생성
+    const onRequest = indexedDB.open(hashedEmail, 1);
+
+    onRequest.onsuccess = () => {
+      alert('indexedDB onsuccess');
+    }
+
+    onRequest.onupgradeneeded = (e) => {
+      alert('indexedDB onupgradeneeded');
+      const db = onRequest.result;
+      db.createObjectStore('order', { keyPath: 'productId'});
+      db.createObjectStore('cart', { keyPath: 'productId'});
+    }
+
+    onRequest.onerror = () => {
+      alert('Error creating or accessing db')
+    }
+
+
     alert(`정상적으로 로그인되었습니다.`);
 
     // 로그인 성공
