@@ -1,14 +1,13 @@
-import { userModel } from '../db';
+import jwt from 'jsonwebtoken';
 
 async function userRoleCheck(req, res, next) {
+  const userToken = req.headers['authorization']?.split(' ')[1];
   try {
-    //유저를 가져오고
-    console.log(req.currentUserId);
-    const currentUser = await userModel.findById(req.currentUserId);
-    //db에서 그 유저의 role을 가져옴
+    const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
+    const jwtDecoded = jwt.verify(userToken, secretKey);
 
-    const userRole = currentUser.role;
-    console.log(userRole);
+    const userRole = jwtDecoded.userRole;
+
     if (userRole == 'basic-user') {
       console.log('권한이 없는 페이지 입니다.');
       res.status(403).json({
@@ -17,6 +16,7 @@ async function userRoleCheck(req, res, next) {
       });
       return;
     }
+
     next();
   } catch (error) {
     next(error);

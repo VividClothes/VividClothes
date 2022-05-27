@@ -26,8 +26,7 @@ function loginRequired(req, res, next) {
     //role 값 가져오기
     // 라우터에서 req.currentUserId를 통해 유저의 id에 접근 가능하게 됨
     req.currentUserId = userId;
-    //req role 값 담아주기
-
+    req.currentUserRole = userRole;
     next();
   } catch (error) {
     // jwt.verify 함수가 에러를 발생시키는 경우는 토큰이 정상적으로 decode 안되었을 경우임.
