@@ -103,18 +103,14 @@ const cartButton = document.querySelector('.cart-container');
 
 
     /*********************수량 직접 입력***************************/
-    quantity.addEventListener('input', (e) => {
+    quantity.addEventListener('change', (e) => {
         const quantityNum = parseInt(e.target.value);
-        if (quantityNum > 99 || quantityNum < 1) {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-            e.target.value = 1;
-            totalPriceText.textContent = addCommas(result.price);
-        } else { 
+        if (quantityNum >= 1 && quantityNum <= 99) {
             totalPriceText.textContent = addCommas(quantityNum * result.price);
-        }
-
-        if (!quantityNum) {
-            totalPriceText.textContent = 0;
+        } else {
+            alert('1 이상 99 이하의 수량만 가능합니다.');
+            quantity.value = 1;
+            totalPriceText.textContent = addCommas(result.price);
         }
     })
     /*************************************************************/
@@ -165,16 +161,16 @@ const cartButton = document.querySelector('.cart-container');
         if (!hashedEmail) {
             window.location.href = '/login';
         }
-
+        
         // indexedDB에 삽입할 요소
         const data = {
             productId: result._id,
             imagePath: result.imagePath[0],
             productName: result.productName,
-            color: result.option.size[0],
-            size: result.option.color[0],
-            quantity: Number(quantity.textContent),
-            totalPrice: convertToNumber(totalPriceText.textContent)
+            color: result.option.color[0],
+            size: result.option.size[0],
+            quantity: Number(quantity.value),
+            price: result.price
         }
         //indexedDB order 요소 추가 저장
         const onRequest = indexedDB.open(hashedEmail, 1);
@@ -183,6 +179,7 @@ const cartButton = document.querySelector('.cart-container');
             const db = onRequest.result;
             const transaction = db.transaction('cart', 'readwrite');
             await transaction.objectStore('cart').add(data);
+            alert('장바구니에 추가 되었습니다.')
         }
     })
     /*************************************************************/
