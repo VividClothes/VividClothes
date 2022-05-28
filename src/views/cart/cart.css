@@ -59,10 +59,10 @@ input {
 .image-box {
   width: 80px;
   height: 80px;
-  background-image: url('/home-img3.jpg');
   background-size: cover;
   background-position: center center;
   background-repeat: none;
+  cursor: pointer;
 }
 
 .options-box {
@@ -71,7 +71,7 @@ input {
   justify-content: center;
   align-items: flex-start;
   text-align: left;
-  padding-left: 10px;
+  padding-left: 20px;
 }
 
 .product-name {
@@ -153,3 +153,14 @@ input {
   background-color: #0078FF;
 }
 
+
+.no-item-container {
+  border: solid #ddd 1px;
+  margin-top: -1px;
+  padding-top: 50px;
+  padding-bottom: 50px;
+  text-align: center;
+  font-size: 12px;
+  color:#777;
+  font-weight: bold;
+}
