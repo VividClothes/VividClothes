@@ -146,7 +146,7 @@ const cartButton = document.querySelector('.cart-container');
             const transaction = db.transaction('order', 'readwrite');
             await transaction.objectStore('order').clear();
             await transaction.objectStore('order').add(data);
-            window.location.href = '/order?type=order';   
+            window.location.href = '/order?storeName=order';   
         }
     })
     /*************************************************************/
