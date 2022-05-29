@@ -15,36 +15,65 @@
     <script src="cart.js" type="module" defer></script>
   </head>
   <body>
-    <!-- 헤더 -->
-
-    <div class="cart-status-container">
-      <span class="title is-2">👜 장바구니 </span>
-      <section class="cart-main">
-        <div class="card min-height min-width">
-          <div class="cart-upper">
-            <span class="width-s">제품 상세</span>
-            <span class="width-r">수량</span>
-            <span class="width-r">가격</span>
-            <span class="width-r">합계</span>
+    <div class="cart-container">
+      <h1 class="cart-title">장바구니</h1>
+      <div class="delete-container">
+        <input class="delete-all-button" type="button" value="전체삭제"> 
+        <input class="delete-checked-button" type="button" value="선택삭제"> 
+      </div>
+      <div class="items-container">
+        <div class="items-header">
+          <div class="header-item-number">전체 1개</div>
+          <div class="header-checkbox-container">
+            <input type="checkbox" class="check-all">
           </div>
-          <div class="cart-bottom">
-            <div class="width-s"></div>
-            <div class="width-r"></div>
-            <div class="width-r"></div>
-            <div class="width-r"></div>
-          </div>
+          <div class="header-product-name-options">상품명(옵션)</div>
+          <div class="header-price">가격</div>
+          <div class="header-quantity">수량</div>
+          <div class="header-total-price">주문금액</div>
+          <div class="header-delete-button">주문관리</div>
         </div>
-      </section>
-      <div class="card">
-        <header class="card-header">
-          <p class="card-header-title">결제정보</p>
-        </header>
-        <div class="card-content">
-          <div class="content min-height2"></div>
+        <div class="items-body">
+          <!-- <div class="item-container">
+            <div class="item-number">1</div>
+            <div class="checkbox-container">
+              <input type="checkbox" class="check-one">
+            </div>
+            <div class="product-name-options">
+              <div class="image-box"></div>
+              <div class="options-box">
+                <div class="product-name">정말정말 이쁜 이쁜 후드티</div>
+                <div class="options">옵션: FREE / RED</div>
+              </div>
+            </div>
+            <div class="price">10,000</div>
+            <div class="product-quantity-container">
+              <span class="quantity-container">
+                <a href="#" class="quantity-wrap up-button">
+                  <img src="/btn_count_up.gif" alt="수량증가">
+                </a>
+                <input class="quantity" value="1" type="text">
+                <a href="#" class="quantity-wrap down-button">
+                  <img src="/btn_count_down.gif" alt="수량감소">
+                </a>
+              </span>
+            </div>
+            <div class="total-price">10,000</div>
+            <div class="delete-button-container">
+              <input class="delete-button" type="button" value="삭제하기">
+            </div>
+          </div> -->
+          <!-- <div class="no-item-container">장바구니에 담긴 상품이 없습니다.</div> -->
         </div>
       </div>
-      <div class="button-div">
-        <button class="button is-link is-light purchase">구매 하기</button>
+      <div class="foot-container">
+        <div class="foot-helper">
+          <div class="total-price-sum-container">
+            <span class="total-price-sum-text">최종 결제 금액</span>
+            <span class="total-price-sum">10000원</span>
+          </div>
+          <input class="order-button" type="button" value="주문하기"> 
+        </div>
       </div>
     </div>
   </body>
