@@ -123,7 +123,11 @@ async function run() {
     e.stopPropagation();
     
     const updateCategory = prompt('변경할 카테고리명을 입력해주세요.');
-    
+    if (!updateCategory.trim()) {
+      alert('값을 입력해주세요');
+      return;
+    }
+
     // 중복된 카테고리명이 있는지 확인
     if(!categories.some((category) => category.categoryName === updateCategory)){
       if(updateCategory) {
@@ -153,6 +157,10 @@ async function run() {
   async function addBoxCallBack(e) {
     e.preventDefault();
     const newCategoryName = prompt('등록할 카테고리명을 입력해주세요.');
+    if (!newCategoryName.trim()) {
+      alert('값을 입력해주세요');
+      return;
+    }
 
     // 중복된 이름 있는지 확인
     if(!categories.some((category) => category.categoryName === newCategoryName)) {
@@ -191,7 +199,7 @@ async function run() {
 function makeCategoryBoxHTML(newCategoryName) {
   return `
   <li class="item-box">
-    <i class="fa fa-bars"></i><span class="category">${newCategoryName}</span>
+    <i id="three-bar" class="fa fa-bars"></i><span class="category">${newCategoryName}</span>
     <div class="info-btn">
       <a href="#" class="btn btn-update">수정</a>
       <a href="#" class="btn btn-delete">삭제</a>
