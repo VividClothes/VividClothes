@@ -19,12 +19,6 @@ class OrderService {
             quantity: product.quantity
         }))
 
-        // orderInfo.products = await Promise.all(
-        //     orderInfo.products.map( async product => ({
-        //     product: await productService.getProductById(product.productId),
-        //     quantity: product.quantity
-        // })));
-
         // 주문 총액 계산
         orderInfo.priceTotal = orderInfo.products.reduce(
             (sum, item) => sum + item.product.price * item.quantity
@@ -77,7 +71,7 @@ class OrderService {
 
     async updateOrder(orderId, stateCode) {
         const state = ['상품 준비중', '상품 배송중', '배송 완료'];
-        if (stateCode < 0 || stateCode > 2) {
+        if (stateCode < 0 || stateCode >= state.length) {
             throw new Error(
                 '유효하지 않은 상태코드입니다. 올바른 상태코드를 입력해주세요.'
             )
