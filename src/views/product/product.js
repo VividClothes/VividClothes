@@ -135,8 +135,8 @@ const cartButton = document.querySelector('.cart-container');
             productName: result.productName,
             color: result.option.size[0],
             size: result.option.color[0],
-            quantity: Number(quantity.textContent),
-            totalPrice: convertToNumber(totalPriceText.textContent)
+            quantity: quantity.value,
+            price: result.price
         }
 
         //indexedDB order 요소 삭제 후 저장
@@ -146,7 +146,7 @@ const cartButton = document.querySelector('.cart-container');
             const transaction = db.transaction('order', 'readwrite');
             await transaction.objectStore('order').clear();
             await transaction.objectStore('order').add(data);
-            window.location.href = '/order?type=product';   
+            window.location.href = '/order?type=order';   
         }
     })
     /*************************************************************/
