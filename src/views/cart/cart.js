@@ -213,7 +213,8 @@ const isCheckedArray = [];
                       quantity: quantityNum + 1 
                     });
                     alert('수량이 변경되었습니다.');
-                    window.location.reload()
+                    quantities[index].value = quantityNum + 1;
+
                   }
 
                 })
@@ -236,7 +237,7 @@ const isCheckedArray = [];
                       quantity: quantityNum - 1 
                     });
                     alert('수량이 변경되었습니다.');
-                    window.location.reload()
+                    quantities[index].value = quantityNum -1;
                   }
 
                 })
@@ -258,7 +259,7 @@ const isCheckedArray = [];
                       quantity: quantityNum 
                     });
                     alert('수량이 변경되었습니다.');
-                    window.location.reload()
+                    quantities[index].value = quantityNum;
                   }
 
                   // 그 외에는 원래 수량으로 채운다
