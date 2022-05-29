@@ -135,7 +135,7 @@ const cartButton = document.querySelector('.cart-container');
             productName: result.productName,
             color: result.option.size[0],
             size: result.option.color[0],
-            quantity: quantity.value,
+            quantity: Number(quantity.value),
             price: result.price
         }
 
