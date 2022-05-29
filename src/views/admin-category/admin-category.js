@@ -1,5 +1,24 @@
-import { header } from '/header.js';
 import * as Api from '/api.js';
+import { header } from '/header.js';
+
+/***************************헤더 내용**********************************/
+// 요소(element), input 혹은 상수
+addAllElements();
+addAllEvents();
+
+// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
+async function addAllElements() {
+  insertHeader();
+}
+
+// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
+function addAllEvents() {}
+
+function insertHeader() {
+  document.body.insertAdjacentElement('afterbegin', header);
+}
+/*********************************************************************/
+
 
 
 /********************필요한 요소들 모음*******************************/
@@ -12,8 +31,6 @@ run();
 
 
 async function run() {
-  insertHeader();
-
   
   const itemBoxes = document.getElementsByClassName('item-box');
   const deleteButtons = document.getElementsByClassName('btn-delete');
@@ -181,8 +198,4 @@ function makeCategoryBoxHTML(newCategoryName) {
     </div>
   </li>
   `
-}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
 }
