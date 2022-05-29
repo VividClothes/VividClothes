@@ -285,7 +285,7 @@ const isCheckedArray = [];
                             isChecked: isCheckedArray[index]
                           })
                         })
-          window.location.href = '/order?type=cart';          
+          window.location.href = '/order?storeName=cart';          
         })
         /************************************************************************/
       }
