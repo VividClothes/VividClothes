@@ -1,60 +1,62 @@
-// 아래는 현재 home.html 페이지에서 쓰이는 코드는 아닙니다.
-// 다만, 앞으로 ~.js 파일을 작성할 때 아래의 코드 구조를 참조할 수 있도록,
-// 코드 예시를 남겨 두었습니다.
-
 import * as Api from '/api.js';
 import { randomId } from '/useful-functions.js';
 
-// 요소(element), input 혹은 상수
-const landingDiv = document.querySelector('#landingDiv');
-const greetingDiv = document.querySelector('#greetingDiv');
-
 addAllElements();
-addAllEvents();
 
-// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 async function addAllElements() {
-  insertTextToLanding();
-  insertTextToGreeting();
+  insertHeader();
+  homeImageEvents();
 }
 
-// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {
-  landingDiv.addEventListener('click', alertLandingText);
-  greetingDiv.addEventListener('click', alertGreetingText);
+function insertHeader() {
+  document.body.insertAdjacentElement('afterbegin', header);
 }
 
-function insertTextToLanding() {
-  landingDiv.insertAdjacentHTML(
-    'beforeend',
-    `
-      <h2>n팀 쇼핑몰의 랜딩 페이지입니다. 자바스크립트 파일에서 삽입되었습니다.</h2>
-    `
-  );
+// async function getDataFromApi() {
+//   // 예시 URI입니다. 현재 주어진 프로젝트 코드에는 없는 URI입니다.
+//   const data = await Api.get('/api/user/data');
+//   const random = randomId();
+
+//   console.log({ data });
+//   console.log({ random });
+// }
+
+// 홈 이미지 이벤트 리스너 등록 (마우스 호버시 글자 및 배경색 변화)
+function homeImageEvents() {
+  const imgFloats = document.getElementsByClassName('imgFloat');
+  for (let elem of imgFloats) {
+    elem.addEventListener('mouseover', (e) => {
+      e.target.style.color = 'rgb(0,0,0,1)';
+      e.target.style.backgroundColor = 'rgb(255,255,255, 0.9)';
+    });
+
+    elem.addEventListener('mouseout', (e) => {
+      e.target.style.color = 'rgb(0,0,0,0)';
+      e.target.style.backgroundColor = 'rgb(255,255,255,0)';
+    });
+  }
 }
 
-function insertTextToGreeting() {
-  greetingDiv.insertAdjacentHTML(
-    'beforeend',
-    `
-      <h1>반갑습니다! 자바스크립트 파일에서 삽입되었습니다.</h1>
-    `
-  );
-}
+// 이미지 슬라이드 기능
+const slide = document.querySelector('.slide');
+slide.style.backgroundImage = 'url( "/home-slide1.jpg" )';
 
-function alertLandingText() {
-  alert('n팀 쇼핑몰입니다. 안녕하세요.');
-}
+const imageURLs = [
+  'url("/home-slide1.jpg"',
+  'url("/home-slide2.jpg"',
+  'url("/home-slide3.png"',
+  'url("/home-slide4.jpeg"',
+];
 
-function alertGreetingText() {
-  alert('n팀 쇼핑몰에 오신 것을 환영합니다');
-}
+let slideIndex = 0;
+showSlides();
 
-async function getDataFromApi() {
-  // 예시 URI입니다. 현재 주어진 프로젝트 코드에는 없는 URI입니다.
-  const data = await Api.get('/api/user/data');
-  const random = randomId();
+function showSlides() {
+  slideIndex++;
+  slide.style.backgroundImage = imageURLs[slideIndex];
+  if (slideIndex === imageURLs.length - 1) {
+    slideIndex = -1;
+  }
 
-  console.log({ data });
-  console.log({ random });
+  setTimeout(showSlides, 3000);
 }

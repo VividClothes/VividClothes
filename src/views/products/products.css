@@ -1,0 +1,164 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
+
+.a-link {
+  color: rgb(40, 40, 40);
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+.subtitle {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  padding: 10px;
+  font-size: 14px;
+  text-align: end;
+}
+
+.medias {
+  padding-top: 15px;
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 12px;
+}
+
+.font-16 {
+  font-size: 16px;
+}
+
+.font-15 {
+  font-size: 15px;
+}
+
+.contents {
+  padding-right: 15px;
+  padding-left: 15px;
+  margin-bottom: 34px;
+}
+
+hr {
+  background-color: rgb(213, 213, 213);
+}
+
+.products-layout {
+  display: flex;
+  width: 70%;
+  margin: 80px auto;
+  padding: 35px;
+}
+
+.content-space {
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  row-gap: 35px;
+  column-gap: 35px;
+}
+
+@media (max-width: 550px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(1, 1fr);
+  }
+
+  .products-layout {
+    display: flex;
+    width: 88%;
+    margin: 80px auto;
+  }
+}
+
+@media (min-width: 550px) and (max-width: 768px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .products-layout {
+    display: flex;
+    width: 85%;
+    margin: 80px auto;
+  }
+}
+
+@media (min-width: 768px) and (max-width: 960px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .products-layout {
+    display: flex;
+    width: 80%;
+    margin: 80px auto;
+  }
+}
+
+@media (min-width: 960px) and (max-width: 1320px) {
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .products-layout {
+    display: flex;
+    width: 75%;
+    margin: 80px auto;
+  }
+}
+
+.col {
+  background-color: pink;
+  margin-bottom: 16px;
+}
+
+.img-container {
+  position: relative;
+  width: 100%;
+  overflow: hidden;
+}
+
+.buynow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 20px;
+  font-weight: 700;
+  color: whitesmoke;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.grid-img {
+  display: block;
+  background-color: transparent;
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  transform-origin: center center;
+  transition: transform 0.3s, filter 0.5s ease-in-out;
+  filter: brightness(100%);
+  z-index: 99;
+}
+
+.grid-img:hover {
+  filter: brightness(70%);
+  transform: scale(1.1);
+}
+
+.grid-img:hover ~ .buynow {
+  visibility: visible;
+  opacity: 1;
+  transform: scale(1.2);
+}
