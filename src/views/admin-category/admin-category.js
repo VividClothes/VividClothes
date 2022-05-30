@@ -139,7 +139,7 @@ async function run() {
         const elem = categories[index];
 
         // 수정 요청 보내기
-        await Api.post(`/category/update/${elem._id}`, { categoryName: updateCategory })
+        await Api.put('/category/update', elem._id, { categoryName: updateCategory })
 
         // 뷰에서 텍스트 바꾸기
         textNode.textContent = updateCategory;
