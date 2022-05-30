@@ -34,7 +34,6 @@ export class UserModel {
   async delete(userId) {
     const filter = { _id: userId };
     await User.deleteOne(filter);
-    //return 해야하나..?
   }
 }
 
