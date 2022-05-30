@@ -1,5 +1,24 @@
-import { header } from '/header.js';
 import * as Api from '/api.js';
+import { header } from '/header.js';
+
+/***************************헤더 내용**********************************/
+// 요소(element), input 혹은 상수
+addAllElements();
+addAllEvents();
+
+// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
+async function addAllElements() {
+  insertHeader();
+}
+
+// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
+function addAllEvents() {}
+
+function insertHeader() {
+  document.body.insertAdjacentElement('afterbegin', header);
+}
+/*********************************************************************/
+
 
 
 /********************필요한 요소들 모음*******************************/
@@ -12,8 +31,6 @@ run();
 
 
 async function run() {
-  insertHeader();
-
   
   const itemBoxes = document.getElementsByClassName('item-box');
   const deleteButtons = document.getElementsByClassName('btn-delete');
@@ -106,7 +123,11 @@ async function run() {
     e.stopPropagation();
     
     const updateCategory = prompt('변경할 카테고리명을 입력해주세요.');
-    
+    if (!updateCategory.trim()) {
+      alert('값을 입력해주세요');
+      return;
+    }
+
     // 중복된 카테고리명이 있는지 확인
     if(!categories.some((category) => category.categoryName === updateCategory)){
       if(updateCategory) {
@@ -118,7 +139,7 @@ async function run() {
         const elem = categories[index];
 
         // 수정 요청 보내기
-        await Api.post(`/category/update/${elem._id}`, { categoryName: updateCategory })
+        await Api.put('/category/update', elem._id, { categoryName: updateCategory })
 
         // 뷰에서 텍스트 바꾸기
         textNode.textContent = updateCategory;
@@ -136,6 +157,10 @@ async function run() {
   async function addBoxCallBack(e) {
     e.preventDefault();
     const newCategoryName = prompt('등록할 카테고리명을 입력해주세요.');
+    if (!newCategoryName.trim()) {
+      alert('값을 입력해주세요');
+      return;
+    }
 
     // 중복된 이름 있는지 확인
     if(!categories.some((category) => category.categoryName === newCategoryName)) {
@@ -174,15 +199,11 @@ async function run() {
 function makeCategoryBoxHTML(newCategoryName) {
   return `
   <li class="item-box">
-    <i class="fa fa-bars"></i><span class="category">${newCategoryName}</span>
+    <i id="three-bar" class="fa fa-bars"></i><span class="category">${newCategoryName}</span>
     <div class="info-btn">
       <a href="#" class="btn btn-update">수정</a>
       <a href="#" class="btn btn-delete">삭제</a>
     </div>
   </li>
   `
-}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
 }

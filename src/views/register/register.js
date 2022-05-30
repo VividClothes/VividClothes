@@ -61,8 +61,8 @@ async function handleSubmit(e) {
 
     alert(`정상적으로 회원가입되었습니다.`);
 
-    // 로그인 페이지 이동
-    window.location.href = '/login';
+    // 메인 페이지로 이동
+    window.location.href = '/';
   } catch (err) {
     console.error(err.stack);
     alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
