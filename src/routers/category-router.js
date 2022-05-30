@@ -1,6 +1,5 @@
 import { Router } from 'express';
-import is from '@sindresorhus/is';
-import { loginRequired, userRoleCheck } from '../middlewares';
+import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import { categoryService } from '../services';
 
 const categoryRouter = Router();
@@ -9,14 +8,9 @@ const categoryRouter = Router();
 categoryRouter.post('/register',
     loginRequired,
     userRoleCheck,
+    checkBody,
     async (req, res, next) => {
         try {
-            // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-            // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-            if (is.emptyObject(req.body)) {
-                throw new Error('headers의 Content-Type을 application/json으로 설정해주세요');
-            }
-
             // req의 body 에서 데이터 가져옴
             const { categoryName } = req.body;
 
@@ -28,7 +22,8 @@ categoryRouter.post('/register',
         } catch (error) {
             next(error);
         }
-    });
+    }
+);
 
 // 전체 카테고리 조회
 categoryRouter.get('/list', async (req, res, next) => {
@@ -45,16 +40,9 @@ categoryRouter.get('/list', async (req, res, next) => {
 categoryRouter.put('/update/:categoryId',
     loginRequired,
     userRoleCheck,
+    checkBody,
     async (req, res, next) => {
         try {
-            // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-            // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-            if (is.emptyObject(req.body)) {
-                throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
-                );
-            }
-
             // req의 params과 body에서 데이터 가져옴
             const { categoryId } = req.params;
             const { categoryName } = req.body;
@@ -68,7 +56,8 @@ categoryRouter.put('/update/:categoryId',
         } catch (error) {
             next(error);
         }
-    });
+    }
+);
 
 // 카테고리 삭제
 categoryRouter.delete('/delete/:categoryId',
@@ -86,6 +75,7 @@ categoryRouter.delete('/delete/:categoryId',
         } catch (error) {
             next(error);
         }
-    });
+    }
+);
 
 export { categoryRouter };

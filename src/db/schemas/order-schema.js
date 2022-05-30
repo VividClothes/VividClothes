@@ -13,6 +13,10 @@ const OrderSchema = new Schema(
                 ref: 'products',
                 required: true,
             },
+            option: {
+                size: String,
+                color: String,
+            },
             quantity: Number
         },
         {
@@ -43,7 +47,6 @@ const OrderSchema = new Schema(
         },
         state: {
             type: String,
-            enum: ['상품 준비중', '상품 배송중', '배송 완료'],
             default: '상품 준비중'
         },
     },

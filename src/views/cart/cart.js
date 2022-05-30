@@ -29,6 +29,7 @@ const checkAll = document.querySelector('.check-all');
 const totalPriceSum = document.querySelector('.total-price-sum');
 const deleteAllButton = document.querySelector('.delete-all-button');
 const deleteCheckedButton = document.querySelector('.delete-checked-button');
+const orderButton = document.querySelector('.order-button');
 /*********************************************************************/
 
 
@@ -213,7 +214,8 @@ const isCheckedArray = [];
                       quantity: quantityNum + 1 
                     });
                     alert('수량이 변경되었습니다.');
-                    window.location.reload()
+                    quantities[index].value = quantityNum + 1;
+
                   }
 
                 })
@@ -236,7 +238,7 @@ const isCheckedArray = [];
                       quantity: quantityNum - 1 
                     });
                     alert('수량이 변경되었습니다.');
-                    window.location.reload()
+                    quantities[index].value = quantityNum -1;
                   }
 
                 })
@@ -258,7 +260,7 @@ const isCheckedArray = [];
                       quantity: quantityNum 
                     });
                     alert('수량이 변경되었습니다.');
-                    window.location.reload()
+                    quantities[index].value = quantityNum;
                   }
 
                   // 그 외에는 원래 수량으로 채운다
@@ -268,6 +270,23 @@ const isCheckedArray = [];
                   }
                 })
               })
+        /************************************************************************/
+
+
+
+        /*************************주문하기 버튼 이벤트 추가****************************/
+        orderButton.addEventListener('click', (e) => {
+          e.preventDefault();
+          
+          const transaction = db.transaction('cart', 'readwrite');
+          cartProducts.forEach((productInfo, index) => {
+                          transaction.objectStore('cart').put({
+                            ...productInfo,
+                            isChecked: isCheckedArray[index]
+                          })
+                        })
+          window.location.href = '/order?storeName=cart';          
+        })
         /************************************************************************/
       }
   }  

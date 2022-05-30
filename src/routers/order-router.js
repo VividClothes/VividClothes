@@ -1,7 +1,6 @@
 import { Router } from 'express';
-import is from '@sindresorhus/is';
-import { loginRequired, userRoleCheck } from '../middlewares';
-import { orderService, userService, productService } from '../services';
+import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
+import { orderService } from '../services';
 
 const orderRouter = Router();
 
@@ -9,16 +8,9 @@ const orderRouter = Router();
 // loginRequired 미들웨어 사용해 로그인한 유저만 주문 가능
 orderRouter.post('/register',
     loginRequired,
+    checkBody,
     async (req, res, next) => {
         try {
-            // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-            // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-            if (is.emptyObject(req.body)) {
-                throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
-                );
-            }
-
             // req에서 데이터 가져와 변수에 할당
             const orderer = req.currentUserId;
             const { products, recipient, postalCode, address1, address2, phoneNumber } = req.body;
@@ -42,7 +34,8 @@ orderRouter.post('/register',
         } catch (error) {
             next(error);
         }
-    });
+    }
+);
 
 // 전체 주문 목록 조회 - 관리자 권한
 orderRouter.get('/list',
@@ -56,14 +49,16 @@ orderRouter.get('/list',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
 
-// 유저별 주문 목록 조회
+// 유저별 주문 목록 조회 - 관리자용
 orderRouter.get('/list/:userId',
     loginRequired,
+    userRoleCheck,
     async (req, res, next) => {
         try {
-            const userId = req.currentUserRole === 'admin-user' ? req.params.userId : req.currentUserId;
+            const userId = req.params.userId;
 
             const orders = await orderService.getOrderByUser(userId);
 
@@ -71,7 +66,24 @@ orderRouter.get('/list/:userId',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
+
+// 유저별 주문 목록 조회 - 일반 유저용
+orderRouter.get('/mylist',
+    loginRequired,
+    async (req, res, next) => {
+        try {
+            const userId = req.currentUserId;
+
+            const orders = await orderService.getOrderByUser(userId);
+
+            res.status(200).json(orders);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
 
 // 특정 주문 내역 조회
 orderRouter.get('/:orderId',
@@ -92,11 +104,14 @@ orderRouter.get('/:orderId',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
 
+// 주문 상태 변경
 orderRouter.patch('/update/:orderId',
     loginRequired,
     userRoleCheck,
+    checkBody,
     async (req, res, next) => {
         try {
             // req에서 데이터 가져옴
@@ -109,7 +124,8 @@ orderRouter.patch('/update/:orderId',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
 
 // 주문 정보 삭제 - 주문 취소
 orderRouter.delete('/cancel/:orderId',
@@ -129,6 +145,7 @@ orderRouter.delete('/cancel/:orderId',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
 
 export { orderRouter };

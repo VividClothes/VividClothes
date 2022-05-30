@@ -1,24 +1,20 @@
 import { Router } from 'express';
-import is from '@sindresorhus/is';
-import { loginRequired, userRoleCheck } from '../middlewares';
+import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import { productService } from '../services';
+import { reviewRouter} from './review-router';
+
 
 const productRouter = Router();
+productRouter.use('/:productId/review', reviewRouter)
 
 // 상품 등록 api
 // 로그인여부 및 유저role 확인하는 미들웨어 추가
 productRouter.post('/register',
     loginRequired,
     userRoleCheck,
+    checkBody,
     async (req, res, next) => {
         try {
-            // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-            // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-            if (is.emptyObject(req.body)) {
-                throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
-                );
-            }
             // req.body에서 데이터 가져와 변수에 할당
             const { productName, category, price, imagePath, info, size, color } = req.body;
 
@@ -40,18 +36,41 @@ productRouter.post('/register',
         } catch (error) {
             next(error);
         }
-    });
+    }
+);
 
 // 전체 상품 목록 가져옴
 productRouter.get('/list', async (req, res, next) => {
     try {
+
+        /*
+        
+  if (req.query.write) {
+    res.render('post/edit');
+    return;
+  }
+  
+  const page = Number(req.query.page || 1)// url 쿼리에서 page 받기, 기본값 1
+  const perPage = Number(req.query.perPage || 10)// url 쿼리에서 peRage 받기, 기본값 10
+  const [total, posts] = await Promise.all([
+    Post.countDocuments({}),    // 전체 게시글 수 쿼리하기
+    Post.find({})   // sort, skip, limit 사용하기
+    // total, posts 를 Promise.all 을 사용해 동시에 호출하기
+        .sort({createdAt: -1})
+        .skip(perPage * (page-1))
+        .limit(perPage)
+  ])
+  const totalPage = Math.ceil(total / perPage);
+  
+  res.render('post/list', { posts, page, perPage, totalPage });
+  */
         const products = await productService.getProducts();
 
         res.status(200).json(products);
     } catch (error) {
         next(error);
     }
-})
+});
 
 // 카테고리별 상품 조회
 productRouter.get('/category/:categoryId', async (req, res, next) => {
@@ -66,7 +85,7 @@ productRouter.get('/category/:categoryId', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-})
+});
 
 // 특정 상품 조회
 productRouter.get('/:productId', async (req, res, next) => {
@@ -81,22 +100,15 @@ productRouter.get('/:productId', async (req, res, next) => {
     } catch (error) {
         next(error);
     }
-})
+});
 
 // 상품 정보 수정
 productRouter.put('/update/:productId',
     loginRequired,
     userRoleCheck,
+    checkBody,
     async (req, res, next) => {
         try {
-            // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-            // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-            if (is.emptyObject(req.body)) {
-                throw new Error(
-                    'headers의 Content-Type을 application/json으로 설정해주세요'
-                );
-            }
-
             // req의 params와 body에서 데이터 가져옴
             const { productId } = req.params;
             const { productName, category, price, imagePath, info, size, color } = req.body;
@@ -118,7 +130,8 @@ productRouter.put('/update/:productId',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
 
 // 상품 정보 삭제
 productRouter.delete('/delete/:productId',
@@ -134,6 +147,7 @@ productRouter.delete('/delete/:productId',
         } catch (error) {
             next(error);
         }
-    })
+    }
+);
 
 export { productRouter };
