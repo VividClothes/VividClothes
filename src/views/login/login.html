@@ -20,7 +20,7 @@
     <!-- 로그인 폼(Form) -->
     <div class="login-form-container">
       <form class="box login-form-box" id="loginForm">
-        <p class="title is-5 has-text-info">어서오세요!</p>
+        <p class="title">어서오세요!</p>
         <div class="field">
           <label class="label" for="emailInput">이메일</label>
           <div class="control">
@@ -47,7 +47,15 @@
           </div>
         </div>
 
-        <button class="button is-info is-fullwidth" id="submitButton">로그인하기</button>
+        <div class="button is-info is-fullwidth" id="localSubmitButton">로그인</div>
+        <div class="button is-info is-fullwidth" id="kakaoSubmitButton">
+          <img src="/kakao_logo.png" alt="kakao logo" class="kakaoLogo">
+          카카오 로그인
+        </div>
+        <div class="button is-info is-fullwidth" id="googleSubmitButton">
+          <img src="/google_logo.png" alt="google logo" class="googleLogo">
+          구글 로그인
+        </div>
       </form>
     </div>
   </body>
