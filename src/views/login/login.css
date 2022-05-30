@@ -5,6 +5,11 @@
   height: 85vh;
 }
 
+.title {
+  color: #474747;
+  font-size: 1.3rem;
+}
+
 .login-form-box {
   width: 30rem;
 }
@@ -15,4 +20,39 @@
 
 .login-form-box .button {
   font-weight: bold;
+}
+
+#localSubmitButton {
+  background-color: #474747;
+}
+
+#localSubmitButton:hover {
+  box-shadow: 0px 0px 10px 3px rgb(220, 220, 220);
+}
+
+#kakaoSubmitButton {
+  margin: 0.5vh 0;
+  background-color: #fee500;
+  color: black;
+}
+
+#kakaoSubmitButton:hover {
+  box-shadow: 0px 0px 10px 3px rgb(220, 220, 220);
+}
+
+.kakaoLogo, .googleLogo {
+  width: 1.8rem;
+  height: 1.8rem;
+  position: absolute;
+  left: 1rem;
+}
+
+#googleSubmitButton {
+  background-color: white;
+  color: black;
+  box-shadow: 0px 0px 5px 1px rgb(230, 230, 230);
+}
+
+#googleSubmitButton:hover {
+  box-shadow: 0px 0px 10px 3px rgb(220, 220, 220);
 }
