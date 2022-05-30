@@ -27,6 +27,7 @@ viewsRouter.use('/products', serveStatic('products'));
 viewsRouter.use('/product', serveStatic('product'));
 viewsRouter.use('/admin-category', serveStatic('admin-category'));
 viewsRouter.use('/admin-product', serveStatic('admin-product'));
+viewsRouter.use('/user-order-list', serveStatic('user-order-list'));
 
 // ../views/images 내의 이미지 파일들을 쓸 수 있게 함
 viewsRouter.use(
