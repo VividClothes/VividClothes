@@ -8,7 +8,7 @@ export const userHeaderList = `
   <span class="dropdown-trigger color-whitesmoke link">마이 페이지<i class="fa-solid fa-angle-down ml-2"></i></span>
   <div class="dropdown-menu" id="dropdown-menu3" role="menu">
     <div class="dropdown-content">
-      <a href="/user-order" class="dropdown-item">
+      <a href="/user-order-list" class="dropdown-item">
         주문 조회
       </a>
       <a href="/cart" class="dropdown-item ">
