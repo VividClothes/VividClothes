@@ -1,7 +1,7 @@
 import modalStlye from '/modal/modal-style.js';
 
 const modal = (props) => {
-  const { modalForm, type } = props;
+  const { modalForm, type, categories } = props;
   let modalClassName = '';
   let modalTitle = '';
   let btnText = '';
@@ -29,7 +29,7 @@ const modal = (props) => {
           ${modalTitle}
         </h3>
       </header>
-        ${modalForm({ btnText })}
+        ${modalForm({ btnText, categories })}
       <footer></footer>
     </div>
   `;

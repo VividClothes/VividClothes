@@ -22,7 +22,8 @@ class AdminProduct {
     // Components
     this.header = document.getElementById('header');
     this.category = document.getElementById('category');
-    this.modal = document.getElementById('modal');
+    this.addProductModal = document.getElementById('add-product-modal');
+    this.editProductModal = document.getElementById('edit-product-modal');
     this.layout = document.getElementById('layout');
     this.titleSection = document.getElementById('title-section');
     this.productGrid = document.getElementById('products-grid');
@@ -31,14 +32,6 @@ class AdminProduct {
   async createDOM() {
     this.header.insertAdjacentHTML('afterbegin', header());
     this.layout.insertAdjacentHTML('afterbegin', layout());
-    this.modal.insertAdjacentHTML(
-      'afterbegin',
-      modal({ modalForm: productModalForm, type: 'ADD' })
-    );
-    this.modal.insertAdjacentHTML(
-      'afterbegin',
-      modal({ modalForm: productModalForm, type: 'EDIT' })
-    );
 
     const categories = await Api.get('/category/list');
     this.category.insertAdjacentHTML('afterbegin', await category({ categories }));
@@ -53,17 +46,29 @@ class AdminProduct {
     );
 
     this.productGrid.insertAdjacentHTML('afterbegin', await productGrid());
+
+    this.addProductModal.insertAdjacentHTML(
+      'afterbegin',
+      modal({ modalForm: productModalForm, type: 'ADD', categories })
+    );
+
+    this.editProductModal.insertAdjacentHTML(
+      'afterbegin',
+      modal({ modalForm: productModalForm, type: 'EDIT', categories })
+    );
   }
 
   addAllEvents() {
     addComponentEvents(this.header);
     addComponentEvents(this.category);
     addComponentEvents(this.titleSection);
-    addComponentEvents(this.modal);
+    addComponentEvents(this.addProductModal);
+    addComponentEvents(this.editProductModal);
 
     this.addSelectCategoryEvent();
     this.addCreateProductEvent();
     this.addEditProductEvent();
+    this.addDeleteProductEvent();
   }
 
   createTitleSectionLeft(categories) {
@@ -96,7 +101,7 @@ class AdminProduct {
   addCreateProductEvent() {
     const createProductBtn = this.titleSection.querySelector('.add-product-btn');
     createProductBtn.addEventListener('click', () => {
-      this.modal.querySelector('.add-product-form').classList.add('show-modal');
+      this.addProductModal.querySelector('.add-product-form').classList.add('show-modal');
     });
   }
 
@@ -105,7 +110,21 @@ class AdminProduct {
 
     editProductBtns.forEach((btn) => {
       btn.addEventListener('click', () => {
-        this.modal.querySelector('.edit-product-form').classList.add('show-modal');
+        this.editProductModal.querySelector('.edit-product-form').classList.add('show-modal');
+      });
+    });
+  }
+
+  addDeleteProductEvent() {
+    const deleteProductBtns = this.productGrid.querySelectorAll('.delete-product-btn');
+
+    deleteProductBtns.forEach((btn) => {
+      btn.addEventListener('click', async () => {
+        if (confirm('해당 상품을 정말 삭제하시겠습니까?')) {
+          console.log(btn.dataset.id);
+          await Api.delete(`/product/delete/${btn.dataset.id}`);
+          window.location.reload();
+        }
       });
     });
   }

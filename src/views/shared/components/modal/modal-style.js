@@ -99,7 +99,76 @@ const modalStlye = /* html */ `
   }
 
   .modal-button:hover {
-    background-color: #5eaca0;
+    background-color: black;
+  }
+
+  .select-category-container {
+    width: 100%;
+    font-size: 17px;
+    height: 45px;
+    margin-top: 2px;
+  }
+
+  select.select-category {
+    width: 100%;
+    border-width: 1px;
+    border-style: solid;
+    border-radius: 5px;
+    border-color: rgb(118, 118, 118);
+  }
+
+  .file-label {
+    width: 100%;
+  }
+
+  .file-name {
+    width: 100%;
+    background-color: white;
+  }
+
+  .size-radio {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    height: 40px;
+    background-color: #ccc;
+    margin-top: 3px;
+    border-radius: 7px;
+  }
+
+  .color-container {
+    position: relative;
+  }
+
+  .color-container .modal-input {
+    width: 100%;
+  }
+
+  .color-button {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    top: 50%;
+    right: 1%;
+    transform: translateY(-50%);
+    border: 0;
+    font-size: 25px;
+    padding: 10px;
+    color: #474747;
+    background-color: transparent;
+    cursor: pointer;
+    transition: all 0.3s ease;
+  }
+
+  .color-button:hover {
+    color: black;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
   }
 </style>
 `;

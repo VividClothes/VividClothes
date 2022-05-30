@@ -41,8 +41,8 @@ const productGrid = async (props) => {
                 <div class="grid-contents">
                   <p class="font-15">${info}</p>
                   <div class="button-container">
-                    <button class="edit-product-btn buttonss has-background-info-dark">수정</button>
-                    <button class="delete-product-btn buttonss has-background-danger">삭제</button>
+                    <button data-id="${_id}" class="edit-product-btn buttonss has-background-info-dark">수정</button>
+                    <button data-id="${_id}" class="delete-product-btn buttonss has-background-danger">삭제</button>
                   </div>
                   <p class="subtitle"><i class="fa-solid fa-won-sign"></i> ${price.toLocaleString()}</p>
                 </div>

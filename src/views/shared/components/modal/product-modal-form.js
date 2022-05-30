@@ -1,5 +1,5 @@
 const productModalForm = (props) => {
-  const { btnText } = props;
+  const { btnText, categories } = props;
 
   return /* html */ `
     <form class="modal-form">
@@ -11,40 +11,101 @@ const productModalForm = (props) => {
           <input class="modal-input" type="text" id="product-name" />
         </li>
         <li class="modal-li">
-          <label class="modal-label" htmlFor="product-category">
-            카테고리
+          <label class="modal-label" htmlFor="product-info">
+            상품 설명
           </label>
-          <input class="modal-input" type="text" id="product-category" />
-        </li>
+          <input class="modal-input" type="text" id="product-info" />
+        </li>        
         <li class="modal-li">
           <label class="modal-label" htmlFor="product-price">
             가격
           </label>
-          <input class="modal-input" type="text" id="product-price" />
+          <input class="modal-input" type="number" id="product-price" />
         </li>
+
+        <li class="modal-li">
+          <label class="modal-label" htmlFor="product-category">
+            카테고리
+          </label>
+          <div class="select select-category-container">
+            <select class="select-category">
+              ${categories
+                .map(({ categoryName }) => {
+                  return /* html */ `
+                  <option value=${categoryName}>${categoryName}</option>
+                `;
+                })
+                .join('')}
+            </select>
+          </div>
+        </li>  
+
         <li class="modal-li">
           <label class="modal-label" htmlFor="product-img">
             상품 이미지
           </label>
-          <input class="modal-input" type="text" id="product-img" />
+          <div class="file has-name is-right">
+            <label class="file-label">
+              <input class="file-input" type="file" name="resume" multiple>
+              <span class="file-cta">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file…
+                </span>
+              </span>
+              <span class="file-name">
+              </span>
+            </label>
+          </div>
+          <div class="imgs-container"></div>
         </li>
-        <li class="modal-li">
-          <label class="modal-label" htmlFor="product-info">
-            상품 정보
-          </label>
-          <input class="modal-input" type="text" id="product-info" />
-        </li>
+      
         <li class="modal-li">
           <label class="modal-label" htmlFor="product-size">
-            사이즈
+            가능 사이즈
           </label>
-          <input class="modal-input" type="text" id="product-size" />
+          <div class="control size-radio">
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" checked>
+              Free
+            </label>
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" >
+              S
+            </label>
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" >
+              M
+            </label>
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" >
+              L
+            </label>
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" >
+              XL
+            </label>
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" >
+              2XL
+            </label>
+            <label class="radio">
+              <input class="size-radio-input" type="checkbox" name="foobar" >
+              3XL
+            </label>                                    
+          </div>
         </li>
         <li class="modal-li">
           <label class="modal-label" htmlFor="product-color">
             색상
           </label>
-          <input class="modal-input" type="text" id="product-color" />
+          <div class="color-container">
+            <input class="modal-input" type="text" id="product-color" />
+            <button class="color-button"><i class="fa-solid fa-circle-plus"></i></button>
+          </div>
+          <div class="colors-container"></div>
         </li>                                
       </ul>
       <button class="modal-button" type="submit">
