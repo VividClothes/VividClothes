@@ -13,6 +13,10 @@ const OrderSchema = new Schema(
                 ref: 'products',
                 required: true,
             },
+            option: {
+                size: String,
+                color: String,
+            },
             quantity: Number
         },
         {

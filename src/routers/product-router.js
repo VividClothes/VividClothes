@@ -1,8 +1,11 @@
 import { Router } from 'express';
 import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import { productService } from '../services';
+import { reviewRouter} from './review-router';
+
 
 const productRouter = Router();
+productRouter.use('/:productId/review', reviewRouter)
 
 // 상품 등록 api
 // 로그인여부 및 유저role 확인하는 미들웨어 추가
@@ -39,6 +42,28 @@ productRouter.post('/register',
 // 전체 상품 목록 가져옴
 productRouter.get('/list', async (req, res, next) => {
     try {
+
+        /*
+        
+  if (req.query.write) {
+    res.render('post/edit');
+    return;
+  }
+  
+  const page = Number(req.query.page || 1)// url 쿼리에서 page 받기, 기본값 1
+  const perPage = Number(req.query.perPage || 10)// url 쿼리에서 peRage 받기, 기본값 10
+  const [total, posts] = await Promise.all([
+    Post.countDocuments({}),    // 전체 게시글 수 쿼리하기
+    Post.find({})   // sort, skip, limit 사용하기
+    // total, posts 를 Promise.all 을 사용해 동시에 호출하기
+        .sort({createdAt: -1})
+        .skip(perPage * (page-1))
+        .limit(perPage)
+  ])
+  const totalPage = Math.ceil(total / perPage);
+  
+  res.render('post/list', { posts, page, perPage, totalPage });
+  */
         const products = await productService.getProducts();
 
         res.status(200).json(products);
