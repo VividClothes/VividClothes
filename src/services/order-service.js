@@ -16,6 +16,7 @@ class OrderService {
         const allProduct = await productService.getProducts();
         orderInfo.products = orderInfo.products.map(product => ({
             product: allProduct.find(p => p._id == product.productId),
+            option: product.option,
             quantity: product.quantity
         }))
 
