@@ -11,9 +11,29 @@ export class ReviewModel {
         return createdNewReview;
     }
 
+    // 유저별 리뷰 조회
+    async findByUser(userId) {
+        const reviews = await Review.find({ writer: userId })
+            .populate([
+                {
+                    path: 'writer',
+                    select: [
+                        'email',
+                        'fullName'
+                    ]
+                },
+                {
+                    path: 'productId',
+                    select: 'productName'
+                }
+            ]);
+
+        return reviews;
+    }
+
     // 상품별 리뷰 조회
     async findByProduct(productId) {
-        const reviews = await Review.find({productId})
+        const reviews = await Review.find({ productId })
             .populate([
                 {
                     path: 'writer',
