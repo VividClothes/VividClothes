@@ -235,10 +235,14 @@ function getRecipientInfo(...recipientArray) {
 }
 
 
-// 구매 상품들의 {productId, quantity}를 배열로 반환
+// 구매 상품들의 {productId, option, quantity}를 배열로 반환
 function getProductsInfo(buyProducts) {
     return buyProducts.map((product) => ({
         productId: product.productId,
+        option: {
+            size: product.size,
+            color: product.color
+        },
         quantity: product.quantity
     }));
 }
