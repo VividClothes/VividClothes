@@ -40,8 +40,8 @@ const COMPLETE = '배송 완료';
   let orderItems = getOrderItems(orders);
   const urlParams = new URLSearchParams(window.location.search);
   const listType = urlParams.get('type');
-  console.log(orders)
-  console.log(orderItems);
+  //console.log(orders)
+  //console.log(orderItems);
   
   // 상품 준비중, 상품 배송중, 배송 완료 텍스트 및 개수 표시
   setStateLinkText(orderItems);
@@ -73,6 +73,34 @@ const COMPLETE = '배송 완료';
   else {
     orderItems.forEach((item) => {
       itemsBody.insertAdjacentHTML('beforeend', makeItemContainerHTML(item));
+    })
+
+
+    // 취소 및 후기 링크 이벤트 추가
+    const stateBoxes = itemsBody.getElementsByClassName('order-state-box');
+    //console.log(stateBoxes);
+    //console.log(orderItems);
+    orderItems.forEach((item, index) => {
+
+      // 1. 상품 준비중 - 취소링크
+      if (item.state ===  PREPARE) {
+        const cancelLink = stateBoxes[index].querySelector('.order-state-link');
+        cancelLink.addEventListener('click', async (e) => {
+          e.preventDefault();
+          const realCancel = confirm('상품 주문을 취소하시겠습니까?');
+
+          if(realCancel) {
+            await Api.patch(`/order/${item.orderId}/product/${item.productId}/cancel`);
+            alert('상품 주문이 취소되었습니다.');
+            window.location.reload();
+          }
+        })
+      }
+
+      // 2. 배송 완료 - 후기 링크
+      else if(item.state === COMPLETE) {
+        // 
+      }
     })
   }
   /************************************************************************/
