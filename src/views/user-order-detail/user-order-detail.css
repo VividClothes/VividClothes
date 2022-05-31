@@ -1,0 +1,174 @@
+.order-container {
+    width: 1400px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10vh;
+    font-weight: bold;
+}
+
+.order-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-bottom: 2.5vh;
+}
+
+
+.order-date-container {
+    border-bottom: solid #ddd 1px;
+    padding-bottom: 2vh;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.order-date {
+    margin-left: 1vw;
+}
+
+/* 수령자 정보, 상품 정보 컨테이너 */
+.recipient-info-container,
+.product-info-container {
+    font-size: 13px;
+    margin-top: 5vh;
+}
+
+
+/* 수령자 정보, 상품 정보 헤더 글자 */
+.recipient-header-eng,
+.product-header-eng,
+.payment-header-eng {
+    font-size: 1.2rem;
+}
+
+.recipient-header-kor,
+.product-header-kor,
+.payment-header-kor {
+    font-size: 0.7rem;
+    padding-left: 5px;
+    color: #777;
+}
+
+.recipient-container {
+    margin-top: 1.5vh;
+}
+
+/* 수령인, 휴대전화, 배송지 주소 컨테이너 */
+.recipient-info-all {
+    padding: 15px 15px;
+    border: solid #ccc 1px;
+}
+
+/* 휴대전화 컨테이너 */
+.phone-container {
+    margin: -1px 0px;
+}
+
+
+/* 수령자 정보 왼쪽 글자들 박스 */
+.recipient-info-kor {
+    display: inline-block;
+    width: 200px;
+}
+
+
+
+/******************상품정보*******************/
+.items-container {
+    margin-top: 1.5vh;
+}
+
+.items-header {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    text-align: center;
+    padding: 15px 0px;
+    font-size: 12.5px;
+    font-weight: bold;
+    border: solid #ddd 1px;
+    margin-top: -1px;
+}
+
+.item-container {
+    display: grid;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
+    place-items: center;
+    text-align: center;
+    font-size: 12.5px;
+    font-weight: bold;
+    border: solid #ddd 1px;
+    margin-top: -1px;
+}
+
+.product-name-options {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 2% 0% 2% 20%;
+}
+
+.image-box {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: none;
+    cursor: pointer;
+    background-image: url('/home-img3.jpg');
+}
+
+.options-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding-left: 20px;
+}
+
+.product-name {
+    display: inline-block;
+}
+
+.options {
+    display: inline-block;
+    margin-top: 2px;
+    color: #777;
+}
+
+.order-state-link:hover {
+    color: #485fc7;
+    text-decoration: underline;
+}
+
+.order-state-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-state-link {
+    margin-top: 0.5vh;
+    display: block;
+}
+
+
+/* 결제하기 버튼 부분 */
+.payment-info-container {
+    margin-bottom: 20vh;
+    font-size: 13px;
+    margin-top: 10vh;
+}
+
+.payment-container {
+    border-top: solid #ddd 1px;
+    margin-top: 1.5vh;
+    padding-top: 4vh;
+    width: 40%;
+    font-size:20px;
+}
+
+.payment-price {
+    margin-left: 20%;
+}
