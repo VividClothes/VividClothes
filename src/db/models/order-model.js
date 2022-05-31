@@ -86,6 +86,22 @@ export class OrderModel {
         return order;
     }
 
+    // 특정 주문의 특정 상품 검색
+    async findByProduct(orderId, productId) {
+        const order = await Order.findOne(
+            { _id: orderId },
+            {
+                'orderer': true,
+                'products': {
+                    '$elemMatch': {
+                        'product': productId
+                    }
+                }
+            });
+
+        return order;
+    }
+
     // 주문 내역 및 상태 변경
     async update(orderId, update) {
         const filter = { _id: orderId };
