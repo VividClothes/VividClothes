@@ -176,7 +176,7 @@ function createProductModalEvents(component) {
     if (sizeInputs.length > 0) {
       size = Array.from(sizeInputs).reduce((acc, curr) => {
         if (curr.checked) {
-          return [...acc, curr.value];
+          return [...acc, curr.name];
         } else {
           return [...acc];
         }

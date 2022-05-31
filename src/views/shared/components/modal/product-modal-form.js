@@ -68,31 +68,31 @@ const productModalForm = (props) => {
           </label>
           <div class="control size-radio">
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" checked>
+              <input class="size-radio-input" type="checkbox" name="Free" checked>
               Free
             </label>
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" >
+              <input class="size-radio-input" type="checkbox" name="S" >
               S
             </label>
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" >
+              <input class="size-radio-input" type="checkbox" name="M" >
               M
             </label>
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" >
+              <input class="size-radio-input" type="checkbox" name="L" >
               L
             </label>
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" >
+              <input class="size-radio-input" type="checkbox" name="XL" >
               XL
             </label>
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" >
+              <input class="size-radio-input" type="checkbox" name="2XL" >
               2XL
             </label>
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="foobar" >
+              <input class="size-radio-input" type="checkbox" name="3XL" >
               3XL
             </label>                                    
           </div>
