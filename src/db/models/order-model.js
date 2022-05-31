@@ -27,7 +27,8 @@ export class OrderModel {
                     path: 'products.product',
                     select: [
                         'productName',
-                        'price'
+                        'price',
+                        'imagePath'
                     ]
                 }
             ]);
@@ -51,7 +52,8 @@ export class OrderModel {
                     path: 'products.product',
                     select: [
                         'productName',
-                        'price'
+                        'price',
+                        'imagePath'
                     ]
                 }
             ]);
@@ -75,7 +77,8 @@ export class OrderModel {
                     path: 'products.product',
                     select: [
                         'productName',
-                        'price'
+                        'price',
+                        'imagePath'
                     ]
                 }
             ]);

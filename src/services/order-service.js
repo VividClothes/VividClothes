@@ -1,5 +1,5 @@
 import { orderModel } from '../db';
-import { userService, productService } from './index';
+import { productService } from './index';
 
 const state = ['상품 준비중', '상품 배송중', '배송 완료'];
 
@@ -10,17 +10,13 @@ class OrderService {
 
     // 주문 추가
     async addOrder(orderInfo) {
-
-        // 유저 검색 후 재할당
-        orderInfo.orderer = await userService.getUserById(orderInfo.orderer);
-
         // 전체 상품 정보 가져온 후 알맞은 상품을 할당
         const allProduct = await productService.getProducts();
         orderInfo.products = orderInfo.products.map(product => ({
             product: allProduct.find(p => p._id == product.productId),
             option: product.option,
             quantity: product.quantity
-        }))
+        }));
 
         // 주문 총액 계산
         orderInfo.priceTotal = orderInfo.products.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
