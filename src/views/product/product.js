@@ -45,8 +45,8 @@ const cartButton = document.querySelector('.cart-container');
 (async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productID = urlParams.get('id');
-    const result = await Api.get(`/product/${productID}`);
-    console.log(result);
+    let result = await Api.get(`/product/${productID}`);
+    result = result.product;
 
     imageContainer.style.backgroundImage = `url( "${result.imagePath[0]}" )`;
     productName.textContent = result.productName;
