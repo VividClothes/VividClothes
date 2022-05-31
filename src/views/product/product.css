@@ -5,16 +5,66 @@
     align-items: center;
     height: 89vh;
     width: 100vw;
+    margin-bottom: 10vh;
 }
 
 .image-container {
     width: 50vmin;
     height: 64vmin;
     margin-right: 22vmin;
-    background-size: cover;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* background-size: cover;
     background-position: center center;
-    background-repeat: none;
-    box-shadow: 0px 0px 20px 1px rgb(230, 230, 230);
+    background-repeat: none; */
+    /* box-shadow: 0px 0px 20px 1px rgb(230, 230, 230); */
+}
+
+.main-image {
+    display: block;
+    /* max-width: 100%;
+    height: auto; */
+    max-height: 100%;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.prev, .next {
+    font-size: 2.5vmin;
+    color: white;
+    display: inline-block;
+}
+
+.prev:hover,
+.next:hover {
+    color: white;
+}
+
+.prev-box, .next-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 4vmin;
+    height: 4vmin;
+    background-color: rgba(0,0,0,0.3);
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.prev-box {
+    position: absolute;
+    left: 0;
+}
+
+.next-box {
+    position: absolute;
+    right: 0;
 }
 
 .info-container {

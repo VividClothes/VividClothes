@@ -24,6 +24,7 @@ function insertHeader() {
 
 /****************************요소 모음**********************************/
 const imageContainer = document.querySelector('.image-container');
+const mainImage = document.querySelector('.main-image');
 const productName = document.querySelector('.product-name');
 const productInfo = document.querySelector('.product-info');
 const priceText = document.querySelector('.price-text');
@@ -37,6 +38,9 @@ const downButton = document.querySelector('.down-button');
 
 const buyButton = document.querySelector('.buy-container');
 const cartButton = document.querySelector('.cart-container');
+
+const prevBox = document.querySelector('.prev-box');
+const nextBox = document.querySelector('.next-box');
 /*********************************************************************/
 
 
@@ -47,8 +51,9 @@ const cartButton = document.querySelector('.cart-container');
     const productID = urlParams.get('id');
     let result = await Api.get(`/product/${productID}`);
     result = result.product;
+    console.log(result);
 
-    imageContainer.style.backgroundImage = `url( "${result.imagePath[0]}" )`;
+    mainImage.src = `${result.imagePath[0]}`;
     productName.textContent = result.productName;
     productInfo.textContent = result.info;
     priceText.textContent = addCommas(result.price);
@@ -56,7 +61,52 @@ const cartButton = document.querySelector('.cart-container');
     colorText.textContent = result.option.color[0];
     totalPriceText.textContent = addCommas(result.price);
 
+    let currentImageIndex = 0;
+    const imagePaths = result.imagePath;
 
+
+
+    /********************이미지 슬라이드 이벤트*********************/
+    prevBox.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (currentImageIndex === 0) {
+            currentImageIndex = imagePaths.length - 1;
+        } else {
+            currentImageIndex--;
+        }
+
+        mainImage.src = `${imagePaths[currentImageIndex]}`;
+    })
+
+    nextBox.addEventListener('click', (e) => {
+        e.preventDefault();
+        
+        if (currentImageIndex === imagePaths.length - 1) {
+            currentImageIndex = 0;
+        } else {
+            currentImageIndex++;
+        }
+
+        mainImage.src = `${imagePaths[currentImageIndex]}`;
+    })
+    /*************************************************************/
+
+
+
+    /********************슬라이더 화살표 표시***********************/
+    imageContainer.addEventListener('mouseover', (e) => {
+        prevBox.style.visibility = 'visible';
+        nextBox.style.visibility = 'visible';
+    })
+
+    imageContainer.addEventListener('mouseout', (e) => {
+        prevBox.style.visibility = 'hidden';
+        nextBox.style.visibility = 'hidden';
+    })
+    /*************************************************************/
+    
+    
 
     /********************수량 버튼 이벤트**************************/
     // 수량 증가 버튼
