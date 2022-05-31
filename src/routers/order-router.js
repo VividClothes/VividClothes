@@ -127,6 +127,28 @@ orderRouter.patch('/update/:orderId',
     }
 );
 
+// 일부 상품 삭제 - 부분 취소
+orderRouter.patch('/:orderId/product/:productId/cancel',
+    loginRequired,
+    async (req, res, next) => {
+        try {
+            // req의 params에서 데이터 가져옴
+            const { orderId, productId } = req.params;
+
+            const updateProduct = await orderService.updateByProduct(
+                req.currentUserRole,
+                req.currentUserId,
+                orderId,
+                productId
+            );
+
+            res.status(201).json(updateProduct);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
 // 주문 정보 삭제 - 주문 취소
 orderRouter.delete('/cancel/:orderId',
     loginRequired,

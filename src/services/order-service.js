@@ -1,6 +1,8 @@
 import { orderModel } from '../db';
 import { userService, productService } from './index';
 
+const state = ['상품 준비중', '상품 배송중', '배송 완료'];
+
 class OrderService {
     constructor(orderModel) {
         this.orderModel = orderModel;
@@ -21,9 +23,10 @@ class OrderService {
         }))
 
         // 주문 총액 계산
-        orderInfo.priceTotal = orderInfo.products.reduce(
-            (sum, item) => sum + item.product.price * item.quantity
-            , 0);
+        orderInfo.priceTotal = orderInfo.products.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
+
+        // 주문 상태 할당
+        orderInfo.state = state[0];
 
         const createdNewOrder = await this.orderModel.create(orderInfo);
 
@@ -70,8 +73,8 @@ class OrderService {
         return order;
     }
 
+    // 주문 상태 변경
     async updateOrder(orderId, stateCode) {
-        const state = ['상품 준비중', '상품 배송중', '배송 완료'];
         if (stateCode < 0 || stateCode >= state.length) {
             throw new Error(
                 '유효하지 않은 상태코드입니다. 올바른 상태코드를 입력해주세요.'
@@ -79,6 +82,30 @@ class OrderService {
         }
 
         const updateOrder = await this.orderModel.update(orderId, { state: state[stateCode] });
+
+        return updateOrder;
+    }
+
+    // 주문 상품 부분 삭제 - 부분 취소
+    async updateByProduct(userRole, userId, orderId, productId) {
+        // id를 기준으로 DB에서 주문 내역 조회
+        const order = await this.getOrderById(userRole, userId, orderId);
+
+        // 수정할 주문 데이터 객체 생성
+        const updateProduct = {
+            '$pull': {
+                "products": {
+                    "product": productId
+                }
+            }
+        };
+
+        const updateOrder = await this.orderModel.update(order, updateProduct);
+        // 주문한 전체 상품이 취소되었다면 주문 내역 삭제
+        if (updateOrder.products.length < 1) {
+            const deleteOrder = await this.deleteOrder(userRole, userId, order);
+            return deleteOrder;
+        }
 
         return updateOrder;
     }
