@@ -95,18 +95,20 @@ const nextBox = document.querySelector('.next-box');
 
 
     /********************슬라이더 화살표 표시***********************/
-    imageContainer.addEventListener('mouseover', (e) => {
-        prevBox.style.visibility = 'visible';
-        nextBox.style.visibility = 'visible';
-    })
+    if (imagePaths.length > 1) {
+        imageContainer.addEventListener('mouseover', (e) => {
+            prevBox.style.visibility = 'visible';
+            nextBox.style.visibility = 'visible';
+        })
 
-    imageContainer.addEventListener('mouseout', (e) => {
-        prevBox.style.visibility = 'hidden';
-        nextBox.style.visibility = 'hidden';
-    })
+        imageContainer.addEventListener('mouseout', (e) => {
+            prevBox.style.visibility = 'hidden';
+            nextBox.style.visibility = 'hidden';
+        })
+    }
     /*************************************************************/
     
-    
+
 
     /********************수량 버튼 이벤트**************************/
     // 수량 증가 버튼
