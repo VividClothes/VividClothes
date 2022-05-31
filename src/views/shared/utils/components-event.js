@@ -195,6 +195,44 @@ function createProductModalEvents(component) {
 
 function editProductModalEvents(component) {
   addProductModalEvents(component);
+
+  const submitForm = component.querySelector('.modal-form');
+
+  submitForm.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const productName = component.querySelector('.modal-input[id=product-name]').value;
+    const info = component.querySelector('.modal-input[id=product-info]').value;
+    const price = component.querySelector('.modal-input[id=product-price]').value;
+    const category = component.querySelector('.select-category').value;
+    const imagePath = imagePaths;
+    const sizeInputs = component.querySelectorAll('.size-radio-input');
+    const color = [...colors];
+
+    let size = [];
+
+    if (sizeInputs.length > 0) {
+      size = Array.from(sizeInputs).reduce((acc, curr) => {
+        if (curr.checked) {
+          return [...acc, curr.name];
+        } else {
+          return [...acc];
+        }
+      }, []);
+    }
+
+    const data = { productName, info, price, category, imagePath, size, color };
+    console.log(component.getAttribute('product-id'));
+
+    const result = await Api.put(
+      `/product/update`,
+      `${component.getAttribute('product-id')}`,
+      data
+    );
+    console.log(result);
+
+    alert('상품 수정이 정상적으로 완료되었습니다.');
+    window.location.reload();
+  });
 }
 
 export function addComponentEvents(component) {

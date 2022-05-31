@@ -68,7 +68,7 @@ const productModalForm = (props) => {
           </label>
           <div class="control size-radio">
             <label class="radio">
-              <input class="size-radio-input" type="checkbox" name="Free" checked>
+              <input class="size-radio-input" type="checkbox" name="Free">
               Free
             </label>
             <label class="radio">

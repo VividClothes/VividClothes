@@ -27,7 +27,8 @@ export class OrderModel {
                     path: 'products.product',
                     select: [
                         'productName',
-                        'price'
+                        'price',
+                        'imagePath'
                     ]
                 }
             ]);
@@ -51,7 +52,8 @@ export class OrderModel {
                     path: 'products.product',
                     select: [
                         'productName',
-                        'price'
+                        'price',
+                        'imagePath'
                     ]
                 }
             ]);
@@ -75,7 +77,8 @@ export class OrderModel {
                     path: 'products.product',
                     select: [
                         'productName',
-                        'price'
+                        'price',
+                        'imagePath'
                     ]
                 }
             ]);
@@ -83,6 +86,7 @@ export class OrderModel {
         return order;
     }
 
+    // 주문 내역 및 상태 변경
     async update(orderId, update) {
         const filter = { _id: orderId };
         const option = { returnOriginal: false };
@@ -92,7 +96,7 @@ export class OrderModel {
         return updateOrder;
     }
 
-    // 주문 취소 - 삭제
+    // 전체 주문 취소 - 삭제
     async delete(orderId) {
         const filter = { _id: orderId };
 

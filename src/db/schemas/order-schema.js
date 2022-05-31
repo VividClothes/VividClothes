@@ -14,10 +14,21 @@ const OrderSchema = new Schema(
                 required: true,
             },
             option: {
-                size: String,
-                color: String,
+                type: {
+                    size: String,
+                    color: String,
+                },
+                required: true,
+                _id: false,
             },
-            quantity: Number
+            quantity: {
+                type: Number,
+                required: true,
+            },
+            hasReview: {
+                type: Boolean,
+                default: false,
+            },
         },
         {
             _id: false,
@@ -47,7 +58,7 @@ const OrderSchema = new Schema(
         },
         state: {
             type: String,
-            default: '상품 준비중'
+            required: true,
         },
     },
     {
