@@ -6,6 +6,7 @@
     height: 89vh;
     width: 100vw;
     margin-bottom: 10vh;
+    user-select: none;
 }
 
 .image-container {
