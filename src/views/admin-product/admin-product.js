@@ -109,8 +109,30 @@ class AdminProduct {
     const editProductBtns = this.productGrid.querySelectorAll('.edit-product-btn');
 
     editProductBtns.forEach((btn) => {
-      btn.addEventListener('click', () => {
-        this.editProductModal.querySelector('.edit-product-form').classList.add('show-modal');
+      btn.addEventListener('click', async () => {
+        const { _id, productName, category, price, imagePath, info, option } = await Api.get(
+          `/product/${btn.dataset.id}`
+        );
+        const editModalForm = this.editProductModal.querySelector('.edit-product-form');
+        this.editProductModal.setAttribute('product-id', _id.toString());
+
+        editModalForm.querySelector('.modal-input[id=product-name]').value = productName;
+        editModalForm.querySelector('.modal-input[id=product-info]').value = info;
+        editModalForm.querySelector('.modal-input[id=product-price]').value = price;
+        if (category) {
+          editModalForm.querySelector('.select-category').value = category.categoryName;
+        }
+
+        const sizeInputs = editModalForm.querySelectorAll('.size-radio-input');
+        Array.from(sizeInputs).forEach((sizeInput) => {
+          if (option.size.includes(sizeInput.name)) {
+            sizeInput.checked = true;
+          } else {
+            sizeInput.checked = false;
+          }
+        });
+
+        editModalForm.classList.add('show-modal');
       });
     });
   }
