@@ -70,7 +70,10 @@ class ProductService {
     // 상품 정보 삭제
     async deleteProduct(productId) {
         const product = await this.productModel.delete(productId);
-        imageService.imageDelete(product.imagePath);
+
+        if(product.imagePath.length > 0){
+            imageService.imageDelete(product.imagePath);
+        }
 
         return product;
     }
