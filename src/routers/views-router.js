@@ -15,10 +15,7 @@ viewsRouter.use('/login', serveStatic('login'));
 viewsRouter.use('/', serveStatic(''));
 
 // ../views/images 내의 이미지 파일들을 쓸 수 있게 함
-viewsRouter.use(
-  '/',
-  express.static(path.join(__dirname, '../views/shared/images'))
-);
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/images')));
 
 viewsRouter.use('/cart', serveStatic('cart'));
 viewsRouter.use('/order', serveStatic('order'));
@@ -27,25 +24,17 @@ viewsRouter.use('/products', serveStatic('products'));
 viewsRouter.use('/product', serveStatic('product'));
 viewsRouter.use('/admin-category', serveStatic('admin-category'));
 viewsRouter.use('/admin-product', serveStatic('admin-product'));
+viewsRouter.use('/admin-order', serveStatic('admin-order'));
 viewsRouter.use('/user-order-list', serveStatic('user-order-list'));
 
 // ../views/images 내의 이미지 파일들을 쓸 수 있게 함
-viewsRouter.use(
-  '/',
-  express.static(path.join(__dirname, '../views/shared/images'))
-);
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/images')));
 
 // ../views/utils 내의 api.js, useful-functions.js 등을 쓸 수 있게 함.
-viewsRouter.use(
-  '/',
-  express.static(path.join(__dirname, '../views/shared/utils'))
-);
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/utils')));
 
 // ../views/components 내의 파일들을 쓸 수 있게 함.
-viewsRouter.use(
-  '/',
-  express.static(path.join(__dirname, '../views/shared/components'))
-);
+viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/components')));
 
 // views폴더 내의 ${resource} 폴더 내의 모든 파일을 웹에 띄우며,
 // 이 때 ${resource}.html 을 기본 파일로 설정함.
