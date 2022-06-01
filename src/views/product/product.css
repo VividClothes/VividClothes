@@ -5,16 +5,67 @@
     align-items: center;
     height: 89vh;
     width: 100vw;
+    margin-bottom: 10vh;
+    user-select: none;
 }
 
 .image-container {
     width: 50vmin;
     height: 64vmin;
     margin-right: 22vmin;
-    background-size: cover;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* background-size: cover;
     background-position: center center;
-    background-repeat: none;
-    box-shadow: 0px 0px 20px 1px rgb(230, 230, 230);
+    background-repeat: none; */
+    /* box-shadow: 0px 0px 20px 1px rgb(230, 230, 230); */
+}
+
+.main-image {
+    display: block;
+    /* max-width: 100%;
+    height: auto; */
+    max-height: 100%;
+    width: auto;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+
+.prev, .next {
+    font-size: 2.5vmin;
+    color: white;
+    display: inline-block;
+}
+
+.prev:hover,
+.next:hover {
+    color: white;
+}
+
+.prev-box, .next-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 4vmin;
+    height: 4vmin;
+    background-color: rgba(0,0,0,0.3);
+    cursor: pointer;
+    visibility: hidden;
+}
+
+.prev-box {
+    position: absolute;
+    left: 0;
+}
+
+.next-box {
+    position: absolute;
+    right: 0;
 }
 
 .info-container {
@@ -34,7 +85,7 @@
 }
 
 .product-size-container {
-    padding-top: 1vmin;
+    padding-top: 1.5vmin;
     padding-bottom: 1.5vmin;
 }
 
@@ -46,16 +97,22 @@
 
 
 .quantity-wrap {
-    text-decoration: none;
-}
-
-.up-button {
-    margin-left: 1vmin;
+    background-color: #eee;
+    cursor: pointer;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    font-display: row;
+    justify-content: center;
+    align-items: center;
 }
 
 .quantity {
-    width: 30px;
+    width: 25px;
     height: 25px;
+    font-size: 12px;
+    border: solid #eee 1px;
+    text-align: center;
 }
 
 
@@ -89,4 +146,33 @@
 
 .cart-container:hover {
     box-shadow: 0px 0px 10px 1px rgb(220, 220, 220);
+}
+
+
+.product-selected-container {
+    padding: 1vh 1vw;
+}
+
+.select {
+    font-size: 0.7rem;
+    width: 40%;
+    background-color: white;
+    border: solid #ccc 1px;
+}
+
+.selected-option {
+    border: solid #ccc 1px;
+    font-size: 12px;
+    font-weight: bold;
+    display: grid;
+    grid-template-columns: 2.5fr 1.5fr 1fr 0.3fr;
+    padding: 1vh 1vw;
+    margin-top: -1px;
+}
+
+.option-sort-helper {
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
 }
