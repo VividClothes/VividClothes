@@ -51,7 +51,6 @@ const createHeaderNav = (props) => {
   return !isLogin ? notLoginHeaderNav() : loginHeaderNav(config, dropdownContent);
 };
 
-/////////////////////////////////////////////////////////////////////////////////////
 const headerNav = document.createElement('div');
 headerNav.insertAdjacentHTML('afterbegin', createHeaderNav());
 
@@ -81,7 +80,6 @@ function logoutEventListener() {
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    console.log('why?');
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('hashedEmail');

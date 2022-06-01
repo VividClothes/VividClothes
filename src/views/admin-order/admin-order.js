@@ -44,7 +44,6 @@ class AdminOrder {
     );
 
     const orders = await Api.get('/order/list');
-    console.log(orders);
 
     this.titleSection.insertAdjacentHTML('afterend', createAdminOrderList(orders));
   }
