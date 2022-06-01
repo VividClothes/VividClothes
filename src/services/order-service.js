@@ -34,16 +34,16 @@ class OrderService {
     }
 
     // 모든 주문 조회
-    async getOrders() {
-        const orders = await this.orderModel.findAll();
+    async getOrders(page, perPage) {
+        const orders = await this.orderModel.findAll(page, perPage);
 
         return orders;
     }
 
     // 유저별 주문 내역 조회
-    async getOrderByUser(userId) {
+    async getOrderByUser(userId, page, perPage) {
         // 우선 해당 유저의 주문 내역이 db에 존재하는지 확인
-        const orders = await this.orderModel.findByUser(userId);
+        const orders = await this.orderModel.findByUser(userId, page, perPage);
         if (!orders) {
             throw new Error(
                 '해당 유저의 주문 내역이 없습니다.'

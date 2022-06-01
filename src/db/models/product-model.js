@@ -1,11 +1,8 @@
 import { model } from 'mongoose';
-import { CategorySchema } from '../schemas/category-schema';
 import { ProductSchema } from '../schemas/product-schema';
 import { pagination } from '../../utils/pagination';
-import { IoTSecureTunneling } from 'aws-sdk';
 
 const Product = model('products', ProductSchema);
-const Category = model('categories', CategorySchema)
 
 export class ProductModel {
     // 새 상품 등록
@@ -58,23 +55,20 @@ export class ProductModel {
 
     // 카테고리별 상품 출력
     findByCategory(category, page, perPage) {
-        const products = pagination(
-            Product,
-            { category },
-            {
-                _id: true,
-                productName: true,
-                price: true,
-                imagePath: true,
-                info: true,
-            },
-            {
-                orderCount: -1,
-                createdAt: -1,
-            },
-            page,
-            perPage
-        );
+        const filter = { category };
+        const select = {
+            _id: true,
+            productName: true,
+            price: true,
+            imagePath: true,
+            info: true,
+        };
+        const sort = {
+            orderCount: -1,
+            createdAt: -1,
+        };
+
+        const products = pagination(page, perPage, Product, filter, select, sort);
 
         return products;
     }

@@ -63,7 +63,8 @@ productRouter.get('/category/:categoryId', async (req, res, next) => {
     try {
         // req에서 데이터 가져옴
         const { categoryId } = req.params;
-        const { page, perPage } = req.query;
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
 
         // categoryId를 기준으로 Products DB 조회
         const products = await productService.getProductByCategory(categoryId, page, perPage);
