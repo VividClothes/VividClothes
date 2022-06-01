@@ -72,8 +72,8 @@ async function handleLocalSubmit(e) {
     onRequest.onupgradeneeded = (e) => {
       //alert('indexedDB onupgradeneeded');
       const db = onRequest.result;
-      db.createObjectStore('order', { keyPath: 'productId'});
-      db.createObjectStore('cart', { keyPath: 'productId'});
+      db.createObjectStore('order', { keyPath: 'shortId'});
+      db.createObjectStore('cart', { keyPath: 'shortId'});
     }
 
     onRequest.onerror = () => {
@@ -125,8 +125,8 @@ async function handleKakaoSubmit(e) {
     onRequest.onupgradeneeded = (e) => {
       //alert('indexedDB onupgradeneeded');
       const db = onRequest.result;
-      db.createObjectStore('order', { keyPath: 'productId'});
-      db.createObjectStore('cart', { keyPath: 'productId'});
+      db.createObjectStore('order', { keyPath: 'shortId'});
+      db.createObjectStore('cart', { keyPath: 'shortId'});
     }
 
     onRequest.onerror = () => {
@@ -178,8 +178,8 @@ async function handleGoogleSubmit(e) {
     onRequest.onupgradeneeded = (e) => {
       //alert('indexedDB onupgradeneeded');
       const db = onRequest.result;
-      db.createObjectStore('order', { keyPath: 'productId'});
-      db.createObjectStore('cart', { keyPath: 'productId'});
+      db.createObjectStore('order', { keyPath: 'shortId'});
+      db.createObjectStore('cart', { keyPath: 'shortId'});
     }
 
     onRequest.onerror = () => {
