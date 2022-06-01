@@ -2,9 +2,7 @@ import modalStlye from '/modal/modal-style.js';
 import { createProductModalForm, addProductModalFormListener } from '/modal/product-modal-from.js';
 
 const createModal = (props) => {
-  const { data, apiData } = props;
-
-  const { modalTitle, btnText } = data;
+  const { modalTitle, btnText } = props.data;
 
   return /* html */ `
     ${modalStlye}
@@ -17,7 +15,7 @@ const createModal = (props) => {
           ${modalTitle}
         </h3>
       </header>
-      ${createProductModalForm({ btnText, categories: apiData })}
+      ${createProductModalForm({ btnText, categories: props.apiData })}
       <footer></footer>
     </div>
   `;
