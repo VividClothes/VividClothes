@@ -7,6 +7,7 @@ input {
     margin-right: auto;
     margin-left: auto;
     margin-top: 10vh;
+    margin-bottom: 20vh;
 }
 
 .order-list-title {
@@ -20,22 +21,22 @@ input {
     padding-bottom: 2vh;
 }
 
-.delivery-prepare-link,
-.delivery-link,
+.product-prepare-link,
+.product-delivery-link,
 .delivery-complete-link {
     display: inline-block;
     font-weight: bold;
-    color: #ccc;
+    color: #bbb;
 }
 
-.delivery-prepare-link:hover,
-.delivery-link:hover,
+.product-prepare-link:hover,
+.product-delivery-link:hover,
 .delivery-complete-link:hover {
     text-decoration: underline;
-    color: #ccc;
+    color: #bbb;
 }
 
-.delivery-link {
+.product-delivery-link {
     margin-left: 2.5vw;
     margin-right: 2.5vw;
 }
@@ -51,6 +52,10 @@ input {
     margin-top: 7vh;
 }
 
+.items-container {
+    margin-bottom: 10vh;
+}
+
 .item-container {
     display: grid;
     grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
@@ -64,7 +69,11 @@ input {
 
 .product-info {
     display: flex;
-    padding: 10px 20px 10px 20px;
+    flex-direction: row;
+    justify-content: flex-start;
+    width: 100%;
+    height: 100%;
+    padding: 2% 0% 2% 15%;
 }
 
 .image-box {

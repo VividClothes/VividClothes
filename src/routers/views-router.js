@@ -26,6 +26,7 @@ viewsRouter.use('/admin-category', serveStatic('admin-category'));
 viewsRouter.use('/admin-product', serveStatic('admin-product'));
 viewsRouter.use('/admin-order', serveStatic('admin-order'));
 viewsRouter.use('/user-order-list', serveStatic('user-order-list'));
+viewsRouter.use('/user-order-detail', serveStatic('user-order-detail'));
 
 // ../views/images 내의 이미지 파일들을 쓸 수 있게 함
 viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/images')));

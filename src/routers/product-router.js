@@ -1,11 +1,8 @@
 import { Router } from 'express';
 import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
-import { productService } from '../services';
-import { reviewRouter} from './review-router';
-
+import { productService, reviewService } from '../services';
 
 const productRouter = Router();
-productRouter.use('/:productId/review', reviewRouter)
 
 // 상품 등록 api
 // 로그인여부 및 유저role 확인하는 미들웨어 추가
@@ -93,10 +90,11 @@ productRouter.get('/:productId', async (req, res, next) => {
         // req의 params에서 데이터 가져옴
         const { productId } = req.params;
 
-        // id를 기준으로 DB에서 상품 조회
+        // id를 기준으로 DB 조회
         const product = await productService.getProductById(productId);
+        const reviews = await reviewService.getReviewByProduct(productId);
 
-        res.status(200).json(product);
+        res.status(200).json({product, reviews});
     } catch (error) {
         next(error);
     }
