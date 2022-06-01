@@ -37,6 +37,17 @@ productRouter.post('/register',
 );
 
 // 전체 상품 목록 가져옴
+productRouter.get('/list', async (req, res, next) => {
+    try {
+        const products = await productService.getProducts();
+
+        res.status(200).json(products);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// 홈화면에 표시할 상품 목록 가져옴(인기 상위 4개, 신상품 8개)
 productRouter.get('/main', async (req, res, next) => {
     try {
         const products = await productService.getPopularAndRecent();
