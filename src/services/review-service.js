@@ -15,6 +15,7 @@ class ReviewService {
             orderId,
             reviewInfo.productId
         );
+
         if (orderProduct.orderer != reviewInfo.writer) {
             throw new Error(
                 '리뷰를 등록할 수 없습니다.'
@@ -25,6 +26,7 @@ class ReviewService {
         reviewInfo.option = orderProduct.option;
 
         const createdNewReview = await this.reviewModel.create(reviewInfo);
+        orderService.updateHasReview(orderId, reviewInfo.productId);
 
         return createdNewReview;
     }

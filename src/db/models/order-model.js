@@ -103,8 +103,7 @@ export class OrderModel {
     }
 
     // 주문 내역 및 상태 변경
-    async update(orderId, update) {
-        const filter = { _id: orderId };
+    async update(filter, update) {
         const option = { returnOriginal: false };
 
         const updateOrder = await Order.findOneAndUpdate(filter, update, option);
