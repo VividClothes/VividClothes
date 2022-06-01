@@ -70,7 +70,7 @@ class OrderService {
     }
 
     // 특정 주문의 특정 상품 조회
-    async getOrderProduct(userRole, userId, orderId, productId){
+    async getOrderProduct(userRole, userId, orderId, productId) {
         // id를 기준으로 DB에서 주문 내역 조회
         const order = await this.getOrderById(userRole, userId, orderId);
 
@@ -87,9 +87,22 @@ class OrderService {
             )
         }
 
-        const updateOrder = await this.orderModel.update(orderId, { state: state[stateCode] });
+        const updateOrder = await this.orderModel.update({_id: orderId}, { state: state[stateCode] });
 
         return updateOrder;
+    }
+
+    updateHasReview(orderId, productId) {
+        console.log('가즈아')
+        this.orderModel.update({
+            _id: orderId,
+            "products.product": productId
+        },
+        {
+            $set: {
+                "products.$.hasReview": true
+            }
+        });
     }
 
     // 주문 상품 부분 삭제 - 부분 취소
@@ -99,14 +112,14 @@ class OrderService {
 
         // 수정할 주문 데이터 객체 생성
         const updateProduct = {
-            '$pull': {
-                "products": {
-                    "product": productId
+            $pull: {
+                products: {
+                    product: productId
                 }
             }
         };
 
-        const updateOrder = await this.orderModel.update(order, updateProduct);
+        const updateOrder = await this.orderModel.update({_id: orderId}, updateProduct);
         // 주문한 전체 상품이 취소되었다면 주문 내역 삭제
         if (updateOrder.products.length < 1) {
             const deleteOrder = await this.deleteOrder(userRole, userId, order);
