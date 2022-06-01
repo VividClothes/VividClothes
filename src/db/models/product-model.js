@@ -4,6 +4,23 @@ import { pagination } from '../../utils/pagination';
 
 const Product = model('products', ProductSchema);
 
+
+const select = {
+    _id: true,
+    productName: true,
+    price: true,
+    imagePath: true,
+    info: true,
+};
+const sort = {
+    orderCount: -1,
+    createdAt: -1,
+};
+const populate = {
+    path: 'category',
+    select: 'categoryName'
+};
+
 export class ProductModel {
     // 새 상품 등록
     async create(productInfo) {
@@ -13,12 +30,8 @@ export class ProductModel {
     }
 
     // 모든 상품 조회
-    async findAll() {
-        const products = await Product.find({})
-            .populate({
-                path: 'category',
-                select: 'categoryName'
-            });
+    async findAll(page, perPage) {
+        const products = pagination(page, perPage, Product, {}, select, sort);
 
         return products;
     }
@@ -39,7 +52,8 @@ export class ProductModel {
         // const popularProducts = await Category.populate(groupByCategory, {path: '_id', select: 'categoryName'});
         const products = await Product.find({})
             .sort('-orderCount')
-            .limit(count);
+            .limit(count)
+            .populate(populate);
 
         return products;
     }
@@ -48,7 +62,8 @@ export class ProductModel {
     async findRecent(count) {
         const products = await Product.find({})
             .sort('-createdAt')
-            .limit(count);
+            .limit(count)
+            .populate(populate);
 
         return products;
     }
@@ -56,17 +71,6 @@ export class ProductModel {
     // 카테고리별 상품 출력
     findByCategory(category, page, perPage) {
         const filter = { category };
-        const select = {
-            _id: true,
-            productName: true,
-            price: true,
-            imagePath: true,
-            info: true,
-        };
-        const sort = {
-            orderCount: -1,
-            createdAt: -1,
-        };
 
         const products = pagination(page, perPage, Product, filter, select, sort);
 
@@ -76,10 +80,7 @@ export class ProductModel {
     // objectId를 이용해 특정 상품 출력
     async findById(productId) {
         const product = await Product.findOne({ _id: productId })
-            .populate({
-                path: 'category',
-                select: 'categoryName'
-            });
+            .populate(populate);
 
         return product;
     }
