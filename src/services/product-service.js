@@ -32,9 +32,9 @@ class ProductService {
     }
 
     // 카테고리별 상품 조회
-    async getProductByCategory(categoryId) {
+    getProductByCategory(categoryId, page, perPage) {
         // 우선 해당 카테고리의 상품 정보가 db에 존재하는지 확인
-        const products = await this.productModel.findByCategory(categoryId);
+        const products = this.productModel.findByCategory(categoryId, page, perPage);
         if (!products) {
             throw new Error(
                 '해당 카테고리에 상품이 없습니다.'

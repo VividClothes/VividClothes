@@ -1,6 +1,8 @@
 import { model } from 'mongoose';
 import { CategorySchema } from '../schemas/category-schema';
 import { ProductSchema } from '../schemas/product-schema';
+import { pagination } from '../../utils/pagination';
+import { IoTSecureTunneling } from 'aws-sdk';
 
 const Product = model('products', ProductSchema);
 const Category = model('categories', CategorySchema)
@@ -13,7 +15,7 @@ export class ProductModel {
         return createdNewProduct;
     }
 
-    // 모든 상품 출력
+    // 모든 상품 조회
     async findAll() {
         const products = await Product.find({})
             .populate({
@@ -55,14 +57,26 @@ export class ProductModel {
     }
 
     // 카테고리별 상품 출력
-    async findByCategory(category) {
-        const product = await Product.find({ category })
-            .populate({
-                path: 'category',
-                select: 'categoryName'
-            });
+    findByCategory(category, page, perPage) {
+        const products = pagination(
+            Product,
+            { category },
+            {
+                _id: true,
+                productName: true,
+                price: true,
+                imagePath: true,
+                info: true,
+            },
+            {
+                orderCount: -1,
+                createdAt: -1,
+            },
+            page,
+            perPage
+        );
 
-        return product;
+        return products;
     }
 
     // objectId를 이용해 특정 상품 출력
