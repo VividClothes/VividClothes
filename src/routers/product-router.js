@@ -39,7 +39,10 @@ productRouter.post('/register',
 // 전체 상품 목록 가져옴
 productRouter.get('/list', async (req, res, next) => {
     try {
-        const products = await productService.getProducts();
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
+
+        const products = await productService.getProducts(page, perPage);
 
         res.status(200).json(products);
     } catch (error) {
@@ -61,11 +64,13 @@ productRouter.get('/main', async (req, res, next) => {
 // 카테고리별 상품 조회
 productRouter.get('/category/:categoryId', async (req, res, next) => {
     try {
-        // req의 params에서 데이터 가져옴
+        // req에서 데이터 가져옴
         const { categoryId } = req.params;
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
 
         // categoryId를 기준으로 Products DB 조회
-        const products = await productService.getProductByCategory(categoryId);
+        const products = await productService.getProductByCategory(categoryId, page, perPage);
 
         res.status(200).json(products);
     } catch (error) {

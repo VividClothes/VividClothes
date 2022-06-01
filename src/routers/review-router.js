@@ -41,7 +41,10 @@ reviewRouter.get('/list',
     loginRequired,
     async (req, res, next) => {
         try {
-            const reviews = await reviewService.getReviewByUser(req.currentUserId);
+            const page = Number(req.query.page || 1);
+            const perPage = Number(req.query.perPage || 10);
+
+            const reviews = await reviewService.getReviewByUser(req.currentUserId, page, perPage);
 
             res.status(200).json(reviews);
         } catch (error) {
@@ -56,8 +59,10 @@ reviewRouter.get('/list/user/:userId',
     async (req, res, next) => {
         try {
             const { userId } = req.params;
+            const page = Number(req.query.page || 1);
+            const perPage = Number(req.query.perPage || 10);
 
-            const reviews = await reviewService.getReviewByUser(userId);
+            const reviews = await reviewService.getReviewByUser(userId, page, perPage);
 
             res.status(200).json(reviews);
         } catch (error) {
@@ -70,8 +75,10 @@ reviewRouter.get('/list/user/:userId',
 reviewRouter.get('/product/:productId', async (req, res, next) => {
     try {
         const { productId } = req.params;
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
 
-        const reviews = await reviewService.getReviewByProduct(productId);
+        const reviews = await reviewService.getReviewByProduct(productId, page, perPage);
 
         res.status(200).json(reviews);
     } catch (error) {
