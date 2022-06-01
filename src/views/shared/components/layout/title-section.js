@@ -11,7 +11,7 @@ const titleSection = (props) => {
       ${title} / <span class="is-italic is-capitalized is-size-4">${subTitle}</span>
     </h2>
     <div class="title-section-left-side">
-      ${extraContent()}
+      ${extraContent ? extraContent() : ''}
     </div>
   </div>
   <hr>
