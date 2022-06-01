@@ -176,3 +176,9 @@
     justify-content: flex-start;
     align-items: center;
 }
+
+.cancel {
+    font-size: 18px;
+    font-weight: normal;
+    cursor: pointer;
+}
