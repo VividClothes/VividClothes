@@ -10,8 +10,8 @@ import category from '/category/category.js';
 import layout from '/layout/layout.js';
 import titleSection from '/layout/title-section.js';
 import productGrid from '/products/products-grid.js';
-import modal from '/modal/modal.js';
-import productModalForm from '/modal/product-modal-form.js';
+import { createModal, addModalListener } from '/modal/modal.js';
+import { addProducttModalData, editProductModalData } from '/modal/product-modal-data.js';
 
 class AdminProduct {
   constructor() {
@@ -49,22 +49,21 @@ class AdminProduct {
 
     this.addProductModal.insertAdjacentHTML(
       'afterbegin',
-      modal({ modalForm: productModalForm, type: 'ADD', categories })
+      createModal({ data: addProducttModalData, apiData: categories })
     );
 
     this.editProductModal.insertAdjacentHTML(
       'afterbegin',
-      modal({ modalForm: productModalForm, type: 'EDIT', categories })
+      createModal({ data: editProductModalData, apiData: categories })
     );
   }
 
   addAllEvents() {
-    // addComponentEvents(this.header);
     addHeaderEventListener();
+    addModalListener(this.addProductModal);
+    addModalListener(this.editProductModal);
     addComponentEvents(this.category);
     addComponentEvents(this.titleSection);
-    addComponentEvents(this.addProductModal);
-    addComponentEvents(this.editProductModal);
 
     this.addSelectCategoryEvent();
     this.addCreateProductEvent();
@@ -102,7 +101,7 @@ class AdminProduct {
   addCreateProductEvent() {
     const createProductBtn = this.titleSection.querySelector('.add-product-btn');
     createProductBtn.addEventListener('click', () => {
-      this.addProductModal.querySelector('.add-product-form').classList.add('show-modal');
+      this.addProductModal.querySelector('.modal-layout').classList.add('show-modal');
     });
   }
 
@@ -111,11 +110,11 @@ class AdminProduct {
 
     editProductBtns.forEach((btn) => {
       btn.addEventListener('click', async () => {
-        const { _id, productName, category, price, imagePath, info, option } = await Api.get(
-          `/product/${btn.dataset.id}`
-        );
-        const editModalForm = this.editProductModal.querySelector('.edit-product-form');
-        this.editProductModal.setAttribute('product-id', _id.toString());
+        const {
+          product: { _id, productName, category, price, image, info, option },
+        } = await Api.get(`/product/${btn.dataset.id}`);
+
+        const editModalForm = this.editProductModal.querySelector('.modal-layout');
 
         editModalForm.querySelector('.modal-input[id=product-name]').value = productName;
         editModalForm.querySelector('.modal-input[id=product-info]').value = info;
@@ -132,6 +131,10 @@ class AdminProduct {
             sizeInput.checked = false;
           }
         });
+
+        this.editProductModal.setAttribute('product-id', _id.toString());
+        this.editProductModal.setAttribute('product-colors', option.color.join(''));
+        this.editProductModal.setAttribute('product-images', image.join(''));
 
         editModalForm.classList.add('show-modal');
       });

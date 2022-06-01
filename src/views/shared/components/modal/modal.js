@@ -1,26 +1,14 @@
 import modalStlye from '/modal/modal-style.js';
+import { createProductModalForm, addProductModalFormListener } from '/modal/product-modal-from.js';
 
-const modal = (props) => {
-  const { modalForm, type, categories } = props;
-  let modalClassName = '';
-  let modalTitle = '';
-  let btnText = '';
+const createModal = (props) => {
+  const { data, apiData } = props;
 
-  if (type === 'ADD') {
-    modalClassName = 'add-product-form';
-    modalTitle = '상품 등록 👔';
-    btnText = '등록하기';
-  }
-
-  if (type === 'EDIT') {
-    modalClassName = 'edit-product-form';
-    modalTitle = '상품 수정 👗';
-    btnText = '수정하기';
-  }
+  const { modalTitle, btnText } = data;
 
   return /* html */ `
     ${modalStlye}
-    <div class="modal-layout ${modalClassName}">
+    <div class="modal-layout">
       <header class="modal-header">
         <button class="modal-header-close">
           <i class="fa-solid fa-xmark"></i>
@@ -29,10 +17,24 @@ const modal = (props) => {
           ${modalTitle}
         </h3>
       </header>
-        ${modalForm({ btnText, categories })}
+      ${createProductModalForm({ btnText, categories: apiData })}
       <footer></footer>
     </div>
   `;
 };
 
-export default modal;
+function addModalListener(component) {
+  onClickCloseBtn(component);
+  addProductModalFormListener(component);
+}
+
+function onClickCloseBtn(component) {
+  const modalLayout = component.querySelector('.modal-layout');
+  const closeBtn = component.querySelector('.modal-header-close');
+
+  closeBtn.addEventListener('click', () => {
+    modalLayout.classList.remove('show-modal');
+  });
+}
+
+export { createModal, addModalListener };

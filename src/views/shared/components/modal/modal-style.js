@@ -50,7 +50,7 @@ const modalStlye = /* html */ `
     font-weight: bold;
   }
 
-    .modal-form {
+  .modal-form {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -145,7 +145,7 @@ const modalStlye = /* html */ `
     width: 100%;
   }
 
-  .color-button {
+  .add-color-btn {
     position: absolute;
     display: flex;
     align-items: center;
