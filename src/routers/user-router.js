@@ -165,4 +165,19 @@ userRouter.delete('/users/:userId', async (req, res, next) => {
     next(error);
   }
 });
+
+// userRouter.post('/login/google')
+
+// 카카오 로그인을 하게 되면 이 라우터로 요청이 옴
+userRouter.post('/login/kakao', passport.authenticate('kakao'));
+// 카카오 로그인이 되면 callback url(redirect url)로 오게 됨
+userRouter.get(
+  '/login/kakao/callback',
+  passport.authenticate('kakao', {
+    failureRedirect: '/',
+  }),
+  (req, res) => {
+    res.redirect('/');
+  }
+);
 export { userRouter };

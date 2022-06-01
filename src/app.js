@@ -1,10 +1,31 @@
 import cors from 'cors';
 import express from 'express';
-import { viewsRouter, userRouter, imageRouter, productRouter, categoryRouter, orderRouter } from './routers';
+import {
+  viewsRouter,
+  userRouter,
+  imageRouter,
+  productRouter,
+  categoryRouter,
+  orderRouter,
+} from './routers';
 import { errorHandler } from './middlewares';
+import passport from 'passport';
+import passportconfig from './config/kakao';
 
 const app = express();
-
+//passport 설정
+passportconfig();
+app.use(
+  session({
+    resave: false,
+    saveUninitialized: false,
+    secret: process.env.COOKIE_SECRET,
+    cookie: {
+      httpOnly: true,
+      secure: false,
+    },
+  })
+);
 // CORS 에러 방지
 app.use(cors());
 
@@ -26,6 +47,8 @@ app.use('/product', productRouter);
 app.use('/category', categoryRouter);
 app.use('/order', orderRouter);
 
+app.use(passport.initialize());
+app.use(passport.session());
 // 순서 중요 (errorHandler은 다른 일반 라우팅보다 나중에 있어야 함)
 // 그래야, 에러가 났을 때 next(error) 했을 때 여기로 오게 됨
 app.use(errorHandler);
