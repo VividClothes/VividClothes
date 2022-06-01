@@ -1,7 +1,9 @@
 import { model } from 'mongoose';
+import { CategorySchema } from '../schemas/category-schema';
 import { ProductSchema } from '../schemas/product-schema';
 
 const Product = model('products', ProductSchema);
+const Category = model('categories', CategorySchema)
 
 export class ProductModel {
     // 새 상품 등록
@@ -18,6 +20,36 @@ export class ProductModel {
                 path: 'category',
                 select: 'categoryName'
             });
+
+        return products;
+    }
+
+    // 인기 상위 n개 상품 조회
+    async findPopular(count) {
+        // const groupByCategory = await Product
+        //     .aggregate([
+        //         {
+        //             $group: {
+        //                 _id: '$category',
+        //                 maxCount: {$max: '$orderCount'}
+        //             }
+        //         }
+        //     ])
+        //     .sort('-maxCount')
+        //     .limit(4);
+        // const popularProducts = await Category.populate(groupByCategory, {path: '_id', select: 'categoryName'});
+        const products = await Product.find({})
+            .sort('-orderCount')
+            .limit(count);
+
+        return products;
+    }
+
+    // 최신 n개 상품 조회
+    async findRecent(count) {
+        const products = await Product.find({})
+            .sort('-createdAt')
+            .limit(count);
 
         return products;
     }
@@ -45,7 +77,7 @@ export class ProductModel {
     }
 
     // 상품 정보 수정
-    async update({ productId, update }) {
+    async update(productId, update) {
         const filter = { _id: productId };
         const option = { returnOriginal: false };
 

@@ -33,6 +33,10 @@ const ProductSchema = new Schema(
             }),
             required: true,
         },
+        orderCount: {
+            type: Number,
+            default: 0
+        },
     },
     {
         collection: 'products',
