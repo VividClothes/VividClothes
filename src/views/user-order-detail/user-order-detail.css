@@ -9,44 +9,46 @@
 .order-title {
     font-size: 1.2rem;
     font-weight: bold;
-    padding-bottom: 10px;
+    padding-bottom: 2.5vh;
+}
+
+
+.order-date-container {
     border-bottom: solid #ddd 1px;
+    padding-bottom: 2vh;
+    font-size: 14px;
+    font-weight: bold;
 }
 
-.recipient,
-.phone,
-.postcode,
-.postcodeButton,
-.address1,
-.address2 {
-    border: solid #ccc 1px;
-    height: 24px;
+.order-date {
+    margin-left: 1vw;
 }
-
 
 /* 수령자 정보, 상품 정보 컨테이너 */
 .recipient-info-container,
 .product-info-container {
     font-size: 13px;
-    margin-top: 50px;
+    margin-top: 5vh;
 }
 
 
 /* 수령자 정보, 상품 정보 헤더 글자 */
 .recipient-header-eng,
-.product-header-eng {
+.product-header-eng,
+.payment-header-eng {
     font-size: 1.2rem;
 }
 
 .recipient-header-kor,
-.product-header-kor {
+.product-header-kor,
+.payment-header-kor {
     font-size: 0.7rem;
     padding-left: 5px;
     color: #777;
 }
 
 .recipient-container {
-    margin-top: 15px;
+    margin-top: 1.5vh;
 }
 
 /* 수령인, 휴대전화, 배송지 주소 컨테이너 */
@@ -60,12 +62,6 @@
     margin: -1px 0px;
 }
 
-/* 주소 컨테이너 */
-.address-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-}
 
 /* 수령자 정보 왼쪽 글자들 박스 */
 .recipient-info-kor {
@@ -74,67 +70,15 @@
 }
 
 
-/* 수령인, 휴대전화, 우편번호 입력란 */
-.recipient,
-.phone,
-.postcode {
-    width: 150px;
-}
-
-
-/* 우편번호, 주소1 입력란 */
-.postcode,
-.address1 {
-    background-color: #eee;
-}
-
-
-/* 주소1, 주소2 입력란 */
-.address1,
-.address2 {
-    width: 500px;
-    display: block;
-    margin-top: 5px;
-}
-
-
-/* 우편번호 입력란, 주소찾기 버튼 컨테이너 */
-.search-address-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-    align-items: flex-start;
-}
-
-
-/* 주소찾기 버튼 */
-.postcodeButton {
-    background-color: #eee;
-    ;
-    width: 90px;
-    height: 40px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-left: 10px;
-}
-
-
-.product-info-container {
-    font-size: 13px;
-    margin-top: 50px;
-}
-
-
 
 /******************상품정보*******************/
-
 .items-container {
-    margin-top: 15px;
+    margin-top: 1.5vh;
 }
 
 .items-header {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
     text-align: center;
     padding: 15px 0px;
     font-size: 12.5px;
@@ -145,7 +89,7 @@
 
 .item-container {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
+    grid-template-columns: 3fr 1fr 1fr 1fr;
     place-items: center;
     text-align: center;
     font-size: 12.5px;
@@ -192,20 +136,39 @@
     color: #777;
 }
 
-
-/* 결제하기 버튼 부분 */
-.foot-container {
-    margin: 100px 0px 150px 0px;
-    text-align: center;
+.order-state-link:hover {
+    color: #485fc7;
+    text-decoration: underline;
 }
 
-.order-button {
-    background-color: #0078FF;
-    border: none;
-    color: white;
-    padding: 15px 100px;
-    font-size: 18px;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-  }
+.order-state-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.order-state-link {
+    margin-top: 0.5vh;
+    display: block;
+}
+
+
+/* 최종 결제 금액란 */
+.payment-info-container {
+    margin-bottom: 20vh;
+    font-size: 13px;
+    margin-top: 10vh;
+}
+
+.payment-container {
+    border-top: solid #ddd 1px;
+    margin-top: 1.5vh;
+    padding-top: 4vh;
+    width: 40%;
+    font-size:20px;
+}
+
+.payment-price {
+    margin-left: 20%;
+}

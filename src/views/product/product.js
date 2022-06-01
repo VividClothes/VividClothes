@@ -45,8 +45,8 @@ const cartButton = document.querySelector('.cart-container');
 (async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productID = urlParams.get('id');
-    const result = await Api.get(`/product/${productID}`);
-    console.log(result);
+    let result = await Api.get(`/product/${productID}`);
+    result = result.product;
 
     imageContainer.style.backgroundImage = `url( "${result.imagePath[0]}" )`;
     productName.textContent = result.productName;
@@ -133,8 +133,8 @@ const cartButton = document.querySelector('.cart-container');
             productId: result._id,
             imagePath: result.imagePath[0],
             productName: result.productName,
-            color: result.option.size[0],
-            size: result.option.color[0],
+            color: result.option.color[0],
+            size: result.option.size[0],
             quantity: Number(quantity.value),
             price: result.price
         }

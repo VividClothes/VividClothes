@@ -69,6 +69,16 @@ class OrderService {
         return order;
     }
 
+    // 특정 주문의 특정 상품 조회
+    async getOrderProduct(userRole, userId, orderId, productId){
+        // id를 기준으로 DB에서 주문 내역 조회
+        const order = await this.getOrderById(userRole, userId, orderId);
+
+        const orderProduct = await this.orderModel.findByProduct(order, productId);
+
+        return orderProduct;
+    }
+
     // 주문 상태 변경
     async updateOrder(orderId, stateCode) {
         if (stateCode < 0 || stateCode >= state.length) {

@@ -7,6 +7,7 @@ import {
   productRouter,
   categoryRouter,
   orderRouter,
+  reviewRouter,
 } from './routers';
 import { errorHandler } from './middlewares';
 import passport from 'passport';
@@ -46,6 +47,7 @@ app.use('/image', imageRouter);
 app.use('/product', productRouter);
 app.use('/category', categoryRouter);
 app.use('/order', orderRouter);
+app.use('/review', reviewRouter);
 
 app.use(passport.initialize());
 app.use(passport.session());
