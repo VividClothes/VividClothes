@@ -39,15 +39,43 @@
             </div>
             <div class="product-size-container">
                 <span class="size-kor">사이즈</span>
-                <span class="size-text"></span>
+                <select name="size" class="size-select select">
+                    <option value="">[필수] 옵션을 선택해주세요</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                </select>
             </div>
             <div class="product-color-container">
                 <span class="color-kor">색상</span>
-                <span class="color-text"></span>
+                <select name="size" class="color-select select">
+                    <option value="">[필수] 옵션을 선택해주세요</option>
+                    <option value="red">red</option>
+                    <option value="blue">blue</option>
+                </select>
             </div>
             <hr class="horizen">
-            <div class="product-quantity-container">
-                <span class="quantity-kor">수량</span>
+            <div class="product-selected-container">
+                <div class="selected-option">
+                    <div class="option-text option-sort-helper">S / GREY</div>
+                    <div class="quantity-container option-sort-helper">
+                        <span class="fa-solid fa-minus quantity-wrap down-button"></span>
+                        <input class="quantity" value="1" type="text">
+                        <span class="fa-solid fa-plus quantity-wrap up-button"></span>
+                    </div> 
+                    <div class="price-sum option-sort-helper">10000</div>   
+                    <div class="cancel option-sort-helper">x</div>
+                </div>
+                <div class="selected-option">
+                    <div class="option-text option-sort-helper">S / GREY</div>
+                    <div class="quantity-container option-sort-helper">
+                        <span class="fa-solid fa-minus quantity-wrap down-button"></span>
+                        <input class="quantity" value="1" type="text">
+                        <span class="fa-solid fa-plus quantity-wrap up-button"></span>
+                    </div> 
+                    <div class="price-sum option-sort-helper">10000</div>   
+                    <div class="cancel option-sort-helper">x</div>
+                </div>
+                <!-- <span class="quantity-kor">수량</span>
                 <span class="quantity-container">
                     <input class="quantity" value="1" type="text">
                     <a href="#" class="quantity-wrap up-button">
@@ -56,7 +84,7 @@
                     <a href="#" class="quantity-wrap down-button">
                         <img src="/btn_count_down.gif" alt="수량감소">
                     </a>
-                </span>
+                </span> -->
             </div>
             <hr class="horizen">
             <div class="total-price-container">

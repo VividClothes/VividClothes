@@ -28,9 +28,14 @@ const mainImage = document.querySelector('.main-image');
 const productName = document.querySelector('.product-name');
 const productInfo = document.querySelector('.product-info');
 const priceText = document.querySelector('.price-text');
-const sizeText = document.querySelector('.size-text');
-const colorText = document.querySelector('.color-text');
+// const sizeText = document.querySelector('.size-text');
+// const colorText = document.querySelector('.color-text');
+const sizeSelectBox = document.querySelector('.size-select');
+const colorSelectBox = document.querySelector('.color-select');
 const totalPriceText = document.querySelector('.total-price-text');
+
+const selectedContainer = document.querySelector('.product-selected-container');
+const selectedOption = document.querySelector('.selected-option');
 
 const quantity = document.querySelector('.quantity');
 const upButton = document.querySelector('.up-button');
@@ -43,6 +48,10 @@ const prevBox = document.querySelector('.prev-box');
 const nextBox = document.querySelector('.next-box');
 /*********************************************************************/
 
+
+const selectedSizeColor = { size: '', color: '' };
+const optionKeys = [];
+let price;
 
 
 /****************************렌더링**********************************/
@@ -57,12 +66,92 @@ const nextBox = document.querySelector('.next-box');
     productName.textContent = result.productName;
     productInfo.textContent = result.info;
     priceText.textContent = addCommas(result.price);
-    sizeText.textContent = result.option.size[0];
-    colorText.textContent = result.option.color[0];
+    //sizeText.textContent = result.option.size[0];
+    //colorText.textContent = result.option.color[0];
     totalPriceText.textContent = addCommas(result.price);
 
     let currentImageIndex = 0;
     const imagePaths = result.imagePath;
+
+
+    // 선택된 상품들 
+    const height = selectedContainer.offsetHeight;
+    const unitHeight = selectedOption.offsetHeight;
+    console.log(height)
+    if(height > 250) {
+        selectedContainer.style.height = `${unitHeight * 5}px`;
+        selectedContainer.style.overflowY = 'scroll';
+    }
+
+
+
+    /********************사이즈 박스 선택 이벤트*********************/
+    sizeSelectBox.addEventListener('change', (e) => {
+        
+        selectedSizeColor.size = e.target.value; // 값 변경
+        const size = selectedSizeColor.size;
+        const color = selectedSizeColor.color;
+
+        // 둘 다 선택되면 아이템 컴포넌트 추가
+        const isAllChecked = size && color;
+        if (isAllChecked) {
+            const optionKey = `${size}${color}`;
+
+            // 같은 옵션을 이미 선택했는지 검사
+            const isAlreadyChecked = optionKeys.some(elem => elem === optionKey);
+            
+            // 이미 선택한 경우는 pass
+            if (isAlreadyChecked) {
+                alert('이미 선택한 옵션입니다.');
+                resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor);
+            } 
+            
+            // 선택하지 않은 옵션인 경우 컴포넌트 추가
+            else {
+                optionKeys.push(`${size}${color}`); // 사이즈+색 문자열 저장
+                selectedContainer.insertAdjacentHTML('beforeend', 
+                    makeItemContainerHTML(size, color, result.price));
+
+                resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor);
+            }
+        }
+    })
+    /*************************************************************/
+
+
+
+    /********************색상 박스 선택 이벤트*********************/
+    colorSelectBox.addEventListener('change', (e) => {
+        selectedSizeColor.color = e.target.value; // 값 변경
+        const size = selectedSizeColor.size;
+        const color = selectedSizeColor.color;
+
+
+        // 둘 다 선택되면 아이템 컴포넌트 추가
+        const isAllChecked = size && color;
+        if (isAllChecked) {
+            const optionKey = `${size}${color}`;
+
+            // 같은 옵션을 이미 선택했는지 검사
+            const isAlreadyChecked = optionKeys.some(elem => elem === optionKey);
+            
+            // 이미 선택한 경우는 pass
+            if (isAlreadyChecked) {
+                alert('이미 선택한 옵션입니다.');
+                resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor);
+            } 
+            
+            // 선택하지 않은 옵션인 경우 컴포넌트 추가
+            else {
+                optionKeys.push(`${size}${color}`); // 사이즈+색 문자열 저장
+                selectedContainer.insertAdjacentHTML('beforeend', 
+                    makeItemContainerHTML(size, color, result.price));
+
+                resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor);
+            }
+        }
+    })
+    /*************************************************************/
 
 
 
@@ -107,14 +196,15 @@ const nextBox = document.querySelector('.next-box');
         })
     }
     /*************************************************************/
-    
+
 
 
     /********************수량 버튼 이벤트**************************/
     // 수량 증가 버튼
     upButton.addEventListener('click', (e) => {
         e.preventDefault();
-        
+        const totalPriceText = e.target.parentNode.nextElementSibling;
+        const quantity = e.target.previousElementSibling;
         let quantityNum = parseInt(quantity.value);
 
         if (quantityNum === 99) {
@@ -134,7 +224,8 @@ const nextBox = document.querySelector('.next-box');
     // 수량 감소 버튼
     downButton.addEventListener('click', (e) => {
         e.preventDefault();
-
+        const totalPriceText = e.target.parentNode.nextElementSibling;
+        const quantity = e.target.nextElementSibling;
         let quantityNum = parseInt(quantity.value);
 
         if (quantityNum === 1) {
@@ -238,3 +329,27 @@ const nextBox = document.querySelector('.next-box');
     })
     /*************************************************************/
 })();
+
+
+function makeItemContainerHTML(size, color, price) {
+    return `
+    <div class="selected-option">
+        <div class="option-text option-sort-helper">${size} / ${color}</div>
+        <div class="quantity-container option-sort-helper">
+            <span class="fa-solid fa-minus quantity-wrap down-button"></span>
+            <input class="quantity" value="1" type="text">
+            <span class="fa-solid fa-plus quantity-wrap up-button"></span>
+        </div> 
+        <div class="price-sum option-sort-helper">${addCommas(price)}원</div>   
+        <div class="cancel option-sort-helper">x</div>
+    </div>
+    `
+}
+
+
+function resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor) {
+    sizeSelectBox.value = sizeSelectBox[0].value;
+    colorSelectBox.value = colorSelectBox[0].value;
+    selectedSizeColor.size = '';
+    selectedSizeColor.color = '';
+}
