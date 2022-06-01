@@ -4,6 +4,14 @@ import { pagination } from '../../utils/pagination';
 
 const Order = model('orders', OrderSchema);
 
+const select = {
+    _id: true,
+    orderer: true,
+    products: true,
+    priceTotal: true,
+    state: true,
+};
+const sort = { createdAt: -1 };
 const populate = [
     {
         path: 'orderer',
@@ -33,15 +41,6 @@ export class OrderModel {
 
     // 모든 주문 조회
     findAll(page, perPage) {
-        const select = {
-            _id: true,
-            orderer: true,
-            products: true,
-            priceTotal: true,
-            state: true,
-        };
-        const sort = { createdAt: -1 };
-
         const orders = pagination(page, perPage, Order, {}, select, sort, populate);
 
         return orders;
@@ -50,14 +49,6 @@ export class OrderModel {
     // 유저별 주문 조회
     findByUser(userId, page, perPage) {
         const filter = { orderer: userId };
-        const select = {
-            _id: true,
-            orderer: true,
-            products: true,
-            priceTotal: true,
-            state: true,
-        };
-        const sort = { createdAt: -1 };
 
         const orders = pagination(page, perPage, Order, filter, select, sort, populate);
 
