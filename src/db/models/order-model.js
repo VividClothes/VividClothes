@@ -32,7 +32,7 @@ export class OrderModel {
     }
 
     // 모든 주문 조회
-    async findAll(page, perPage) {
+    findAll(page, perPage) {
         const select = {
             _id: true,
             orderer: true,
@@ -48,7 +48,7 @@ export class OrderModel {
     }
 
     // 유저별 주문 조회
-    async findByUser(userId, page, perPage) {
+    findByUser(userId, page, perPage) {
         const filter = { orderer: userId };
         const select = {
             _id: true,

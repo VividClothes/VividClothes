@@ -32,9 +32,9 @@ class ReviewService {
     }
 
     // 유저별 리뷰 조회
-    async getReviewByUser(userId) {
-        const reviews = await this.reviewModel.findByUser(userId);
-        if (!reviews) {
+    async getReviewByUser(userId, page, perPage) {
+        const reviews = await this.reviewModel.findByUser(userId, page, perPage);
+        if (reviews.datas.length < 1) {
             throw new Error(
                 '작성한 리뷰가 없습니다.'
             );
@@ -44,9 +44,9 @@ class ReviewService {
     }
 
     // 상품별 리뷰 조회
-    async getReviewByProduct(productId) {
-        const reviews = await this.reviewModel.findByProduct(productId);
-        if (!reviews) {
+    async getReviewByProduct(productId, page, perPage) {
+        const reviews = await this.reviewModel.findByProduct(productId, page, perPage);
+        if (reviews.datas.length < 1) {
             throw new Error(
                 '작성된 리뷰가 없습니다.'
             );
