@@ -60,7 +60,7 @@ class ReviewService {
         const originalReview = await this.getReviewById(reviewId);
 
         // 작성자가 아니라면 에러 발생
-        if (originalReview.writer != userId) {
+        if (originalReview.writer._id != userId) {
             throw new Error(
                 '접근할 수 없는 사용자입니다. 다시 로그인해 주세요.'
             )
