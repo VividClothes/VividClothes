@@ -11,22 +11,22 @@ import {
 } from './routers';
 import { errorHandler } from './middlewares';
 import passport from 'passport';
-import passportconfig from './config/kakao';
-
+// import socialLogin from './services/social-login-service';
 const app = express();
 //passport 설정
-passportconfig();
-app.use(
-  session({
-    resave: false,
-    saveUninitialized: false,
-    secret: process.env.COOKIE_SECRET,
-    cookie: {
-      httpOnly: true,
-      secure: false,
-    },
-  })
-);
+// passportconfig();
+// app.use(
+//   session({
+//     resave: false,
+//     saveUninitialized: false,
+//     secret: process.env.COOKIE_SECRET,
+//     cookie: {
+//       httpOnly: true,
+//       secure: false,
+//     },
+//   })
+// );
+// socialLogin(passport);
 // CORS 에러 방지
 app.use(cors());
 

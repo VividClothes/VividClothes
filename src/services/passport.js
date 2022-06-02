@@ -1,5 +1,5 @@
 import passport from 'passport';
-import kakao from '../config/kakao';
+import kakao from '../services/social-login-service';
 import { UserModel } from '../db';
 
 module.exports = () => {

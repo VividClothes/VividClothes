@@ -1,11 +1,22 @@
 import { Router } from 'express';
-import is from '@sindresorhus/is';
-// 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
+
 import { userService } from '../services';
 import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import * as userValidator from '../middlewares/user-validator';
+import generateRandomPassword from '../util/generate-random-password';
+import passport from 'passport';
+import { Strategy as KakaoStrategy } from 'passport-kakao';
+import { UserSchema } from '../db/schemas/user-schema';
 const userRouter = Router();
 
+// app.use(
+//   session({
+//     secret: 'secret key',
+//     store: sessionStore,
+//     resave: false,
+//     saveUninitialized: false,
+//   })
+// );
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 userRouter.post(
   '/register',
@@ -94,7 +105,7 @@ userRouter.get('/userlist/:userId', async (req, res, next) => {
 // 사용자 정보 수정
 // (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
 userRouter.patch(
-  '/users/:userId',
+  '/users',
   checkBody,
   loginRequired,
 
@@ -108,7 +119,6 @@ userRouter.patch(
       const password = req.body.password;
       const address = req.body.address;
       const phoneNumber = req.body.phoneNumber;
-      const role = req.body.role;
 
       // body data로부터, 확인용으로 사용할 현재 비밀번호를 추출함.
       const currentPassword = req.body.currentPassword;
@@ -127,7 +137,6 @@ userRouter.patch(
         ...(password && { password }),
         ...(address && { address }),
         ...(phoneNumber && { phoneNumber }),
-        ...(role && { role }),
       };
       // 사용자 정보를 업데이트함.
       const updatedUserInfo = await userService.setUser(
@@ -167,9 +176,34 @@ userRouter.delete('/users/:userId', async (req, res, next) => {
 });
 
 // userRouter.post('/login/google')
-
+passport.use(
+  'kakao',
+  new KakaoStrategy(
+    {
+      clientID: process.env.KAKAO_ID,
+      callbackURL: '/api/login/kakao/callback',
+    },
+    async (accessToken, refreshToken, profile, done) => {
+      console.log(profile);
+      try {
+        const exUser = await userService.getUserByEmail(profile.email);
+        if (exUser) {
+          done(null, exUser);
+        } else {
+          const newUser = await userService.addUser({
+            email,
+            password,
+          });
+          done(null, newUser);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+  )
+);
 // 카카오 로그인을 하게 되면 이 라우터로 요청이 옴
-userRouter.post('/login/kakao', passport.authenticate('kakao'));
+userRouter.get('/login/kakao', passport.authenticate('kakao'));
 // 카카오 로그인이 되면 callback url(redirect url)로 오게 됨
 userRouter.get(
   '/login/kakao/callback',
@@ -180,4 +214,25 @@ userRouter.get(
     res.redirect('/');
   }
 );
+
+//비밀번호 찾기
+userRouter.post('/reset-password', async (req, res) => {
+  const { email } = req.body;
+  if (email == '') {
+    res.status(400).send('email required');
+  }
+  // 해당 email이 있는지 확인
+  const userInfo = await userService.getUserByEmail(email);
+  const passwordToken = generateRandomPassword();
+  console.log(userInfo); //userinfo 값 먼저 확인해보고
+  // 밑에 email에 어떻게 넣을지 생각해보기 uiserInfo.email??
+  const data = {
+    passwordToken,
+    email: userInfo.email,
+    ttl: 300, //ttl 값 설정 (5분)
+  };
+  // 5. 인증 코드 테이블에 데이터 입력
+  // 예) db.EmailAuth.create(data);
+  userService.createAuth(data);
+});
 export { userRouter };

@@ -1,5 +1,5 @@
 import { userModel } from '../db';
-
+import { authModel } from '../db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
@@ -107,6 +107,16 @@ class UserService {
     return await user;
   }
 
+  async getUserByEmail(email) {
+    let user = await this.userModel.findByEmail(email);
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    if (!user) {
+      throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    }
+    return await user;
+  }
+
   // 유저정보 수정, 현재 비밀번호가 있어야 수정 가능함.
   async setUser(userInfoRequired, toUpdate) {
     // 객체 destructuring
@@ -151,6 +161,20 @@ class UserService {
 
     return user;
   }
+
+  //비밀번호 업데이트
+  // async updatePassword(email, password) {
+  //   user = await this.userModel.update({
+  //     email,
+  //     password: toUpdate,
+  //   });
+
+  //   return user;
+  // }
+  async createAuth(newUserInfo) {
+    const createdNewAuth = await this.authModel.create(newUserInfo);
+    return createdNewUser;
+  }
   async deleteUser(userInfoRequired) {
     let user = await this.userModel.findById(userId);
     if (!user) {
@@ -175,3 +199,4 @@ class UserService {
 const userService = new UserService(userModel);
 
 export { userService };
+//https://www.passportjs.org/packages/passport-kakao/

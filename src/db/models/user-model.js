@@ -1,8 +1,8 @@
 import { model } from 'mongoose';
 import { UserSchema } from '../schemas/user-schema';
-
+import { AuthSchema } from '../schemas/auth-schema';
 const User = model('users', UserSchema);
-
+const Auth = model('auth', AuthSchema);
 export class UserModel {
   async findByEmail(email) {
     const user = await User.findOne({ email });
@@ -18,7 +18,10 @@ export class UserModel {
     const createdNewUser = await User.create(userInfo);
     return createdNewUser;
   }
-
+  async createAuth(userInfo) {
+    const createdNewAuth = await Auth.create(userInfo);
+    return createdNewAuth;
+  }
   async findAll() {
     const users = await User.find({});
     return users;
@@ -30,6 +33,15 @@ export class UserModel {
 
     const updatedUser = await User.findOneAndUpdate(filter, update, option);
     return updatedUser;
+  }
+
+  async updatePassword({ email, password }) {
+    const updatePassword = await User.updateOne(
+      { email },
+      {
+        password: hashPassword(password),
+      }
+    );
   }
   async delete(userId) {
     const filter = { _id: userId };
