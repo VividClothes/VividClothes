@@ -22,7 +22,8 @@ const reviewBody = document.querySelector('.review-container-helper');
 
 
 (async () => {
-  const reviews = await Api.get('/review/list');
+  const results = await Api.get('/review/list');
+  const reviews = results.datas;
 
   reviews.forEach((review) => {
     reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review));
@@ -63,7 +64,7 @@ function makeReviewContainerHTML(review) {
     </div>
     <div class="product-name-options">
         <div class="image-box"
-        style="background-image:url('/home-img3.jpg')"
+        style="background-image:url('${review.productId.imagePath[0]}')"
         onclick="
         window.location.href='/product?id=${review.productId._id}'
         "></div>
