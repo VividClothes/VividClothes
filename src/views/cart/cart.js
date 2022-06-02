@@ -61,7 +61,7 @@ const isCheckedArray = [];
           // body에 요소 추가
           cartProducts.forEach((product, index) => {
             itemsBody.insertAdjacentHTML('beforeend', makeItemContainerHTML(product, index));
-            productIdArray.push(product.productId);
+            productIdArray.push(`${product.productId}${product.size}${product.color}`);
             isCheckedArray.push(false);
           })
           setItemHeaderContent(cartProducts);
@@ -97,7 +97,7 @@ const isCheckedArray = [];
             
             const deleteItemsList = productIdArray
                                       .filter((elem, index) => isCheckedArray[index])
-            console.log(deleteItemsList);
+            
             const isDelete = confirm('선택한 상품을 삭제하시겠습니까?');
             if (isDelete) {
               const transaction = db.transaction('cart', 'readwrite');
