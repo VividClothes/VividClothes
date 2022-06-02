@@ -1,3 +1,5 @@
+import * as Api from '/api.js';
+
 import adminOrderListStyle from '/admin-order/admin-order-list-style.js';
 
 const createAdminOrderList = (orders) => /* html */ `
@@ -27,6 +29,7 @@ const createAdminOrderList = (orders) => /* html */ `
             <span>${_id}</span>
             <span>${orderer.email}</span>
             <span>${convertedDate}</span>
+            <button data-orderid="${_id}" class="order-cancel-btn">주문취소</button>
         </div>
         <div class="order-center">
         ${order.products
@@ -53,7 +56,6 @@ const createAdminOrderList = (orders) => /* html */ `
               
               <div class="order-price-info flex-box"><span>${price.toLocaleString()}</span></div>
               <div class="order-quantity-info flex-box"><span>${product.quantity}</span></div>
-              <div class="order-state-info flex-box">${order.state}</div>
             </div>
           `
             )
@@ -62,8 +64,12 @@ const createAdminOrderList = (orders) => /* html */ `
           )
           .join('')}
       
-      </div> 
-      <div class="order-total order-side-content flex-box">${order.priceTotal.toLocaleString()}원</div>
+      </div>
+      <div class="order-state-info order-side-content flex-box"> ${createOrderState(
+        order.state,
+        _id
+      )}</div> 
+      <div class="order-total-info order-side-content flex-box">${order.priceTotal.toLocaleString()}원</div>
       </div>`;
       })
       .join('')}
@@ -71,29 +77,67 @@ const createAdminOrderList = (orders) => /* html */ `
   </main>  
 `;
 
-export { createAdminOrderList };
+function addAdminOrderListener(component) {
+  onClickCancelBtn(component);
+  addSelectCategoryEvent(component);
+}
 
-// <div class="order-content">
-//   <div class="order-number order-side-content">sadasd</div>
-//   <div class="order-center">
-//     <div class="order-info">
-//       <div class="order-product-info">
-//         <div>상품 이미지</div>
-//         <div>상품 설명</div>
-//       </div>
-//       <div class="order-price-info">가격</div>
-//       <div class="order-quantity-info">수량</div>
-//       <div class="order-state-info">배송상태</div>
-//     </div>
-//     <div class="order-info">
-//       <div class="order-product-info">
-//         <div>상품 이미지</div>
-//         <div>상품 설명</div>
-//       </div>
-//       <div class="order-price-info">가격</div>
-//       <div class="order-quantity-info">수량</div>
-//       <div class="order-state-info">배송상태</div>
-//     </div>
-//   </div>
-//   <div class="order-total order-side-content">asdsad</div>
-// </div>;
+function createOrderState(orderState, orderId) {
+  const optionValues = ['상품 준비중', '상품 배송중', '배송 완료'];
+  const filtered = optionValues.filter((op) => op !== orderState);
+  return /* html */ `
+      <div class="select">
+        <select data-orderid="${orderId}" class="select-box">
+          <option value="none" selected disabled hidden>${orderState}</option>
+          ${filtered
+            .map(
+              (option) => /* html */ `
+            <option value="${option}">${option}</option>
+          `
+            )
+            .join('')}
+        </select>
+      </div>
+    `;
+}
+
+function onClickCancelBtn(component) {
+  const cancelBtn = component.querySelectorAll('.order-cancel-btn');
+
+  Array.from(cancelBtn).forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const orderId = e.target.dataset.orderid;
+      await Api.delete(`/order/cancel`, `${orderId}`);
+      window.location.reload();
+    });
+  });
+}
+
+async function addSelectCategoryEvent(component) {
+  const selectBox = component.querySelectorAll('.select-box');
+
+  Array.from(selectBox).forEach((select) => {
+    select.addEventListener('change', async (e) => {
+      const orderId = e.target.dataset.orderid;
+      console.log(e.target);
+      let data = 0;
+
+      switch (e.target.value) {
+        case '상품 준비중':
+          data = 0;
+          break;
+        case '상품 배송중':
+          data = 1;
+          break;
+        case '배송 완료':
+          data = 2;
+          break;
+      }
+
+      await Api.patch('/order/update', `${orderId}`, { stateCode: data });
+      window.location.reload();
+    });
+  });
+}
+
+export { createAdminOrderList, addAdminOrderListener };

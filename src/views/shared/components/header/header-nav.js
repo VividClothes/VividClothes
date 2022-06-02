@@ -16,7 +16,7 @@ const notLoginHeaderNav = () => /* html */ `
 const loginHeaderNav = (config, dropdownContent) => /* html */ `
   <ul class="flex-style">
     <li>
-      <a class="link" href="/user-profile">회원정보</a>
+      <a class="link" href="/profile">회원정보</a>
       <span class="mx-3">/</span>
     </li>
     
@@ -51,7 +51,6 @@ const createHeaderNav = (props) => {
   return !isLogin ? notLoginHeaderNav() : loginHeaderNav(config, dropdownContent);
 };
 
-/////////////////////////////////////////////////////////////////////////////////////
 const headerNav = document.createElement('div');
 headerNav.insertAdjacentHTML('afterbegin', createHeaderNav());
 
@@ -81,7 +80,6 @@ function logoutEventListener() {
 
   const logoutHandler = (e) => {
     e.preventDefault();
-    console.log('why?');
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('hashedEmail');

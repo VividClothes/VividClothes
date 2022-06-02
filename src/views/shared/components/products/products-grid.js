@@ -2,24 +2,21 @@ import * as Api from '/api.js';
 
 import productGridStyle from '/products/products-grid-style.js';
 
-const productGrid = async (props) => {
-  let selectedProducts = await Api.get('/product/list');
+const productGrid = async (props = {}) => {
+  let products;
 
-  if (props) {
-    if (props.selected !== 'default') {
-      selectedProducts = selectedProducts.filter(({ category }) => {
-        if (!category) return false;
-        return category.categoryName === props.selected;
-      });
-    }
+  if (!props.categoryId || props.categoryId === 'default') {
+    products = await Api.get('/product/list');
+  } else {
+    products = await Api.get(`/product/category/${props.categoryId}`);
   }
 
   return /* html */ `
     ${productGridStyle}
     <ul class="grid">
-    ${selectedProducts
+    ${products.datas
       .map((product) => {
-        const { _id, productName, category, price, imagePath, info, option } = product;
+        const { _id, productName, category, price, imagePath, info } = product;
 
         return /* html */ `
         <li class="col">

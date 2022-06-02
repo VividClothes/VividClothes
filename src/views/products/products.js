@@ -39,7 +39,6 @@ categoryName.innerHTML = `
 `;
 
 
-// 카테고리 요청 중복(이미 카테고리 컴포넌트에서 요청하였음) -> 그냥 id 값으로 페이지 전환해도 될듯.. 해당 funtion 필요없음
 async function createCategoryHash() {
   const categories = await Api.get('/category/list');
   categories.forEach(({ _id, categoryName }) => {
@@ -49,7 +48,7 @@ async function createCategoryHash() {
 
 async function createProductsList() {
   const products = await Api.get(`/product/category/${categoryHash[categoryTarget]}`);
-  const insertedEl = products
+  const insertedEl = products.datas
     .map(({ _id, productName, category, price, imagePath, info, option }) => {
       return `
       <li class="col">

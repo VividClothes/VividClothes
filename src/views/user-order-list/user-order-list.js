@@ -62,7 +62,7 @@ exitButton.addEventListener("click", close);
 (async () => {
   // 데이터 불러오기
   const orders = await Api.get(`/order/mylist`);
-  let orderItems = getOrderItems(orders);
+  let orderItems = getOrderItems(orders.datas);
   const urlParams = new URLSearchParams(window.location.search);
   const listType = urlParams.get('type');
   //console.log(orders)

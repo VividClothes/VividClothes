@@ -1,7 +1,25 @@
 import { model } from 'mongoose';
 import { ReviewSchema } from '../schemas/review-schema';
+import { pagination } from '../../utils/pagination';
 
 const Review = model('reviews', ReviewSchema);
+
+const populate = [
+    {
+        path: 'writer',
+        select: [
+            'email',
+            'fullName'
+        ]
+    },
+    {
+        path: 'productId',
+        select: [
+            'productName',
+            'imagePath'
+        ]
+    }
+];
 
 export class ReviewModel {
     // 새 리뷰 등록
@@ -12,41 +30,21 @@ export class ReviewModel {
     }
 
     // 유저별 리뷰 조회
-    async findByUser(userId) {
-        const reviews = await Review.find({ writer: userId })
-            .populate([
-                {
-                    path: 'writer',
-                    select: [
-                        'email',
-                        'fullName'
-                    ]
-                },
-                {
-                    path: 'productId',
-                    select: 'productName'
-                }
-            ]);
+    findByUser(userId, page, perPage) {
+        const filter = { writer: userId };
+        const sort = { createAt: -1 };
+
+        const reviews = pagination(page, perPage, Review, filter, {}, sort, populate);
 
         return reviews;
     }
 
     // 상품별 리뷰 조회
-    async findByProduct(productId) {
-        const reviews = await Review.find({ productId })
-            .populate([
-                {
-                    path: 'writer',
-                    select: [
-                        'email',
-                        'fullName'
-                    ]
-                },
-                {
-                    path: 'productId',
-                    select: 'productName'
-                }
-            ]);
+    findByProduct(productId, page, perPage) {
+        const filter = { productId };
+        const sort = { rate: -1 };
+
+        const reviews = pagination(page, perPage, Review, filter, {}, sort, populate);
 
         return reviews;
     }
@@ -54,19 +52,7 @@ export class ReviewModel {
     // 특정 리뷰 조회
     async findById(reviewId) {
         const review = await Review.findOne({ _id: reviewId })
-            .populate([
-                {
-                    path: 'writer',
-                    select: [
-                        'email',
-                        'fullName'
-                    ]
-                },
-                {
-                    path: 'productId',
-                    select: 'productName'
-                }
-            ]);
+            .populate(populate);
 
         return review;
     }

@@ -29,9 +29,6 @@ const OrderSchema = new Schema(
                 type: Boolean,
                 default: false,
             },
-        },
-        {
-            _id: false,
         })],
         priceTotal: {
             type: Number,
