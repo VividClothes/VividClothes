@@ -8,7 +8,7 @@ import { addComponentEvents } from '/components-event.js';
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createAdminTab } from '/admin-tab/admin-tab.js';
 import { adminOrderTabData } from '/admin-tab/admin-tab-data.js';
-import { createAdminOrderList } from '/admin-order/admin-order-list.js';
+import { createAdminOrderList, addAdminOrderListener } from '/admin-order/admin-order-list.js';
 import category from '/category/category.js';
 import layout from '/layout/layout.js';
 import titleSection from '/layout/title-section.js';
@@ -25,12 +25,13 @@ class AdminOrder {
     this.adminTab = document.getElementById('admin-tab');
     this.layout = document.getElementById('layout');
     this.titleSection = document.getElementById('title-section');
+    this.orderList = document.getElementById('order-list');
   }
 
   async createDOM() {
     this.header.insertAdjacentElement('afterbegin', header);
     this.layout.insertAdjacentHTML('afterbegin', layout());
-    this.adminTab.insertAdjacentHTML('afterbegin', createAdminTab(adminOrderTabData));
+    // this.adminTab.insertAdjacentHTML('afterbegin', createAdminTab(adminOrderTabData));
 
     const categories = await Api.get('/category/list');
     this.category.insertAdjacentHTML('afterbegin', await category({ categories }));
@@ -45,13 +46,14 @@ class AdminOrder {
 
     const orders = await Api.get('/order/list');
 
-    this.titleSection.insertAdjacentHTML('afterend', createAdminOrderList(orders));
+    this.orderList.insertAdjacentHTML('afterbegin', createAdminOrderList(orders));
   }
 
   addAllEvents() {
     addHeaderEventListener();
     addComponentEvents(this.category);
     addComponentEvents(this.titleSection);
+    addAdminOrderListener(this.orderList);
   }
 
   async render() {
