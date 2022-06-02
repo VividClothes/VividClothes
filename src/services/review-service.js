@@ -7,21 +7,22 @@ class ReviewService {
     }
 
     // 리뷰 등록
-    async addReview(orderId, reviewInfo) {
+    async addReview(orderId, orderProductId, reviewInfo) {
         // orderId와 productId로 주문한 상품 정보 조회
-        const orderProduct = await orderService.getOrderProduct(orderId, reviewInfo.orderProductId);
+        const orderProduct = await orderService.getOrderProduct(orderId, orderProductId);
 
         if (orderProduct.orderer != reviewInfo.writer) {
             throw new Error(
-                '리뷰를 등록할 수 없습니다.'
+                '주문자와 일치하지 않아 리뷰를 등록할 수 없습니다.'
             )
         }
 
         // 옵션 정보 재할당
-        reviewInfo.option = orderProduct.option;
+        reviewInfo.option = orderProduct.products[0].option;
+        reviewInfo.productId = orderProduct.products[0].product;
 
         const createdNewReview = await this.reviewModel.create(reviewInfo);
-        orderService.updateHasReview(orderId, reviewInfo.orderProductId);
+        orderService.updateHasReview(orderId, orderProductId);
 
         return createdNewReview;
     }
@@ -29,11 +30,6 @@ class ReviewService {
     // 유저별 리뷰 조회
     async getReviewByUser(userId, page, perPage) {
         const reviews = await this.reviewModel.findByUser(userId, page, perPage);
-        if (reviews.datas.length < 1) {
-            throw new Error(
-                '작성한 리뷰가 없습니다.'
-            );
-        }
 
         return reviews;
     }
@@ -41,11 +37,6 @@ class ReviewService {
     // 상품별 리뷰 조회
     async getReviewByProduct(productId, page, perPage) {
         const reviews = await this.reviewModel.findByProduct(productId, page, perPage);
-        if (reviews.datas.length < 1) {
-            throw new Error(
-                '작성된 리뷰가 없습니다.'
-            );
-        }
 
         return reviews;
     }

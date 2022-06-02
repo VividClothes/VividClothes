@@ -1,5 +1,5 @@
 import * as Api from '/api.js';
-import { addCommas, convertToNumber } from '/useful-functions.js';
+import { addCommas, convertToNumber, maskingFunc } from '/useful-functions.js';
 import { header } from '/header.js';
 
 /***************************헤더 내용**********************************/
@@ -26,23 +26,21 @@ const mainImage = document.querySelector('.main-image');
 const productName = document.querySelector('.product-name');
 const productInfo = document.querySelector('.product-info');
 const priceText = document.querySelector('.price-text');
-// const sizeText = document.querySelector('.size-text');
-// const colorText = document.querySelector('.color-text');
+
 const sizeSelectBox = document.querySelector('.size-select');
 const colorSelectBox = document.querySelector('.color-select');
 const totalPriceSum = document.querySelector('.total-price-text');
 
 const selectedContainer = document.querySelector('.product-selected-container');
 
-// const quantity = document.querySelector('.quantity');
-// const upButton = document.querySelector('.up-button');
-// const downButton = document.querySelector('.down-button');
-
 const buyButton = document.querySelector('.buy-container');
 const cartButton = document.querySelector('.cart-container');
 
 const prevBox = document.querySelector('.prev-box');
 const nextBox = document.querySelector('.next-box');
+
+const reviewContainerTitle = document.querySelector('.review-container-title');
+const reviewBody = document.querySelector('.review-container-helper');
 /*********************************************************************/
 
 const selectedSizeColor = { size: '', color: '' };
@@ -52,29 +50,18 @@ let optionKeys = [];
 (async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const productID = urlParams.get('id');
-  let result = await Api.get(`/product`, `${productID}`);
-  result = result.product;
+  let results = await Api.get(`/product/${productID}`);
+  const result = results.product;
   console.log(result);
 
   mainImage.src = `${result.imagePath[0]}`;
   productName.textContent = result.productName;
   productInfo.textContent = result.info;
   priceText.textContent = addCommas(result.price);
-  //sizeText.textContent = result.option.size[0];
-  //colorText.textContent = result.option.color[0];
   totalPriceSum.textContent = 0;
 
   let currentImageIndex = 0;
   const imagePaths = result.imagePath;
-
-  // 선택된 상품들
-  // const height = selectedContainer.offsetHeight;
-  // const unitHeight = selectedOption.offsetHeight;
-  // console.log(height)
-  // if(height > 250) {
-  //     selectedContainer.style.height = `${unitHeight * 5}px`;
-  //     selectedContainer.style.overflowY = 'scroll';
-  // }
 
   /********************사이즈 박스 선택 이벤트*********************/
   sizeSelectBox.addEventListener('change', (e) => {
@@ -400,7 +387,45 @@ let optionKeys = [];
     }
   });
   /*************************************************************/
+
+  /************************리뷰 렌더링**************************/
+  const reviews = results.reviews;
+  console.log(reviews);
+
+  reviewContainerTitle.textContent = `구매후기(${reviews.length})`;
+
+  reviews.forEach((review) => {
+    reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review));
+  });
 })();
+
+function makeReviewContainerHTML(review) {
+  return `
+    <div class="review-container">
+        <div class="review-head">
+            <div class="writer">${maskingFunc.email(review.writer.email)}</div>
+            <div class="review-date">${getDate(review.createdAt)}</div>
+        </div>
+        <div class="review-option">${review.productId.productName} 구매</div>
+        <div class="review-rate">
+            <span class="star"> 
+                ★★★★★
+                <span class="star-color" style="width:${10 * review.rate}%">★★★★★</span>
+            </span>
+        </div>
+        <div class="review-content">${review.content}</div>
+        <div class="review-image">
+            ${imageComponent(review.imagePath)}
+        </div>
+    </div>
+    `;
+}
+
+function imageComponent(imagePaths) {
+  return imagePaths.reduce((acc, path) => {
+    return acc + `<img src="${path}" alt="review image" class="review-image-unit"></img>`;
+  }, '');
+}
 
 function makeItemContainerHTML(size, color, price) {
   return `
@@ -468,4 +493,12 @@ function getDataObject(result) {
   });
 
   return datas;
+}
+
+// 날짜 전처리
+function getDate(orderDate) {
+  let [date, time] = orderDate.split('T');
+  date = date.replaceAll('-', '.');
+  time = time.split('.')[0];
+  return `${date} ${time}`;
 }
