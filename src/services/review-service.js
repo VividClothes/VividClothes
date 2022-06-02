@@ -22,7 +22,7 @@ class ReviewService {
         reviewInfo.productId = orderProduct.products[0].product;
 
         const createdNewReview = await this.reviewModel.create(reviewInfo);
-        orderService.updateHasReview(orderId, orderProductId);
+        orderService.updateHasReview(orderId, orderProductId, true);
 
         return createdNewReview;
     }
@@ -84,7 +84,7 @@ class ReviewService {
         const originalReview = await this.getReviewById(reviewId);
 
         // 관리자나 작성자가 아니라면 에러 발생
-        if (userRole != 'admin-user' && originalReview.writer != userId) {
+        if (userRole !== 'admin-user' && originalReview.writer._id != userId) {
             throw new Error(
                 '접근할 수 없는 사용자입니다. 다시 로그인해 주세요.'
             )

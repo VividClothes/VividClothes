@@ -1,24 +1,20 @@
-import * as Api from '/api.js';
 import { addCommas, convertToNumber, maskingFunc } from '/useful-functions.js';
-import { header } from '/header.js';
+import * as Api from '/api.js';
+import { header, addHeaderEventListener } from '/header/header.js';
+import { createCategory, addCategoryListener} from '/category/category.js';
 
-/***************************헤더 내용**********************************/
-// 요소(element), input 혹은 상수
-addAllElements();
-addAllEvents();
 
-// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() {
-  insertHeader();
-}
-
-// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
-}
-/*********************************************************************/
+/***************************헤더*************************************/
+const nav = document.getElementById('header');
+const navCategory = document.getElementById('category');
+(async() => {
+  nav.insertAdjacentElement('afterbegin', header);
+  const categories = await Api.get('/category/list');
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+})();
+/*******************************************************************/
 
 
 
@@ -412,7 +408,7 @@ let optionKeys = [];
 
 
     /************************리뷰 렌더링**************************/
-    const reviews = results.reviews;
+    const reviews = results.reviews.datas;
     console.log(reviews);
 
     reviewContainerTitle.textContent = `구매후기(${reviews.length})`;
@@ -430,7 +426,17 @@ function makeReviewContainerHTML(review) {
             <div class="writer">${maskingFunc.email(review.writer.email)}</div>
             <div class="review-date">${getDate(review.createdAt)}</div>
         </div>
-        <div class="review-option">${review.productId.productName} 구매</div>
+        <div class="product-name-options">
+            <div class="image-box"
+            style="background-image:url('${review.productId.imagePath[0]}')"
+            onclick="
+            window.location.href='/product?id=${review.productId._id}'
+            "></div>
+            <div class="options-box">
+                <div class="product-name">${review.productId.productName}</div>
+                <div class="options">${review.option.size} / ${review.option.color} 구매</div>
+            </div>
+        </div>
         <div class="review-rate">
             <span class="star"> 
                 ★★★★★

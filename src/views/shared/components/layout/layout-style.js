@@ -2,9 +2,8 @@ const layoutStyle = /* html */ `
   <style>
     #layout {
       width: 70%;
-      margin: 30px 0;
-      margin-left: 30px;
-      padding: 30px 30px 30px 30px;
+      margin: 30px auto;
+      padding: 30px;
     }
     
     @media (max-width: 768px) {

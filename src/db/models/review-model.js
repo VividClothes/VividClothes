@@ -14,7 +14,10 @@ const populate = [
     },
     {
         path: 'productId',
-        select: 'productName'
+        select: [
+            'productName',
+            'imagePath'
+        ]
     }
 ];
 
