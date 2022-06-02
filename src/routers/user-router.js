@@ -31,7 +31,7 @@ userRouter.post(
       const password = req.body.password;
 
       // 위 데이터를 유저 db에 추가하기
-      const newUser = await userService.addUser({
+      await userService.addUser({
         fullName,
         email,
         password,
@@ -39,7 +39,7 @@ userRouter.post(
 
       // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
       // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-      res.status(201).json(newUser);
+      res.status(201).redirect('/');
     } catch (error) {
       next(error);
     }
@@ -174,52 +174,17 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
-    const userData = await userService.verify(credential);
-
+    const userData = await verify(credential);
+    await userService.addUser({
+      fullName: userData.name,
+      email: userData.email,
+      password: 'google',
+    });
     res.status(200).redirect('/');
   } catch (err) {
     next(err);
   }
 });
-
-passport.use(
-  'kakao',
-  new KakaoStrategy(
-    {
-      clientID: process.env.KAKAO_ID,
-      callbackURL: '/api/login/kakao/callback',
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
-      try {
-        const exUser = await userService.getUserByEmail(profile.email);
-        if (exUser) {
-          done(null, exUser);
-        } else {
-          const newUser = await userService.addUser({
-            email,
-            password,
-          });
-          done(null, newUser);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  )
-);
-// 카카오 로그인을 하게 되면 이 라우터로 요청이 옴
-// userRouter.get('/login/kakao', passport.authenticate('kakao'));
-// // 카카오 로그인이 되면 callback url(redirect url)로 오게 됨
-// userRouter.get(
-//   '/login/kakao/callback',
-//   passport.authenticate('kakao', {
-//     failureRedirect: '/',
-//   }),
-//   (req, res) => {
-//     res.redirect('/');
-//   }
-// );
 
 //비밀번호 찾기
 userRouter.post('/reset-password', async (req, res) => {

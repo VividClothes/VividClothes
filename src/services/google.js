@@ -3,21 +3,15 @@
 import { OAuth2Client } from 'google-auth-library';
 import { userModel } from '../db';
 
-const client = new OAuth2Client(process.env.CLIENT_ID);
-
-module.exports = (req, res, next) => {
-  async function verify() {
-    const ticket = await client.verifyIdToken({
-      //idtoken을 .. 어디에 담아주는거임
-      idToken: req.body.it,
-    });
-    const payload = ticket.getPayload();
-    const userid = payload['sub'];
-  }
-  verify()
-    .then(() => {})
-    .catch(console.error);
-};
+async function verify(credential) {
+  const client = new OAuth2Client(process.env.ClIENT_ID);
+  const ticket = await client.verifyIdToken({
+    idToken: credential,
+    audience: process.env.GOOGLE_ClIENT_ID,
+  });
+  const payload = ticket.getPayload();
+  return payload;
+}
 
 // 공식문서에는 verify().catch(console.error) 이렇게 되어 있는데
 // 굳이 중간에 then을 해줘야 하는지 알아보기
@@ -28,4 +22,4 @@ module.exports = (req, res, next) => {
 //clientid : 196598776648-dbu1p15dcgeotoi1rirs6eu63v3l5qom.apps.googleusercontent.com
 // pw: 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
 
-// export default verify;
+export default verify;
