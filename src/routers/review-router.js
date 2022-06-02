@@ -130,7 +130,6 @@ reviewRouter.patch('/:reviewId/update',
 // 리뷰 삭제
 reviewRouter.delete('/:reviewId/delete',
     loginRequired,
-    userRoleCheck,
     async (req, res, next) => {
         try {
             const { reviewId } = req.params;
