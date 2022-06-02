@@ -5,7 +5,7 @@ const titleSection = (props) => {
   const { extraContent } = props || null;
 
   return /* html */ `
-  ${titleSectionStyle}
+  ${titleSectionStyle(title)}
   <div class="title-section-container">
     <h2 class="title-section-title is-2">
       ${title} / <span class="is-italic is-capitalized is-size-4">${subTitle}</span>

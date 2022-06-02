@@ -1,8 +1,25 @@
 import modalStlye from '/modal/modal-style.js';
-import { createProductModalForm, addProductModalFormListener } from '/modal/product-modal-from.js';
+import { addProducttModalData, editProductModalData } from '/modal/product-modal-data.js';
+import { confirmPasswordModalData } from '/modal/password-modal-data.js';
+
+import { createProductModalForm, addProductModalFormListener } from '/modal/product-modal-form.js';
+import { createConfirmModalForm, addConfirmModalFormListener } from '/modal/password-modal-form.js';
+
+let modalFormListener = null;
 
 const createModal = (props) => {
-  const { modalTitle, btnText } = props.data;
+  const { type, modalTitle, btnText } = props.data;
+  let modalForm = null;
+
+  if (type === addProducttModalData.type || type === editProductModalData.type) {
+    modalForm = createProductModalForm({ btnText, categories: props.apiData });
+    modalFormListener = addProductModalFormListener;
+  }
+
+  if (type === confirmPasswordModalData.type) {
+    modalForm = createConfirmModalForm({ btnText });
+    modalFormListener = addConfirmModalFormListener;
+  }
 
   return /* html */ `
     ${modalStlye}
@@ -15,7 +32,7 @@ const createModal = (props) => {
           ${modalTitle}
         </h3>
       </header>
-      ${createProductModalForm({ btnText, categories: props.apiData })}
+      ${modalForm}
       <footer></footer>
     </div>
   `;
@@ -23,7 +40,7 @@ const createModal = (props) => {
 
 function addModalListener(component) {
   onClickCloseBtn(component);
-  addProductModalFormListener(component);
+  modalFormListener(component);
 }
 
 function onClickCloseBtn(component) {

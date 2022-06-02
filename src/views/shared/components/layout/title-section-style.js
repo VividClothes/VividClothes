@@ -1,10 +1,11 @@
-const titleSectionStyle = /* html */ `
+const titleSectionStyle = (title) => {
+  return /* html */ `
 <style>
   .title-section-container {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    align-items: center;
+    align-items: ${title !== '회원 정보' ? 'center' : 'flex-end'};
   }
   
   .title-section-title {
@@ -23,5 +24,6 @@ const titleSectionStyle = /* html */ `
 
 </style>
 `;
+};
 
 export default titleSectionStyle;

@@ -1,10 +1,8 @@
-import * as Api from '/api.js';
-
 import profileStyle from '/profile/profile-form-style.js';
 
 const createProfile = (props) => {
-  const { email, fullName } = props;
-  console.log(props);
+  const { email, fullName, phoneNumber, address } = props;
+
   return /* html */ `
   ${profileStyle}
   <div class="user-info-container">
@@ -33,7 +31,9 @@ const createProfile = (props) => {
           <span class="tooltip">연락처는 "-"를 제외해주세요.</span>
         </div>
         <div class="tooltip-effect input-group input-group-icon">
-          <input class="user-info-phone-number" type="text" />
+          <input class="user-info-phone-number" type="text" value="${
+            phoneNumber ? phoneNumber : ''
+          }" />
           <div class="input-icon">
             <i class="fa-solid fa-phone"></i>
           </div>
@@ -41,14 +41,20 @@ const createProfile = (props) => {
         
         <label class="user-info-label">◾ Adress</label>
         <div class="input-group input-group-icon">
-          <input class="post-number" type="text" id="post-number" placeholder="우편번호" disabled>
+          <input class="post-number" type="text" id="post-number" placeholder="우편번호" value="${
+            address ? address.postalCode : ''
+          }" disabled>
           <div class="input-icon">
             <i class="fa-solid fa-map-location"></i>
           </div>
           <button class="post-btn">주소 찾기</button>
           <span id="guide" style="color:#999;display:none"></span>
-          <input class="post-inputs" type="text" id="post-road-adress" placeholder="도로명주소" disabled>
-          <input class="post-inputs" type="text" id="post-detail-adress" placeholder="상세주소" disabled>
+          <input class="post-inputs" type="text" id="post-road-adress" placeholder="도로명주소" value="${
+            address ? address.address1 : ''
+          }" disabled>
+          <input class="post-inputs" type="text" id="post-detail-adress" placeholder="상세주소" value="${
+            address ? address.address2 : ''
+          }" disabled>
         </div>
       </div>
       <div>
@@ -151,29 +157,11 @@ function onMouseoverInputs(component) {
 function onSubmitForm(component) {
   const userInfoForm = component.querySelector('.user-info-form');
 
-  const fullName = component.querySelector('.user-info-name').value;
-  const phoneNumber = component.querySelector('.user-info-phone-number').value;
-  const addressCode = component.querySelector('#post-number').value;
-  const addressRoad = component.querySelector('#post-road-adress').value;
-  const addressDetail = component.querySelector('#post-detail-adress').value;
-
-  const address = {
-    postalCode: addressCode,
-    address1: addressRoad,
-    address2: addressDetail,
-  };
-
-  userInfoForm.addEventListener('submit', async (e) => {
+  userInfoForm.addEventListener('submit', (e) => {
     e.preventDefault();
-
-    const data = {
-      fullName,
-      phoneNumber,
-      address,
-    };
-
-    const result = await Api.patch('api/user', '', data);
-    console.log(result);
+    const modalForm = document.querySelector('.modal-form');
+    modalForm.setAttribute('id', 'edit-user');
+    document.querySelector('#password-modal > .modal-layout').classList.add('show-modal');
   });
 }
 
