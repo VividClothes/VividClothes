@@ -46,7 +46,7 @@ class AdminOrder {
 
     const orders = await Api.get('/order/list');
 
-    this.orderList.insertAdjacentHTML('afterbegin', createAdminOrderList(orders));
+    this.orderList.insertAdjacentHTML('afterbegin', createAdminOrderList(orders.datas));
   }
 
   addAllEvents() {
