@@ -34,9 +34,6 @@ function addAllEvents() {
   kakaoSubmitButton.addEventListener('click', handleKakaoSubmit);
 }
 
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
-}
 
 // 로컬 로그인 진행
 async function handleLocalSubmit(e) {
