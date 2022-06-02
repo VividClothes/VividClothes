@@ -28,8 +28,6 @@ function insertHeader() {
   document.body.insertAdjacentElement('afterbegin', header);
 }
 
-
-
 // 로컬 로그인 진행
 async function handleLocalSubmit(e) {
   e.preventDefault();
@@ -42,7 +40,9 @@ async function handleLocalSubmit(e) {
   const isPasswordValid = password.length >= 4;
 
   if (!isEmailValid || !isPasswordValid) {
-    return alert('비밀번호가 4글자 이상인지, 이메일 형태가 맞는지 확인해 주세요.');
+    return alert(
+      '비밀번호가 4글자 이상인지, 이메일 형태가 맞는지 확인해 주세요.'
+    );
   }
 
   // 로그인 api 요청
@@ -50,36 +50,34 @@ async function handleLocalSubmit(e) {
     const data = { email, password };
 
     const result = await Api.post('/api/login', data);
-   
+
     const token = result.token;
     const role = result.userRole;
     const hashedEmail = result.hashedEmail;
-    
+
     // 로그인 성공, 토큰을 세션 스토리지에 저장
     // 물론 다른 스토리지여도 됨
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
     localStorage.setItem('hashedEmail', hashedEmail);
 
-
     // indexedDB 생성
     const onRequest = indexedDB.open(hashedEmail, 1);
 
     onRequest.onsuccess = () => {
       //alert('indexedDB onsuccess');
-    }
+    };
 
     onRequest.onupgradeneeded = (e) => {
       //alert('indexedDB onupgradeneeded');
       const db = onRequest.result;
-      db.createObjectStore('order', { keyPath: 'shortId'});
-      db.createObjectStore('cart', { keyPath: 'shortId'});
-    }
+      db.createObjectStore('order', { keyPath: 'shortId' });
+      db.createObjectStore('cart', { keyPath: 'shortId' });
+    };
 
     onRequest.onerror = () => {
       //alert('Error creating or accessing db')
-    }
-
+    };
 
     alert(`정상적으로 로그인되었습니다.`);
 
@@ -92,8 +90,6 @@ async function handleLocalSubmit(e) {
     alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
   }
 }
-
-
 
 // 카카오 로그인 진행
 async function handleKakaoSubmit(e) {
@@ -101,38 +97,35 @@ async function handleKakaoSubmit(e) {
 
   // 로그인 api 요청
   try {
-
     const result = await Api.get('/api/login/kakao');
-   
+
     const token = result.token;
     const role = result.userRole;
     const hashedEmail = result.hashedEmail;
-    
+
     // 로그인 성공, 토큰을 세션 스토리지에 저장
     // 물론 다른 스토리지여도 됨
     localStorage.setItem('token', token);
     localStorage.setItem('role', role);
     localStorage.setItem('hashedEmail', hashedEmail);
 
-
     // indexedDB 생성
     const onRequest = indexedDB.open(hashedEmail, 1);
 
     onRequest.onsuccess = () => {
       //alert('indexedDB onsuccess');
-    }
+    };
 
     onRequest.onupgradeneeded = (e) => {
       //alert('indexedDB onupgradeneeded');
       const db = onRequest.result;
-      db.createObjectStore('order', { keyPath: 'shortId'});
-      db.createObjectStore('cart', { keyPath: 'shortId'});
-    }
+      db.createObjectStore('order', { keyPath: 'shortId' });
+      db.createObjectStore('cart', { keyPath: 'shortId' });
+    };
 
     onRequest.onerror = () => {
       //alert('Error creating or accessing db')
-    }
-
+    };
 
     alert(`정상적으로 로그인되었습니다.`);
 
@@ -146,55 +139,61 @@ async function handleKakaoSubmit(e) {
   }
 }
 
-
-
 // 구글 로그인 진행
-async function handleGoogleSubmit(e) {
-  e.preventDefault();
+// async function handleGoogleSubmit(e) {
+//   e.preventDefault();
 
-  // 로그인 api 요청
-  try {
+//   // 로그인 api 요청
+//   try {
 
-    const result = await Api.get('/api/login/google');
-   
-    const token = result.token;
-    const role = result.userRole;
-    const hashedEmail = result.hashedEmail;
-    
-    // 로그인 성공, 토큰을 세션 스토리지에 저장
-    // 물론 다른 스토리지여도 됨
-    localStorage.setItem('token', token);
-    localStorage.setItem('role', role);
-    localStorage.setItem('hashedEmail', hashedEmail);
+//     const result = await Api.get('/api/login/google');
 
+//     const token = result.token;
+//     const role = result.userRole;
+//     const hashedEmail = result.hashedEmail;
 
-    // indexedDB 생성
-    const onRequest = indexedDB.open(hashedEmail, 1);
+//     // 로그인 성공, 토큰을 세션 스토리지에 저장
+//     // 물론 다른 스토리지여도 됨
+//     localStorage.setItem('token', token);
+//     localStorage.setItem('role', role);
+//     localStorage.setItem('hashedEmail', hashedEmail);
 
-    onRequest.onsuccess = () => {
-      //alert('indexedDB onsuccess');
-    }
+//     // indexedDB 생성
+//     const onRequest = indexedDB.open(hashedEmail, 1);
 
-    onRequest.onupgradeneeded = (e) => {
-      //alert('indexedDB onupgradeneeded');
-      const db = onRequest.result;
-      db.createObjectStore('order', { keyPath: 'shortId'});
-      db.createObjectStore('cart', { keyPath: 'shortId'});
-    }
+//     onRequest.onsuccess = () => {
+//       //alert('indexedDB onsuccess');
+//     }
 
-    onRequest.onerror = () => {
-      //alert('Error creating or accessing db')
-    }
+//     onRequest.onupgradeneeded = (e) => {
+//       //alert('indexedDB onupgradeneeded');
+//       const db = onRequest.result;
+//       db.createObjectStore('order', { keyPath: 'shortId'});
+//       db.createObjectStore('cart', { keyPath: 'shortId'});
+//     }
 
+//     onRequest.onerror = () => {
+//       //alert('Error creating or accessing db')
+//     }
 
-    alert(`정상적으로 로그인되었습니다.`);
+//     alert(`정상적으로 로그인되었습니다.`);
 
-    // 로그인 성공
+//     // 로그인 성공
 
-    // 기본 페이지로 이동
-    window.location.href = '/';
-  } catch (err) {
-    console.error(err.stack);
-    alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
-  }
+//     // 기본 페이지로 이동
+//     window.location.href = '/';
+//   } catch (err) {
+//     console.error(err.stack);
+//     alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
+//   }
+// }
+function onSignIn(googleUser) {
+  var id_token = googleUser.getAuthResponse().id_token;
+  var xhr = new XMLHttpRequest();
+  xhr.open('POST', '/api/login/google');
+  xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhr.onload = function () {
+    console.log('Signed in as: ' + xhr.responseText);
+  };
+  xhr.send('idtoken=' + id_token);
 }
