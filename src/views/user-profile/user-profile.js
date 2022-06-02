@@ -7,7 +7,7 @@ import { addComponentEvents } from '/components-event.js';
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createAdminTab } from '/admin-tab/admin-tab.js';
 import { adminOrderTabData } from '/admin-tab/admin-tab-data.js';
-import category from '/category/category.js';
+import { createCategory, addCategoryListener } from '/category/category.js';
 import layout from '/layout/layout.js';
 import titleSection from '/layout/title-section.js';
 import { createProfile, addProfileListener } from '/profile/profile.js';
@@ -33,7 +33,7 @@ class UserProfile {
     // this.adminTab.insertAdjacentHTML('afterbegin', createAdminTab(adminOrderTabData));
 
     const categories = await Api.get('/category/list');
-    this.category.insertAdjacentHTML('afterbegin', await category({ categories }));
+    this.category.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
 
     this.titleSection.insertAdjacentHTML(
       'afterbegin',
@@ -48,7 +48,7 @@ class UserProfile {
 
   addAllEvents() {
     addHeaderEventListener();
-    addComponentEvents(this.category);
+    addCategoryListener(this.category);
     addComponentEvents(this.titleSection);
     addProfileListener(this.profile);
   }

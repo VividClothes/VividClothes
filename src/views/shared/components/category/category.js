@@ -1,7 +1,7 @@
 import * as Api from '/api.js';
 import categoryStyle from '/category/category-style.js';
 
-const category = async (props) => {
+const createCategory = async (props) => {
   const categories = !props ? await Api.get('/category/list') : props.categories;
 
   return /* html */ `
@@ -28,4 +28,17 @@ const category = async (props) => {
   `;
 };
 
-export default category;
+function addCategoryListener(component) {
+  onClickCancelBtn(component);
+}
+
+function onClickCancelBtn(component) {
+  const closeButton = component.querySelector('.close-button');
+  const sidebar = component.querySelector('.sidebar');
+
+  closeButton.addEventListener('click', () => {
+    sidebar.classList.remove('open');
+  });
+}
+
+export { createCategory, addCategoryListener };
