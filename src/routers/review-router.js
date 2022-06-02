@@ -13,7 +13,7 @@ reviewRouter.post('/register/:orderId',
             // req에서 데이터 가져와 변수에 할당
             const writer = req.currentUserId;
             const { orderId } = req.params;
-            const { productId, content, rate, imagePath } = req.body;
+            const { orderProductId, content, rate, imagePath } = req.body;
 
             // 위 데이터를 리뷰 db에 추가하기
             const newReview = await reviewService.addReview(
@@ -21,7 +21,7 @@ reviewRouter.post('/register/:orderId',
                 orderId,
                 {
                     writer,
-                    productId,
+                    orderProductId,
                     option: {},
                     content,
                     rate,
