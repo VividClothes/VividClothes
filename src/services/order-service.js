@@ -95,7 +95,7 @@ class OrderService {
     }
 
     // 리뷰 작성 여부 업데이트
-    updateHasReview(orderId, orderProductId) {
+    updateHasReview(orderId, orderProductId, hasReview) {
         this.orderModel.update(
             {
                 _id: orderId,
@@ -103,7 +103,7 @@ class OrderService {
             },
             {
                 $set: {
-                    "products.$.hasReview": true
+                    "products.$.hasReview": hasReview
                 }
             }
         );

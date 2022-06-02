@@ -1,21 +1,22 @@
 import * as Api from '/api.js';
 import { validateEmail } from '/useful-functions.js';
 import { header, addHeaderEventListener } from '/header/header.js';
-import { createCategory, addCategoryListener} from '/category/category.js';
-
+import { createCategory, addCategoryListener } from '/category/category.js';
 
 /***************************헤더*************************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async() => {
+(async () => {
   nav.insertAdjacentElement('afterbegin', header);
   const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  navCategory.insertAdjacentHTML(
+    'afterbegin',
+    await createCategory({ categories })
+  );
   addHeaderEventListener();
   addCategoryListener(navCategory);
 })();
 /*******************************************************************/
-
 
 // 요소(element), input 혹은 상수
 const fullNameInput = document.querySelector('#fullNameInput');
@@ -28,15 +29,12 @@ addAllElements();
 addAllEvents();
 
 // html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() {
-  insertHeader();
-}
+async function addAllElements() {}
 
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
   submitButton.addEventListener('click', handleSubmit);
 }
-
 
 // 회원가입 진행
 async function handleSubmit(e) {
