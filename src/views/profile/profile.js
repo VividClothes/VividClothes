@@ -5,14 +5,12 @@ import { addComponentEvents } from '/components-event.js';
 
 // Components
 import { header, addHeaderEventListener } from '/header/header.js';
-import { createAdminTab } from '/admin-tab/admin-tab.js';
-import { adminOrderTabData } from '/admin-tab/admin-tab-data.js';
 import { createCategory, addCategoryListener } from '/category/category.js';
 import layout from '/layout/layout.js';
 import titleSection from '/layout/title-section.js';
-import { createProfile, addProfileListener } from '/profile/profile.js';
+import { createProfile, addProfileListener } from '/profile/profile-form.js';
 
-class UserProfile {
+class Profile {
   constructor() {
     // Base DOM
     this.root = document.getElementById('root');
@@ -60,6 +58,6 @@ class UserProfile {
 }
 
 window.onload = () => {
-  const userProfile = new UserProfile();
-  userProfile.render();
+  const profile = new Profile();
+  profile.render();
 };

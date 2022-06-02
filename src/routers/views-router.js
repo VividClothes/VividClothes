@@ -19,7 +19,7 @@ viewsRouter.use('/', express.static(path.join(__dirname, '../views/shared/images
 
 viewsRouter.use('/cart', serveStatic('cart'));
 viewsRouter.use('/order', serveStatic('order'));
-viewsRouter.use('/user-profile', serveStatic('user-profile'));
+viewsRouter.use('/profile', serveStatic('profile'));
 viewsRouter.use('/products', serveStatic('products'));
 viewsRouter.use('/product', serveStatic('product'));
 viewsRouter.use('/admin-category', serveStatic('admin-category'));

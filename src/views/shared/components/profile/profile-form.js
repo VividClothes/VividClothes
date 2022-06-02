@@ -1,4 +1,4 @@
-import profileStyle from '/profile/profile-style.js';
+import profileStyle from '/profile/profile-form-style.js';
 
 const createProfile = (props) => {
   return /* html */ `
