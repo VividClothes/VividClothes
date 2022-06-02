@@ -48,6 +48,7 @@ const open = (e, item) => {
   modal.classList.remove("hidden");
   reviewProductId = item.productId;
   orderId = item.orderId; 
+  starSpan.style.width = '100%';
 }
 const close = () => {
   modal.classList.add("hidden");

@@ -18,7 +18,35 @@ const navCategory = document.getElementById('category');
 
 /*****************************요소모음*******************************/
 const reviewBody = document.querySelector('.review-container-helper');
-/*******************************************************************/
+const modal = document.querySelector('.modal');
+const modalBackground = document.querySelector('.modal-background');
+const exitButton = document.querySelector('.exit-button');
+const starInput = document.querySelector('.star-input');
+const starSpan = document.querySelector('.star span');
+const contentValue = document.querySelector('.content-value');
+const inputFile = document.querySelector('.input-file');
+const modalImages = document.querySelector('.modal-images');
+const registerButton = document.querySelector('.review-register-button');
+let reviewId = 0;
+/*********************************************************************/
+
+
+
+/****************************모달**********************************/
+const open = (e, review) => {
+  modal.classList.remove("hidden");
+  contentValue.value = review.content;
+  starSpan.style.width = `${10 * review.rate}%`;
+  reviewId = review._id;
+}
+const close = () => {
+  modal.classList.add("hidden");
+  refreshModalContents();
+}
+modalBackground.addEventListener("click", close);
+exitButton.addEventListener("click", close);
+/*********************************************************************/
+
 
 
 (async () => {
@@ -32,7 +60,6 @@ const reviewBody = document.querySelector('.review-container-helper');
 
   // 삭제 버튼 이벤트 등록
   const deleteButtons = reviewBody.getElementsByClassName('delete-button');
-  console.log(deleteButtons);
   Array.from(deleteButtons).forEach((deleteButton, index) => {
     deleteButton.addEventListener('click', async (e) => {
       e.preventDefault();
@@ -47,6 +74,12 @@ const reviewBody = document.querySelector('.review-container-helper');
     })
   })
   
+
+  // 수정 버튼 이벤트 등록
+  const updateButtons = reviewBody.getElementsByClassName('update-button');
+  Array.from(updateButtons).forEach((updateButton, index) => {
+    updateButton.addEventListener('click', (e) => open(e, reviews[index]));
+  })
 
 })()
 
@@ -100,3 +133,71 @@ function getDate(orderDate) {
   time = time.split('.')[0]
   return `${date} ${time}`;
 }
+
+
+function refreshModalContents() {
+  contentValue.value = ''; // 글 내용 지우기
+  inputFile.value = ''; // 이미지 지우기
+  modalImages.innerHTML = '';// 이미지 테그 지우기
+}
+
+
+registerButton.addEventListener('click', async (e) => {
+  
+  const rate = parseInt(starSpan.style.width);
+  
+  if (!contentValue.value) {
+    alert('리뷰 내용을 입력해주세요');
+  }
+
+  else {
+
+    const formData = new FormData();
+    
+    for (const file of inputFile.files) {
+      formData.append("images", file);
+    }
+
+    const res = await fetch('/image/register', {
+      method: 'post',
+      body: formData,
+    });
+
+    const imagePath = await res.json();
+    
+    const reqBody = {
+      content: contentValue.value,
+      rate,
+      imagePath
+    }
+
+    await Api.patch(`/review/${reviewId}/update`, '', reqBody);
+    
+    alert('리뷰가 수정되었습니다.');
+    window.location.reload();
+  }
+  
+})
+
+
+
+inputFile.addEventListener('change', (event) => {
+  for (const image of event.target.files) {
+    let reader = new FileReader();
+
+    reader.onload = (e) => {
+      let img = document.createElement('img');
+      img.setAttribute('src', e.target.result);
+      modalImages.appendChild(img);
+      modalImages.lastElementChild.classList.add('modal-image-unit');
+    }
+    reader.readAsDataURL(image);
+  }
+})
+
+
+/*********************별점 관련 이벤트********************/
+starInput.addEventListener('input', (e) => {
+  starSpan.style.width = `${e.target.value * 10}%`;
+})
+/********************************************************/
