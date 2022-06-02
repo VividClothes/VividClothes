@@ -74,12 +74,12 @@ class AdminProduct {
   createTitleSectionLeft(categories) {
     return /* html */ `
       <div class="select">
-        <select class="select-box">
+        <select class="select-box" >
           <option value="default">전체</option>
             ${categories
-              .map(({ categoryName }) => {
+              .map(({ _id, categoryName }) => {
                 return /* html */ ` 
-                <option value=${categoryName}>${categoryName}</option>
+                <option value=${_id}>${categoryName}</option>
               `;
               })
               .join()}
@@ -92,9 +92,10 @@ class AdminProduct {
   addSelectCategoryEvent() {
     const selectBox = this.titleSection.querySelector('.select-box');
 
-    selectBox.addEventListener('change', async () => {
-      console.log(selectBox.value);
-      this.productGrid.innerHTML = await productGrid({ selected: selectBox.value });
+    selectBox.addEventListener('change', async (e) => {
+      this.productGrid.innerHTML = await productGrid({
+        categoryId: e.target.value,
+      });
     });
   }
 
@@ -113,6 +114,8 @@ class AdminProduct {
         const {
           product: { _id, productName, category, price, image, info, option },
         } = await Api.get(`/product/${btn.dataset.id}`);
+
+        console.log(_id);
 
         const editModalForm = this.editProductModal.querySelector('.modal-layout');
 
