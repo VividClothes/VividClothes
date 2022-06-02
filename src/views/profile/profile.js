@@ -6,9 +6,9 @@ import { addComponentEvents } from '/components-event.js';
 // Components
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createCategory, addCategoryListener } from '/category/category.js';
+import { createProfile, addProfileListener } from '/profile/profile-form.js';
 import layout from '/layout/layout.js';
 import titleSection from '/layout/title-section.js';
-import { createProfile, addProfileListener } from '/profile/profile-form.js';
 
 class Profile {
   constructor() {
@@ -19,7 +19,6 @@ class Profile {
     // Components
     this.header = document.getElementById('header');
     this.category = document.getElementById('category');
-    this.adminTab = document.getElementById('admin-tab');
     this.layout = document.getElementById('layout');
     this.titleSection = document.getElementById('title-section');
     this.profile = document.getElementById('profile');
@@ -41,7 +40,9 @@ class Profile {
       })
     );
 
-    this.profile.insertAdjacentHTML('afterbegin', createProfile());
+    const userInfo = await Api.get('/api/user');
+
+    this.profile.insertAdjacentHTML('afterbegin', createProfile(userInfo));
   }
 
   addAllEvents() {
