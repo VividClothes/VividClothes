@@ -72,7 +72,7 @@ exitButton.addEventListener("click", close);
     const ordersInfo = await Api.get(`/order/${orderId}`);
     const orderItems = getProducts(ordersInfo);
     const orderState = ordersInfo.state;
-    console.log(ordersInfo)
+    console.log(orderItems)
 
     // 수령인 정보 설정
     setRecipientInfo(ordersInfo);
@@ -119,8 +119,15 @@ exitButton.addEventListener("click", close);
       // 2. 배송 완료 - 후기 링크
       else if(orderState === COMPLETE) {
         const reviewLink = stateBoxes[index].querySelector('.order-state-link'); 
-        
-        reviewLink.addEventListener('click', (e) => open(e, index, orderItems));
+        //console.log(item)
+        if (item.hasReview) {
+          reviewLink.textContent = '후기 작성완료';
+          reviewLink.style.textDecoration = 'none';
+          reviewLink.style.color = '#bbb';
+        }
+        else {
+          reviewLink.addEventListener('click', (e) => open(e, index, orderItems));
+        }
       }
     })
 })()
@@ -159,7 +166,7 @@ function getAddress(address) {
 // 응답 데이터로 구매 상품 데이터s 전처리
 function getProducts(ordersInfo) {
     const items = [];
-
+    
     ordersInfo.products.forEach((order) => {
         const item = {
             productName: order.product[0].productName,
@@ -169,6 +176,7 @@ function getProducts(ordersInfo) {
             quantity: order.quantity,
             priceSum: order.quantity * order.product[0].price,
             productId: order.product[0]._id,
+            hasReview: order.hasReview
         };
 
         items.push(item);
