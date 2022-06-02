@@ -200,6 +200,5 @@ inputFile.addEventListener('change', (event) => {
 /*********************별점 관련 이벤트********************/
 starInput.addEventListener('input', (e) => {
   starSpan.style.width = `${e.target.value * 10}%`;
-  rate = e.target.value;
 })
 /********************************************************/
