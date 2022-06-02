@@ -17,11 +17,11 @@ reviewRouter.post('/register/:orderId',
 
             // 위 데이터를 리뷰 db에 추가하기
             const newReview = await reviewService.addReview(
-                req.currentUserRole,
                 orderId,
+                orderProductId,
                 {
                     writer,
-                    orderProductId,
+                    productId: '',
                     option: {},
                     content,
                     rate,
