@@ -7,9 +7,9 @@ class ReviewService {
     }
 
     // 리뷰 등록
-    async addReview(orderId, reviewInfo) {
+    async addReview(orderId, orderProductId, reviewInfo) {
         // orderId와 productId로 주문한 상품 정보 조회
-        const orderProduct = await orderService.getOrderProduct(orderId, reviewInfo.orderProductId);
+        const orderProduct = await orderService.getOrderProduct(orderId, orderProductId);
 
         if (orderProduct.orderer != reviewInfo.writer) {
             throw new Error(
@@ -18,10 +18,11 @@ class ReviewService {
         }
 
         // 옵션 정보 재할당
-        reviewInfo.option = orderProduct.option;
+        reviewInfo.option = orderProduct.products[0].option;
+        reviewInfo.productId = orderProduct.products[0].product;
 
         const createdNewReview = await this.reviewModel.create(reviewInfo);
-        orderService.updateHasReview(orderId, reviewInfo.orderProductId);
+        orderService.updateHasReview(orderId, orderProductId);
 
         return createdNewReview;
     }
