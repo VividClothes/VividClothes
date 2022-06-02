@@ -135,18 +135,18 @@ orderRouter.patch('/update/:orderId',
 );
 
 // 일부 상품 삭제 - 부분 취소
-orderRouter.patch('/:orderId/product/:productId/cancel',
+orderRouter.patch('/:orderId/product/:orderProductId/cancel',
     loginRequired,
     async (req, res, next) => {
         try {
             // req의 params에서 데이터 가져옴
-            const { orderId, productId } = req.params;
+            const { orderId, orderProductId } = req.params;
 
             const updateProduct = await orderService.updateByProduct(
                 req.currentUserRole,
                 req.currentUserId,
                 orderId,
-                productId
+                orderProductId
             );
 
             res.status(201).json(updateProduct);
