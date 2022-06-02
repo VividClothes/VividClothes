@@ -408,18 +408,18 @@ let optionKeys = [];
 
 
     /************************리뷰 렌더링**************************/
-    const reviews = results.reviews;
+    const reviews = results.reviews.datas;
     console.log(reviews);
 
     reviewContainerTitle.textContent = `구매후기(${reviews.length})`;
 
     reviews.forEach((review) => {
-        reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review, result.imagePath[0]));
+        reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review));
     })
     
 })();
 
-function makeReviewContainerHTML(review, productImagePath) {
+function makeReviewContainerHTML(review) {
     return `
     <div class="review-container">
         <div class="review-head">
@@ -428,7 +428,7 @@ function makeReviewContainerHTML(review, productImagePath) {
         </div>
         <div class="product-name-options">
             <div class="image-box"
-            style="background-image:url('${productImagePath}')"
+            style="background-image:url('${review.productId.imagePath[0]}')"
             onclick="
             window.location.href='/product?id=${review.productId._id}'
             "></div>
