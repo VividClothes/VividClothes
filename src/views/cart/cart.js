@@ -156,6 +156,8 @@ const isCheckedArray = [];
                   else {
                     checkAll.checked = false;
                   }
+
+                  getTotalPriceSum();
                  })
                })
         }
@@ -173,6 +175,7 @@ const isCheckedArray = [];
                 .forEach((checkOneBox, index) => {
                   checkOneBox.checked = true;
                   isCheckedArray[index] = true;
+                  getTotalPriceSum();
                 })
           }
 
@@ -182,6 +185,7 @@ const isCheckedArray = [];
                 .forEach((checkOneBox, index) => {
                   checkOneBox.checked = false;
                   isCheckedArray[index] = false;
+                  getTotalPriceSum();
                 })
           }
         })
@@ -333,9 +337,16 @@ function makeItemContainerHTML(product, index) {
 
 function setItemHeaderContent(cartProducts) {
   headerItemNumber.textContent = `전체 ${cartProducts.length}개`;
-  const totalPriceSumText = cartProducts.reduce((acc, cur) => {
-    return acc + (cur.quantity * cur.price)
-  }, 0);
-  totalPriceSum.textContent = `${addCommas(totalPriceSumText)}원`
+  totalPriceSum.textContent = '0원';
 }
 
+function getTotalPriceSum() {
+  const totalPrices = document.getElementsByClassName('total-price');
+  let sum = 0;
+  Array.from(totalPrices).forEach((elem, index) => {
+    if(isCheckedArray[index]) {
+      sum += convertToNumber(elem.textContent);
+    }
+  })
+  totalPriceSum.textContent = `${addCommas(sum)}원`;
+}
