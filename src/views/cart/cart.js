@@ -276,15 +276,19 @@ const isCheckedArray = [];
         /*************************주문하기 버튼 이벤트 추가****************************/
         orderButton.addEventListener('click', (e) => {
           e.preventDefault();
-          
-          const transaction = db.transaction('cart', 'readwrite');
-          cartProducts.forEach((productInfo, index) => {
-                          transaction.objectStore('cart').put({
-                            ...productInfo,
-                            isChecked: isCheckedArray[index]
+          const totalSum = convertToNumber(totalPriceSum.textContent);
+          if (totalSum === 0) {
+            alert('주문할 상품을 선택해주세요.');
+          } else {
+            const transaction = db.transaction('cart', 'readwrite');
+            cartProducts.forEach((productInfo, index) => {
+                            transaction.objectStore('cart').put({
+                              ...productInfo,
+                              isChecked: isCheckedArray[index]
+                            })
                           })
-                        })
-          window.location.href = '/order?storeName=cart';          
+            window.location.href = '/order?storeName=cart';   
+          }      
         })
         /************************************************************************/
       }
