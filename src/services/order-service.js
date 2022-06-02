@@ -36,11 +36,6 @@ class OrderService {
     // 모든 주문 조회
     async getOrders(page, perPage) {
         const orders = await this.orderModel.findAll(page, perPage);
-        if (orders.datas.length < 1) {
-            throw new Error(
-                '주문 내역이 없습니다.'
-            );
-        }
 
         return orders;
     }
@@ -49,11 +44,6 @@ class OrderService {
     async getOrderByUser(userId, page, perPage) {
         // 우선 해당 유저의 주문 내역이 db에 존재하는지 확인
         const orders = await this.orderModel.findByUser(userId, page, perPage);
-        if (orders.datas.length < 1) {
-            throw new Error(
-                '해당 유저의 주문 내역이 없습니다.'
-            );
-        }
 
         return orders;
     }
