@@ -1,24 +1,20 @@
-import * as Api from '/api.js';
 import { addCommas, convertToNumber } from '/useful-functions.js';
-import { header } from '/header.js';
+import * as Api from '/api.js';
+import { header, addHeaderEventListener } from '/header/header.js';
+import { createCategory, addCategoryListener} from '/category/category.js';
 
-/***************************헤더 내용**********************************/
-// 요소(element), input 혹은 상수
-addAllElements();
-addAllEvents();
 
-// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() {
-  insertHeader();
-}
-
-// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
-}
-/*********************************************************************/
+/***************************헤더*************************************/
+const nav = document.getElementById('header');
+const navCategory = document.getElementById('category');
+(async() => {
+  nav.insertAdjacentElement('afterbegin', header);
+  const categories = await Api.get('/category/list');
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+})();
+/*******************************************************************/
 
 
 

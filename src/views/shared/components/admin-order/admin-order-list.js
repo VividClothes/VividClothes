@@ -107,7 +107,7 @@ function onClickCancelBtn(component) {
   Array.from(cancelBtn).forEach((btn) => {
     btn.addEventListener('click', async (e) => {
       const orderId = e.target.dataset.orderid;
-      await Api.delete(`/order/cancel`, `/${orderId}`);
+      await Api.delete(`/order/cancel`, `${orderId}`);
       window.location.reload();
     });
   });

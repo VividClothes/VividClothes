@@ -16,7 +16,7 @@ const notLoginHeaderNav = () => /* html */ `
 const loginHeaderNav = (config, dropdownContent) => /* html */ `
   <ul class="flex-style">
     <li>
-      <a class="link" href="/user-profile">회원정보</a>
+      <a class="link" href="/profile">회원정보</a>
       <span class="mx-3">/</span>
     </li>
     

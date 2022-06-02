@@ -1,0 +1,87 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
+
+.review-article-container {
+    width: 1400px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10vh;
+    font-weight: bold;
+}
+
+.review-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-bottom: 2vh;
+    border-bottom: solid #ccc 1px;
+}
+
+
+
+.review-container-helper {
+    width:1000px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20vh;
+
+    font-weight: bold;
+    font-size: 14px;
+
+    padding: 25px 25px;
+}
+
+
+.review-head,
+.review-option,
+.review-rate,
+.review-content,
+.review-image {
+    padding: 10px 30px;
+}
+
+.review-container {
+    border: solid #ccc 1px;
+    padding: 15px 15px;
+    margin-top: 50px;
+}
+
+.review-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.review-rate {
+    font-size: 18px;
+}
+
+.review-image-unit {
+    width: auto;
+    max-height: 250px;
+    margin: 15px 15px;
+}
+
+.review-date,
+.review-option {
+    color: #999;
+}
+
+
+
+/* 별점 css */
+.star {
+    position: relative;
+    font-size: 18px;
+    color: #eee;
+}
+
+.star-color {
+    /* width: 30%; */
+    position: absolute;
+    left: 0;
+    color: #FFB900;
+    overflow: hidden;
+    pointer-events: none;
+}
