@@ -27,9 +27,37 @@ const itemsBody = document.querySelector('.items-body');
 const productPrepareLink = document.querySelector('.product-prepare-link');
 const productDeliveryLink = document.querySelector('.product-delivery-link');
 const deliveryCompleteLink = document.querySelector('.delivery-complete-link');
+const modal = document.querySelector('.modal');
+const modalBackground = document.querySelector('.modal-background');
+const exitButton = document.querySelector('.exit-button');
+const starInput = document.querySelector('.star-input');
+const starSpan = document.querySelector('.star span');
+const contentValue = document.querySelector('.content-value');
+const inputFile = document.querySelector('.input-file');
+const modalImages = document.querySelector('.modal-images');
+const registerButton = document.querySelector('.review-register-button');
 const PREPARE = '상품 준비중';
 const DELIVER = '상품 배송중';
 const COMPLETE = '배송 완료';
+let rate = -1;
+let reviewProductId = 0;
+let orderId = 0;
+/*********************************************************************/
+
+
+
+/****************************모달**********************************/
+const open = (e, item) => {
+  modal.classList.remove("hidden");
+  reviewProductId = item.productId;
+  orderId = item.orderId; 
+}
+const close = () => {
+  modal.classList.add("hidden");
+  refreshModalContents();
+}
+modalBackground.addEventListener("click", close);
+exitButton.addEventListener("click", close);
 /*********************************************************************/
 
 
@@ -99,7 +127,16 @@ const COMPLETE = '배송 완료';
 
       // 2. 배송 완료 - 후기 링크
       else if(item.state === COMPLETE) {
-        // 
+        const reviewLink = stateBoxes[index].querySelector('.order-state-link'); 
+        
+        if(item.hasReview) {
+          reviewLink.textContent = '후기 작성완료';
+          reviewLink.style.textDecoration = 'none';
+          reviewLink.style.color = '#bbb';
+        }
+        else {
+          reviewLink.addEventListener('click', (e) => open(e, item));
+        }
       }
     })
   }
@@ -206,7 +243,8 @@ function getOrderItems(orders) {
         priceSum: item.quantity * item.product[0].price,
         imagePath: item.product[0].imagePath[0],
         productName: item.product[0].productName,
-        productId: item.product[0]._id
+        productId: item.product[0]._id,
+        hasReview: item.hasReview
       }
       orderItems.push(pushItem);
     })
@@ -221,3 +259,79 @@ function getOrderItems(orders) {
 function getDate(date) {
   return date.split('T')[0];
 }
+
+
+
+/*****************************모달******************************/
+function refreshModalContents() {
+  contentValue.value = ''; // 글 내용 지우기
+  inputFile.value = ''; // 이미지 지우기
+  modalImages.innerHTML = '';// 이미지 테그 지우기
+}
+
+
+
+registerButton.addEventListener('click', async (e) => {
+
+  if (rate === -1) {
+    alert('별점을 남겨주세요.');
+  }
+  
+  else if (!contentValue.value) {
+    alert('리뷰 내용을 입력해주세요');
+  }
+
+  else {
+  
+    const formData = new FormData();
+    
+    for (const file of inputFile.files) {
+      formData.append("images", file);
+    }
+
+    const res = await fetch('/image/register', {
+      method: 'post',
+      body: formData,
+    });
+
+    const imagePath = await res.json();
+    
+    const reqBody = {
+      productId: reviewProductId,
+      content: contentValue.value,
+      rate,
+      imagePath
+    }
+
+    console.log(reqBody);
+    await Api.post(`/review/register/${orderId}`, reqBody);
+    
+    alert('리뷰 등록이 완료되었습니다.');
+    window.location.reload();
+  }
+  
+})
+
+
+
+inputFile.addEventListener('change', (event) => {
+  for (const image of event.target.files) {
+    let reader = new FileReader();
+
+    reader.onload = (e) => {
+      let img = document.createElement('img');
+      img.setAttribute('src', e.target.result);
+      modalImages.appendChild(img);
+      modalImages.lastElementChild.classList.add('modal-image-unit');
+    }
+    reader.readAsDataURL(image);
+  }
+})
+
+
+/*********************별점 관련 이벤트********************/
+starInput.addEventListener('input', (e) => {
+  starSpan.style.width = `${e.target.value * 10}%`;
+  rate = e.target.value;
+})
+/********************************************************/

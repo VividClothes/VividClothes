@@ -15,6 +15,33 @@
     <script src="user-order-list.js" type="module" defer></script>
   </head>
   <body>
+    <div class="modal hidden">
+      <div class="modal-background"></div>
+      <div class="modalBox">
+        <div class="exit-button fa-solid fa-x"></div>
+        <h2 class="modal-title">후기 작성</h2>
+        <div class="modal-rate-container">
+          <span class="modal-kor">별점</span>
+          <span class="star span">
+            ★★★★★
+            <span class="span">★★★★★</span>
+            <input type="range" value="1" step="1" min="0" max="10" class="star-input">
+          </span>
+        </div>
+        <div class="modal-content-container">
+          <div class="modal-kor">내용</div>
+          <textarea class="content-value"></textarea>
+        </div>
+        <div class="modal-image-container">
+          <div class="modal-kor">사진</div>
+          <input type="file" name="uploads" class="input-file" multiple>
+          <div class="modal-images"></div>
+        </div>
+        <div class="review-register-button">
+          <div>등록</div>
+        </div>
+      </div>
+    </div>
     <div class="order-list-container">
       <h1 class="order-list-title">주문내역 조회</h1>
       <div class="order-state-container">
