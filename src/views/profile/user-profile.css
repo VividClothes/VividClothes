@@ -5,6 +5,10 @@
   font-family: 'Roboto', 'Noto Sans KR', sans-serif;
 }
 
+.cart-status-container {
+  padding: 120px 200px;
+}
+
 .card {
   position: relative;
   height: 100%;

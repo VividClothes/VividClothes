@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>주문 상세 내역</title>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="user-review-list.css" />
+    <script src="user-review-list.js" type="module" defer></script>
+    <!-- 카카오 우편번호 API -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  </head>
+<body>
+  <div id="header"></div>
+  <div id="category"></div>
+  <div class="review-article-container">
+    <h1 class="review-title">마이 리뷰</h1>
+    <div class="review-container-helper">
+      <div class="review-container">
+        <div class="review-button-container">
+          <input type="button" class="update-button" value="수정">
+          <input type="button" class="delete-button" value="삭제">
+        </div>
+        <div class="review-head">
+          <div class="writer">이*</div>
+          <div class="review-date">2022-05-24 22:55:46</div>
+        </div>
+        <div class="review-option">S / White 구매</div>
+        <div class="review-rate">
+          <span class="star">
+            ★★★★★
+            <span class="star-color">★★★★★</span>
+          </span>
+        </div>
+        <div class="review-content">
+          와... 이거 진짜 핏 장난 아닙니다!!ㅋㅋㅋㅋㅋㅋㅋㅋ 제발 사줘요..ㅠㅠ
+        </div>
+        <div class="review-image">
+          <img src="/home-img1.jpg" alt="" class="review-image-unit">
+          <img src="/home-img1.jpg" alt="" class="review-image-unit">
+          <img src="/home-img2.jpg" alt="" class="review-image-unit">
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
