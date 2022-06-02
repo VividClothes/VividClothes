@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>주문내역 조회</title>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="user-order-list.css" />
+    <script src="user-order-list.js" type="module" defer></script>
+  </head>
+  <body>
+    <div id="header"></div>
+    <div id="category"></div>
+    <div class="modal hidden">
+      <div class="modal-background"></div>
+      <div class="modalBox">
+        <div class="exit-button fa-solid fa-x"></div>
+        <h2 class="modal-title">후기 작성</h2>
+        <div class="modal-rate-container">
+          <span class="modal-kor">별점</span>
+          <span class="star span">
+            ★★★★★
+            <span class="span">★★★★★</span>
+            <input type="range" value="1" step="1" min="0" max="10" class="star-input">
+          </span>
+        </div>
+        <div class="modal-content-container">
+          <div class="modal-kor">내용</div>
+          <textarea class="content-value"></textarea>
+        </div>
+        <div class="modal-image-container">
+          <div class="modal-kor">사진</div>
+          <input type="file" name="uploads" class="input-file" multiple>
+          <div class="modal-images"></div>
+        </div>
+        <div class="review-register-button">
+          <div>등록</div>
+        </div>
+      </div>
+    </div>
+    <div class="order-list-container">
+      <h1 class="order-list-title">주문내역 조회</h1>
+      <div class="order-state-container">
+        <a href="/user-order-list?type=prepare" class="product-prepare-link"></a> 
+        <a href="/user-order-list?type=deliver" class="product-delivery-link"></a>
+        <a href="/user-order-list?type=complete" class="delivery-complete-link"></a>
+      </div>
+      <div class="items-container">
+        <div class="items-header">
+          <div class="header-product-info">상품정보</div>
+          <div class="header-order-date">주문일자</div>
+          <div class="header-price-quantity">주문금액(수량)</div>
+          <div class="header-order-state">주문상태</div>
+          <div class="header-order-detail">상세보기</div>
+        </div>
+        <div class="items-body">
+          <!-- <div class="item-container">
+            <div class="product-info">
+              <div class="image-box"></div>
+              <div class="options-box">
+                <div class="product-name">정말정말 이쁜 이쁜 후드티</div>
+                <div class="options">옵션: FREE / RED</div>
+              </div>
+            </div>
+            <div class="order-date">2022-05-28</div>
+            <div class="price-quantity">
+              <div class="price">24,000원</div>
+              <div class="quantity">1개</div>
+            </div>
+            <div class="order-state-box">
+              <div class="order-state-text">상품 배송중</div>
+            </div>
+            <div class="order-detail">
+              <a href="#" class="order-detail-link">주문 상세보기</a>
+            </div>
+          </div>
+          <div class="item-container">
+            <div class="product-info">
+              <div class="image-box"></div>
+              <div class="options-box">
+                <div class="product-name">정말정말 이쁜 이쁜 후드티</div>
+                <div class="options">옵션: FREE / RED</div>
+              </div>
+            </div>
+            <div class="order-date">2022-05-28</div>
+            <div class="price-quantity">
+              <div class="price">24,000원</div>
+              <div class="quantity">1개</div>
+            </div>
+            <div class="order-state-box">
+              <div class="order-state-text">배송 완료</div>
+              <a class="order-state-link">후기작성</a>
+            </div>
+            <div class="order-detail">
+              <a href="#" class="order-detail-link">주문 상세보기</a>
+            </div>
+          </div>
+          <div class="item-container">
+            <div class="product-info">
+              <div class="image-box"></div>
+              <div class="options-box">
+                <div class="product-name">정말정말 이쁜 이쁜 후드티</div>
+                <div class="options">옵션: FREE / RED</div>
+              </div>
+            </div>
+            <div class="order-date">2022-05-28</div>
+            <div class="price-quantity">
+              <div class="price">24,000원</div>
+              <div class="quantity">1개</div>
+            </div>
+            <div class="order-state-box">
+              <div class="order-state-text">상품 준비중</div>
+              <a class="order-state-link">주문취소</a>
+            </div>
+            <div class="order-detail">
+              <a href="#" class="order-detail-link">주문 상세보기</a>
+            </div>
+          </div>-->
+          <!-- <div class="no-item-container">장바구니에 담긴 상품이 없습니다.</div> -->
+        </div>
+      </div>
+  </body>
+</html>

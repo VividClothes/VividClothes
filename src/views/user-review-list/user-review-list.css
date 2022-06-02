@@ -1,0 +1,146 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
+
+.review-article-container {
+    width: 1400px;
+    margin-right: auto;
+    margin-left: auto;
+    margin-top: 10vh;
+    font-weight: bold;
+}
+
+.review-title {
+    font-size: 1.2rem;
+    font-weight: bold;
+    padding-bottom: 2vh;
+    border-bottom: solid #ccc 1px;
+    margin-bottom: 100px;
+}
+
+
+
+.review-container-helper {
+    width:800px;
+    
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 20vh;
+
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.review-container-title {
+    font-size: 18px;
+    font-weight: bold;
+    padding-bottom: 2%;
+    padding-top: 3%;
+}
+
+
+.product-name-options,
+.review-image {
+    padding: 10px 30px;
+}
+
+.review-head,
+.review-rate,
+.review-content,
+.review-button-container {
+    padding: 10px 50px;
+}
+
+
+.review-container {
+    border: solid #ccc 1px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    margin-top: -1px;
+}
+
+.review-head {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 5px;
+}
+
+.review-button-container {
+    margin-bottom: 10px;
+}
+
+.update-button,
+.delete-button {
+    background-color: white;
+    border: solid #ccc 1px;
+    font-size: 12px;
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.product-name-options {
+    display: flex;
+}
+
+.image-box {
+    width: 80px;
+    height: 80px;
+    background-size: cover;
+    background-position: center center;
+    background-repeat: none;
+    cursor: pointer;
+}
+
+
+.options-box {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    text-align: left;
+    padding-left: 20px;
+}
+  
+.product-name {
+    display: inline-block;
+
+}
+
+.options {
+    display: inline-block;
+    margin-top: 2px;
+    color: #999;
+}
+
+
+.review-rate {
+    font-size: 18px;
+}
+
+.review-image-unit {
+    width: auto;
+    max-height: 250px;
+    margin: 15px 15px;
+}
+
+.review-date {
+    color: #999;
+}
+
+
+
+/* 별점 css */
+.star {
+    position: relative;
+    font-size: 18px;
+    color: #eee;
+}
+
+.star-color {
+    /* width: 30%; */
+    position: absolute;
+    left: 0;
+    color: #FFB900;
+    overflow: hidden;
+    pointer-events: none;
+}

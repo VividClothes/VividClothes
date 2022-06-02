@@ -1,7 +1,36 @@
 import { model } from 'mongoose';
 import { OrderSchema } from '../schemas/order-schema';
+import { pagination } from '../../utils/pagination';
 
 const Order = model('orders', OrderSchema);
+
+const select = {
+    _id: true,
+    orderer: true,
+    products: true,
+    priceTotal: true,
+    state: true,
+    createdAt: true,
+};
+const sort = { createdAt: -1 };
+const populate = [
+    {
+        path: 'orderer',
+        select: [
+            'email',
+            'fullName',
+            'phoneNumber'
+        ]
+    },
+    {
+        path: 'products.product',
+        select: [
+            'productName',
+            'price',
+            'imagePath'
+        ]
+    }
+];
 
 export class OrderModel {
     // 주문 추가
@@ -12,51 +41,17 @@ export class OrderModel {
     }
 
     // 모든 주문 조회
-    async findAll() {
-        const orders = await Order.find({})
-            .populate([
-                {
-                    path: 'orderer',
-                    select: [
-                        'email',
-                        'fullName',
-                        'phoneNumber'
-                    ]
-                },
-                {
-                    path: 'products.product',
-                    select: [
-                        'productName',
-                        'price',
-                        'option'
-                    ]
-                }
-            ]);
+    findAll(page, perPage) {
+        const orders = pagination(page, perPage, Order, {}, select, sort, populate);
 
         return orders;
     }
 
     // 유저별 주문 조회
-    async findByUser(userId) {
-        const orders = await Order.find({ orderer: userId })
-            .populate([
-                {
-                    path: 'orderer',
-                    select: [
-                        'email',
-                        'fullName',
-                        'phoneNumber'
-                    ]
-                },
-                {
-                    path: 'products.product',
-                    select: [
-                        'productName',
-                        'price',
-                        'option'
-                    ]
-                }
-            ]);
+    findByUser(userId, page, perPage) {
+        const filter = { orderer: userId };
+
+        const orders = pagination(page, perPage, Order, filter, select, sort, populate);
 
         return orders;
     }
@@ -64,30 +59,30 @@ export class OrderModel {
     // objectId를 이용해 특정 주문 조회
     async findById(orderId) {
         const order = await Order.findOne({ _id: orderId })
-            .populate([
-                {
-                    path: 'orderer',
-                    select: [
-                        'email',
-                        'fullName',
-                        'phoneNumber'
-                    ]
-                },
-                {
-                    path: 'products.product',
-                    select: [
-                        'productName',
-                        'price',
-                        'option'
-                    ]
-                }
-            ]);
+            .populate(populate);
 
         return order;
     }
 
-    async update(orderId, update) {
-        const filter = { _id: orderId };
+    // 특정 주문의 특정 상품 검색
+    async findByProduct(orderId, orderProductId) {
+        const order = await Order.findOne(
+            { _id: orderId },
+            {
+                'orderer': true,
+                'products': {
+                    '$elemMatch': {
+                        '_id': orderProductId
+                    }
+                }
+            }
+        );
+
+        return order;
+    }
+
+    // 주문 내역 및 상태 변경
+    async update(filter, update) {
         const option = { returnOriginal: false };
 
         const updateOrder = await Order.findOneAndUpdate(filter, update, option);
@@ -95,7 +90,7 @@ export class OrderModel {
         return updateOrder;
     }
 
-    // 주문 취소 - 삭제
+    // 전체 주문 취소 - 삭제
     async delete(orderId) {
         const filter = { _id: orderId };
 

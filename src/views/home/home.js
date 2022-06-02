@@ -1,41 +1,21 @@
 import * as Api from '/api.js';
-import { randomId } from '/useful-functions.js';
+import { header, addHeaderEventListener } from '/header/header.js';
+import { createCategory, addCategoryListener } from '/category/category.js';
 
-addAllElements();
-
-async function addAllElements() {
-  insertHeader();
-  homeImageEvents();
-}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
-}
-
-// async function getDataFromApi() {
-//   // 예시 URI입니다. 현재 주어진 프로젝트 코드에는 없는 URI입니다.
-//   const data = await Api.get('/api/user/data');
-//   const random = randomId();
-
-//   console.log({ data });
-//   console.log({ random });
-// }
-
-// 홈 이미지 이벤트 리스너 등록 (마우스 호버시 글자 및 배경색 변화)
-function homeImageEvents() {
-  const imgFloats = document.getElementsByClassName('imgFloat');
-  for (let elem of imgFloats) {
-    elem.addEventListener('mouseover', (e) => {
-      e.target.style.color = 'rgb(0,0,0,1)';
-      e.target.style.backgroundColor = 'rgb(255,255,255, 0.9)';
-    });
-
-    elem.addEventListener('mouseout', (e) => {
-      e.target.style.color = 'rgb(0,0,0,0)';
-      e.target.style.backgroundColor = 'rgb(255,255,255,0)';
-    });
-  }
-}
+/***************************헤더*************************************/
+const nav = document.getElementById('header');
+const navCategory = document.getElementById('category');
+(async () => {
+  nav.insertAdjacentElement('afterbegin', header);
+  const categories = await Api.get('/category/list');
+  navCategory.insertAdjacentHTML(
+    'afterbegin',
+    await createCategory({ categories })
+  );
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+})();
+/*******************************************************************/
 
 // 이미지 슬라이드 기능
 const slide = document.querySelector('.slide');

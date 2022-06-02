@@ -25,9 +25,12 @@
     <!-- 커스텀 css, js -->
     <link rel="stylesheet" href="login.css" />
     <script src="login.js" type="module" defer></script>
+    <!-- google login -->
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
   </head>
   <body>
     <!-- 헤더 -->
+<<<<<<< HEAD
     <nav class="navbar" role="navigation" aria-label="main navigation">
       <div class="container mt-3">
         <div class="navbar-brand">
@@ -67,10 +70,14 @@
       </div>
     </nav>
 
+=======
+    <div id="header"></div>
+    <div id="category"></div>
+>>>>>>> 9c85489f8a21a03d4219ba75a9909480c48c295d
     <!-- 로그인 폼(Form) -->
     <div class="login-form-container">
       <form class="box login-form-box" id="loginForm">
-        <p class="title is-5 has-text-info">어서오세요!</p>
+        <p class="title">어서오세요!</p>
         <div class="field">
           <label class="label" for="emailInput">이메일</label>
           <div class="control">
@@ -97,9 +104,40 @@
           </div>
         </div>
 
+<<<<<<< HEAD
         <button class="button is-info is-fullwidth" id="submitButton">
           로그인하기
         </button>
+=======
+        <div class="button is-info is-fullwidth" id="localSubmitButton">
+          로그인
+        </div>
+        <div class="button is-info is-fullwidth" id="kakaoSubmitButton">
+          <img src="/kakao_logo.png" alt="kakao logo" class="kakaoLogo" />
+          카카오 로그인
+        </div>
+        <!-- <div class="button is-info is-fullwidth" id="googleSubmitButton">
+          <img src="/google_logo.png" alt="google logo" class="googleLogo" />
+          구글 로그인
+        </div> -->
+        <!-- <div class="g-signin2" data-onsuccess="onSignIn"></div> -->
+        <!-- data-client_id 어떻게 숨김? -->
+        <div
+          id="g_id_onload"
+          data-client_id="196598776648-dbu1p15dcgeotoi1rirs6eu63v3l5qom.apps.googleusercontent.com"
+          data-login_uri="http://localhost:5000/api/google/login"
+          data-auto_prompt="false"
+        ></div>
+        <div
+          class="g_id_signin"
+          data-type="standard"
+          data-size="large"
+          data-theme="outline"
+          data-text="sign_in_with"
+          data-shape="rectangular"
+          data-logo_alignment="left"
+        ></div>
+>>>>>>> 9c85489f8a21a03d4219ba75a9909480c48c295d
       </form>
     </div>
   </body>

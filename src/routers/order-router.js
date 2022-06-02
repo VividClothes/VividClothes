@@ -43,7 +43,10 @@ orderRouter.get('/list',
     userRoleCheck,
     async (req, res, next) => {
         try {
-            const orders = await orderService.getOrders();
+            const page = Number(req.query.page || 1);
+            const perPage = Number(req.query.perPage || 10);
+
+            const orders = await orderService.getOrders(page, perPage);
 
             res.status(200).json(orders);
         } catch (error) {
@@ -59,8 +62,10 @@ orderRouter.get('/list/:userId',
     async (req, res, next) => {
         try {
             const userId = req.params.userId;
+            const page = Number(req.query.page || 1);
+            const perPage = Number(req.query.perPage || 10);
 
-            const orders = await orderService.getOrderByUser(userId);
+            const orders = await orderService.getOrderByUser(userId, page, perPage);
 
             res.status(200).json(orders);
         } catch (error) {
@@ -75,8 +80,10 @@ orderRouter.get('/mylist',
     async (req, res, next) => {
         try {
             const userId = req.currentUserId;
+            const page = Number(req.query.page || 1);
+            const perPage = Number(req.query.perPage || 10);
 
-            const orders = await orderService.getOrderByUser(userId);
+            const orders = await orderService.getOrderByUser(userId, page, perPage);
 
             res.status(200).json(orders);
         } catch (error) {
@@ -121,6 +128,28 @@ orderRouter.patch('/update/:orderId',
             const updateOrder = await orderService.updateOrder(orderId, stateCode);
 
             res.status(201).json(updateOrder);
+        } catch (error) {
+            next(error);
+        }
+    }
+);
+
+// 일부 상품 삭제 - 부분 취소
+orderRouter.patch('/:orderId/product/:orderProductId/cancel',
+    loginRequired,
+    async (req, res, next) => {
+        try {
+            // req의 params에서 데이터 가져옴
+            const { orderId, orderProductId } = req.params;
+
+            const updateProduct = await orderService.updateByProduct(
+                req.currentUserRole,
+                req.currentUserId,
+                orderId,
+                orderProductId
+            );
+
+            res.status(201).json(updateProduct);
         } catch (error) {
             next(error);
         }
