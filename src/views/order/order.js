@@ -121,7 +121,7 @@ const productIdArray = [];
 
 
                     // 수정 필요
-                    alert('주문이 접수되었습니다. 주문 조회 페이지로 이동합니다.');
+                    alert('주문이 접수되었습니다.\n주문 조회 페이지로 이동합니다.');
                     window.location.href = '/user-order-list';
                 }
             })
