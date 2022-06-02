@@ -1,8 +1,5 @@
 const headerNavAdmin = () => {
   return /* html */ `
-  <a href="/admin-user" class="dropdown-item">
-    회원 관리
-  </a>
   <a href="/admin-product" class="dropdown-item">
     상품 관리
   </a>

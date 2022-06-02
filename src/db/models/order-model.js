@@ -10,6 +10,7 @@ const select = {
     products: true,
     priceTotal: true,
     state: true,
+    createdAt: true,
 };
 const sort = { createdAt: -1 };
 const populate = [
