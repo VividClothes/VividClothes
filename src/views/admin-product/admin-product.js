@@ -133,8 +133,6 @@ class AdminProduct {
         });
 
         this.editProductModal.setAttribute('product-id', _id.toString());
-        this.editProductModal.setAttribute('product-colors', option.color.join(''));
-        this.editProductModal.setAttribute('product-images', image.join(''));
 
         editModalForm.classList.add('show-modal');
       });

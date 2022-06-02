@@ -55,14 +55,17 @@ main {
 
 .order-quantity {
   width: 10%;
+  margin-left: 9px;
 }
 
 .order-state {
   width: 15%;
+  margin-left: 7px;
 }
 
 .order-total {
   width: 10%;
+  margin-left: 7px;
 }
 
 .order-content {
@@ -72,7 +75,7 @@ main {
 .order-center {
   display: flex;
   flex-direction: column;
-  width: 70%;
+  width: 55%;
 }
 
 .flex-box {
@@ -96,25 +99,27 @@ main {
 
 .order-product-info {
   display: flex;
-  width: 44%;
+  width: 58%;
 }
 
 .order-price-info {
   display: flex;
   justify-content: center;
-  width: 14.5%;
+  width: 20%;
 }
 
 .order-quantity-info {
   display: flex; 
   justify-content: center;
-  width: 15%;
+  width: 22%;
 }
 
 .order-state-info {
-  display: flex; 
-  justify-content: center;
-  width: 21.5%;
+  width: 15%;
+}
+
+.order-total-info {
+  width: 13%;
 }
 
 .order-image-container {
