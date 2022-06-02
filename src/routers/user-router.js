@@ -90,10 +90,11 @@ userRouter.get(
 );
 
 //특정 유저
-userRouter.get('/userlist/:userId', async (req, res, next) => {
+userRouter.get('/user', loginRequired, async (req, res, next) => {
   try {
     // req의 params에서 데이터 가져옴
-    const { userId } = req.params;
+    const userId = req.currentUserId;
+
     const user = await userService.getUserById(userId);
 
     res.status(200).json(user);
@@ -108,11 +109,10 @@ userRouter.patch(
   '/users',
   checkBody,
   loginRequired,
-
   async function (req, res, next) {
     try {
       // params로부터 id를 가져옴
-      const userId = req.params.userId;
+      const userId = req.currentUserId;
 
       // body data 로부터 업데이트할 사용자 정보를 추출함.
       const fullName = req.body.fullName;
@@ -152,7 +152,7 @@ userRouter.patch(
   }
 );
 // 사용자 정보 삭제 사용자는 개인 페이지에서 자신의 회원 정보를 삭제(탈퇴)할 수 있다.
-userRouter.delete('/users/:userId', async (req, res, next) => {
+userRouter.delete('/user', loginRequired, async (req, res, next) => {
   try {
     const currentPassword = req.body.currentPassword;
 
@@ -161,9 +161,8 @@ userRouter.delete('/users/:userId', async (req, res, next) => {
       throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
     }
 
+    const userId = req.currentUserId;
     const userInfoRequired = { userId, currentPassword };
-
-    const { userId } = req.params;
 
     if (!userId) {
       return res.status(400);
