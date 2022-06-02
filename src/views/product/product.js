@@ -414,19 +414,29 @@ let optionKeys = [];
     reviewContainerTitle.textContent = `구매후기(${reviews.length})`;
 
     reviews.forEach((review) => {
-        reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review));
+        reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review, result.imagePath[0]));
     })
     
 })();
 
-function makeReviewContainerHTML(review) {
+function makeReviewContainerHTML(review, productImagePath) {
     return `
     <div class="review-container">
         <div class="review-head">
             <div class="writer">${maskingFunc.email(review.writer.email)}</div>
             <div class="review-date">${getDate(review.createdAt)}</div>
         </div>
-        <div class="review-option">${review.productId.productName} 구매</div>
+        <div class="product-name-options">
+            <div class="image-box"
+            style="background-image:url('${productImagePath}')"
+            onclick="
+            window.location.href='/product?id=${review.productId._id}'
+            "></div>
+            <div class="options-box">
+                <div class="product-name">${review.productId.productName}</div>
+                <div class="options">${review.option.size} / ${review.option.color} 구매</div>
+            </div>
+        </div>
         <div class="review-rate">
             <span class="star"> 
                 ★★★★★
