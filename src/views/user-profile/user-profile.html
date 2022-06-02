@@ -13,107 +13,17 @@
     <!-- 커스텀 css, js -->
     <link rel="stylesheet" href="user-profile.css" />
     <script src="user-profile.js" type="module" defer></script>
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
   </head>
   <body>
-    <!-- 헤더 -->
-    <div class="cart-status-container">
-      <span class="title is-2">🔒 회원 정보</span>
-      <section class="cart-main">
-        <div class="right-side">
-          <div class="field">
-            <label class="label">이름</label>
-            <div class="control">
-              <input class="input" type="text" placeholder="Text input" />
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">이메일</label>
-            <div class="control has-icons-left has-icons-right">
-              <input class="input is-success" type="text" placeholder="Text input" value="bulma" />
-              <span class="icon is-small is-left">
-                <i class="fas fa-user"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fas fa-check"></i>
-              </span>
-            </div>
-            <p class="help is-success">This username is available</p>
-          </div>
-
-          <div class="field">
-            <label class="label">연락처</label>
-            <div class="control has-icons-left has-icons-right">
-              <input
-                class="input is-danger"
-                type="email"
-                placeholder="Email input"
-                value="hello@"
-              />
-              <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-              </span>
-              <span class="icon is-small is-right">
-                <i class="fas fa-exclamation-triangle"></i>
-              </span>
-            </div>
-            <p class="help is-danger">This email is invalid</p>
-          </div>
-
-          <div class="field">
-            <label class="label">주소</label>
-            <div class="control">
-              <div class="select">
-                <select>
-                  <option>Select dropdown</option>
-                  <option>With options</option>
-                </select>
-              </div>
-            </div>
-          </div>
-
-          <div class="field">
-            <label class="label">Message</label>
-            <div class="control">
-              <textarea class="textarea" placeholder="Textarea"></textarea>
-            </div>
-          </div>
-
-          <div class="field is-grouped">
-            <div class="control">
-              <button class="button is-link">수정</button>
-            </div>
-          </div>
-        </div>
-        <div class="menu-side">
-          <article class="panel is-link">
-            <p class="panel-heading">Menu</p>
-            <a class="panel-block is-active">
-              <span class="panel-icon">
-                <i class="fas fa-book" aria-hidden="true"></i>
-              </span>
-              기본 정보
-            </a>
-            <a class="panel-block">
-              <span class="panel-icon">
-                <i class="fas fa-book" aria-hidden="true"></i>
-              </span>
-              비밀번호 변경
-            </a>
-            <a class="panel-block">
-              <span class="panel-icon">
-                <i class="fas fa-book" aria-hidden="true"></i>
-              </span>
-              구매 내역
-            </a>
-            <a class="panel-block">
-              <span class="panel-icon">
-                <i class="fas fa-book" aria-hidden="true"></i>
-              </span>
-              회원 탈퇴
-            </a>
-          </article>
-        </div>
-      </section>
+    <div id="root">
+      <div id="header"></div>
+      <div id="category"></div>
+      <div id="admin-tab"></div>
+      <div id="layout">
+        <div id="title-section"></div>
+        <div id="profile"></div>
+        <div id="main"></div>
+      </div>
   </body>
 </html>

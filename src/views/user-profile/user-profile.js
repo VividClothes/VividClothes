@@ -1,22 +1,65 @@
-// 아래는 현재 home.html 페이지에서 쓰이는 코드는 아닙니다.
-// 다만, 앞으로 ~.js 파일을 작성할 때 아래의 코드 구조를 참조할 수 있도록,
-// 코드 예시를 남겨 두었습니다.
-
 import * as Api from '/api.js';
-import { randomId } from '/useful-functions.js';
-import { header } from '/header.js';
 
-addAllElements();
-addAllEvents();
+// Utils
+import { addComponentEvents } from '/components-event.js';
 
-// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-async function addAllElements() {
-  insertHeader();
+// Components
+import { header, addHeaderEventListener } from '/header/header.js';
+import { createAdminTab } from '/admin-tab/admin-tab.js';
+import { adminOrderTabData } from '/admin-tab/admin-tab-data.js';
+import category from '/category/category.js';
+import layout from '/layout/layout.js';
+import titleSection from '/layout/title-section.js';
+import { createProfile, addProfileListener } from '/profile/profile.js';
+
+class UserProfile {
+  constructor() {
+    // Base DOM
+    this.root = document.getElementById('root');
+    this.main = document.getElementById('main');
+
+    // Components
+    this.header = document.getElementById('header');
+    this.category = document.getElementById('category');
+    this.adminTab = document.getElementById('admin-tab');
+    this.layout = document.getElementById('layout');
+    this.titleSection = document.getElementById('title-section');
+    this.profile = document.getElementById('profile');
+  }
+
+  async createDOM() {
+    this.header.insertAdjacentElement('afterbegin', header);
+    this.layout.insertAdjacentHTML('afterbegin', layout());
+    // this.adminTab.insertAdjacentHTML('afterbegin', createAdminTab(adminOrderTabData));
+
+    const categories = await Api.get('/category/list');
+    this.category.insertAdjacentHTML('afterbegin', await category({ categories }));
+
+    this.titleSection.insertAdjacentHTML(
+      'afterbegin',
+      titleSection({
+        title: '회원 정보',
+        subTitle: '기본 정보',
+      })
+    );
+
+    this.profile.insertAdjacentHTML('afterbegin', createProfile());
+  }
+
+  addAllEvents() {
+    addHeaderEventListener();
+    addComponentEvents(this.category);
+    addComponentEvents(this.titleSection);
+    addProfileListener(this.profile);
+  }
+
+  async render() {
+    await this.createDOM();
+    this.addAllEvents();
+  }
 }
 
-// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
-}
+window.onload = () => {
+  const userProfile = new UserProfile();
+  userProfile.render();
+};
