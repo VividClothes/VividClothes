@@ -47,6 +47,7 @@ let reviewProductId = 0;
 const open = (e, index, orderItems) => {
   modal.classList.remove("hidden");
   reviewProductId = orderItems[index].productId;
+  starSpan.style.width = `100%`;
 }
 const close = () => {
   modal.classList.add("hidden");
