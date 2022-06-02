@@ -171,10 +171,9 @@ registerButton.addEventListener('click', async (e) => {
       imagePath
     }
 
-    console.log(reqBody);
-    await Api.patch(`/review/${reviewId}/update`, reqBody);
+    await Api.patch(`/review/${reviewId}/update`, '', reqBody);
     
-    alert('리뷰 등록이 완료되었습니다.');
+    alert('리뷰가 수정되었습니다.');
     window.location.reload();
   }
   
