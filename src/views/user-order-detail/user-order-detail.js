@@ -29,10 +29,37 @@ const phoneNumber = document.querySelector('.phone');
 const address = document.querySelector('.address');
 const itemsBody = document.querySelector('.items-body');
 const paymentPrice = document.querySelector('.payment-price');
+const modal = document.querySelector('.modal');
+const modalBackground = document.querySelector('.modal-background');
+const exitButton = document.querySelector('.exit-button');
+const starInput = document.querySelector('.star-input');
+const starSpan = document.querySelector('.star span');
+const contentValue = document.querySelector('.content-value');
+const inputFile = document.querySelector('.input-file');
+const modalImages = document.querySelector('.modal-images');
+const registerButton = document.querySelector('.review-register-button');
 const PREPARE = '상품 준비중';
 const DELIVER = '상품 배송중';
 const COMPLETE = '배송 완료';
+let rate = -1;
+let reviewProductId = 0;
 /*********************************************************************/
+
+
+
+/****************************모달**********************************/
+const open = (e, index, orderItems) => {
+  modal.classList.remove("hidden");
+  reviewProductId = orderItems[index].productId;
+}
+const close = () => {
+  modal.classList.add("hidden");
+  refreshModalContents();
+}
+modalBackground.addEventListener("click", close);
+exitButton.addEventListener("click", close);
+/*********************************************************************/
+
 
 
 (async () => {
@@ -45,7 +72,7 @@ const COMPLETE = '배송 완료';
     const ordersInfo = await Api.get(`/order/${orderId}`);
     const orderItems = getProducts(ordersInfo);
     const orderState = ordersInfo.state;
-
+    console.log(orderItems)
 
     // 수령인 정보 설정
     setRecipientInfo(ordersInfo);
@@ -91,10 +118,18 @@ const COMPLETE = '배송 완료';
 
       // 2. 배송 완료 - 후기 링크
       else if(orderState === COMPLETE) {
-        // 
+        const reviewLink = stateBoxes[index].querySelector('.order-state-link'); 
+        //console.log(item)
+        if (item.hasReview) {
+          reviewLink.textContent = '후기 작성완료';
+          reviewLink.style.textDecoration = 'none';
+          reviewLink.style.color = '#bbb';
+        }
+        else {
+          reviewLink.addEventListener('click', (e) => open(e, index, orderItems));
+        }
       }
     })
-
 })()
 
 
@@ -131,7 +166,7 @@ function getAddress(address) {
 // 응답 데이터로 구매 상품 데이터s 전처리
 function getProducts(ordersInfo) {
     const items = [];
-
+    
     ordersInfo.products.forEach((order) => {
         const item = {
             productName: order.product[0].productName,
@@ -141,6 +176,7 @@ function getProducts(ordersInfo) {
             quantity: order.quantity,
             priceSum: order.quantity * order.product[0].price,
             productId: order.product[0]._id,
+            hasReview: order.hasReview
         };
 
         items.push(item);
@@ -177,31 +213,106 @@ function makeItemHTML(item, orderState) {
 
 // 상품 박스 내 '주문 상태' HTML
 function stateComponent(state) {
-    if (state === PREPARE) {
-      return `
+  if (state === PREPARE) {
+    return `
         <div class="order-state-text">${PREPARE}</div>
         <a class="order-state-link" id="cancel-link">주문취소</a>
       `
-    }
-  
-    else if (state === DELIVER) {
-      return `<div class="order-state-text">${DELIVER}</div>`
-    }
-  
-    else if(state === COMPLETE) {
-      return `
+  }
+
+  else if (state === DELIVER) {
+    return `<div class="order-state-text">${DELIVER}</div>`
+  }
+
+  else if (state === COMPLETE) {
+    return `
         <div class="order-state-text">${COMPLETE}</div>
-        <a class="order-state-link" id="cancel-link>후기작성</a>
+        <a class="order-state-link">후기작성</a>
       `
+  }
+}
+
+
+
+function setPaymentPrice(items) {
+    const totalPrice = items.reduce((sum, item) => {
+      return sum + item.priceSum;
+    }, 0);
+
+    paymentPrice.textContent = `${addCommas(totalPrice)}원`;
+}
+
+
+function refreshModalContents() {
+  contentValue.value = ''; // 글 내용 지우기
+  inputFile.value = ''; // 이미지 지우기
+  modalImages.innerHTML = '';// 이미지 테그 지우기
+}
+
+
+registerButton.addEventListener('click', async (e) => {
+
+  if (rate === -1) {
+    alert('별점을 남겨주세요.');
+  }
+  
+  else if (!contentValue.value) {
+    alert('리뷰 내용을 입력해주세요');
+  }
+
+  else {
+    const urlParams = new URLSearchParams(window.location.search);
+    const orderId = urlParams.get('id');
+
+    const formData = new FormData();
+    
+    for (const file of inputFile.files) {
+      formData.append("images", file);
     }
+
+    const res = await fetch('/image/register', {
+      method: 'post',
+      body: formData,
+    });
+
+    const imagePath = await res.json();
+    
+    const reqBody = {
+      productId: reviewProductId,
+      content: contentValue.value,
+      rate,
+      imagePath
+    }
+
+    console.log(reqBody);
+    await Api.post(`/review/register/${orderId}`, reqBody);
+    
+    alert('리뷰 등록이 완료되었습니다.');
+    window.location.reload();
   }
+  
+})
 
 
 
-  function setPaymentPrice(items) {
-      const totalPrice = items.reduce((sum, item) => {
-        return sum + item.priceSum;
-      }, 0);
+inputFile.addEventListener('change', (event) => {
+  for (const image of event.target.files) {
+    let reader = new FileReader();
 
-      paymentPrice.textContent = `${addCommas(totalPrice)}원`;
+    reader.onload = (e) => {
+      let img = document.createElement('img');
+      img.setAttribute('src', e.target.result);
+      modalImages.appendChild(img);
+      modalImages.lastElementChild.classList.add('modal-image-unit');
+    }
+    reader.readAsDataURL(image);
   }
+})
+
+
+/*********************별점 관련 이벤트********************/
+starInput.addEventListener('input', (e) => {
+  starSpan.style.width = `${e.target.value * 10}%`;
+  rate = e.target.value;
+})
+/********************************************************/

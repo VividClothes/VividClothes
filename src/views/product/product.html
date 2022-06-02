@@ -20,7 +20,11 @@
   </head>
   <body>
     <div class="article-container">
-        <div class="image-container"></div>
+        <div class="image-container">
+            <img src="" alt="product image" class="main-image">
+            <div class="prev-box"><a href="#" class="prev">❮</a></div>
+            <div class="next-box"><a href="#" class="next">❯</a></div>
+        </div>
         <div class="info-container">
             <div class="product-name-container">
                 <span class="product-name"></span>
@@ -35,25 +39,22 @@
             </div>
             <div class="product-size-container">
                 <span class="size-kor">사이즈</span>
-                <span class="size-text"></span>
+                <select name="size" class="size-select select">
+                    <option value="">[필수] 옵션을 선택해주세요</option>
+                    <option value="S">S</option>
+                    <option value="M">M</option>
+                </select>
             </div>
             <div class="product-color-container">
                 <span class="color-kor">색상</span>
-                <span class="color-text"></span>
+                <select name="size" class="color-select select">
+                    <option value="">[필수] 옵션을 선택해주세요</option>
+                    <option value="red">red</option>
+                    <option value="blue">blue</option>
+                </select>
             </div>
             <hr class="horizen">
-            <div class="product-quantity-container">
-                <span class="quantity-kor">수량</span>
-                <span class="quantity-container">
-                    <input class="quantity" value="1" type="text">
-                    <a href="#" class="quantity-wrap up-button">
-                        <img src="/btn_count_up.gif" alt="수량증가">
-                    </a>
-                    <a href="#" class="quantity-wrap down-button">
-                        <img src="/btn_count_down.gif" alt="수량감소">
-                    </a>
-                </span>
-            </div>
+            <div class="product-selected-container"></div>
             <hr class="horizen">
             <div class="total-price-container">
                 <span class="total-price-kor">총 상품 금액</span>
@@ -66,6 +67,30 @@
                 <span class="cart-text">ADD TO CART</span>
             </div>
         </div>
+    </div>
+    <div class="review-container-helper">
+        <h2 class="review-container-title">구매후기(1)</h2>
+        <!-- <div class="review-container">
+            <div class="review-head">
+                <div class="writer">이*</div>
+                <div class="review-date">2022-05-24 22:55:46</div>
+            </div>
+            <div class="review-option">S / White 구매</div>
+            <div class="review-rate">
+                <span class="star"> 
+                    ★★★★★
+                    <span class="star-color">★★★★★</span>
+                </span>
+            </div>
+            <div class="review-content">
+                와... 이거 진짜 핏 장난 아닙니다!!ㅋㅋㅋㅋㅋㅋㅋㅋ 제발 사줘요..ㅠㅠ    
+            </div>
+            <div class="review-image">
+                <img src="/home-img1.jpg" alt="" class="review-image-unit">
+                <img src="/home-img1.jpg" alt="" class="review-image-unit">
+                <img src="/home-img2.jpg" alt="" class="review-image-unit">
+            </div>
+        </div> -->
     </div>
   </body>
 </html>

@@ -39,29 +39,21 @@ productRouter.post('/register',
 // 전체 상품 목록 가져옴
 productRouter.get('/list', async (req, res, next) => {
     try {
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
 
-        /*
-        
-  if (req.query.write) {
-    res.render('post/edit');
-    return;
-  }
-  
-  const page = Number(req.query.page || 1)// url 쿼리에서 page 받기, 기본값 1
-  const perPage = Number(req.query.perPage || 10)// url 쿼리에서 peRage 받기, 기본값 10
-  const [total, posts] = await Promise.all([
-    Post.countDocuments({}),    // 전체 게시글 수 쿼리하기
-    Post.find({})   // sort, skip, limit 사용하기
-    // total, posts 를 Promise.all 을 사용해 동시에 호출하기
-        .sort({createdAt: -1})
-        .skip(perPage * (page-1))
-        .limit(perPage)
-  ])
-  const totalPage = Math.ceil(total / perPage);
-  
-  res.render('post/list', { posts, page, perPage, totalPage });
-  */
-        const products = await productService.getProducts();
+        const products = await productService.getProducts(page, perPage);
+
+        res.status(200).json(products);
+    } catch (error) {
+        next(error);
+    }
+});
+
+// 홈화면에 표시할 상품 목록 가져옴(인기 상위 4개, 신상품 8개)
+productRouter.get('/main', async (req, res, next) => {
+    try {
+        const products = await productService.getPopularAndRecent();
 
         res.status(200).json(products);
     } catch (error) {
@@ -72,11 +64,13 @@ productRouter.get('/list', async (req, res, next) => {
 // 카테고리별 상품 조회
 productRouter.get('/category/:categoryId', async (req, res, next) => {
     try {
-        // req의 params에서 데이터 가져옴
+        // req에서 데이터 가져옴
         const { categoryId } = req.params;
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
 
         // categoryId를 기준으로 Products DB 조회
-        const products = await productService.getProductByCategory(categoryId);
+        const products = await productService.getProductByCategory(categoryId, page, perPage);
 
         res.status(200).json(products);
     } catch (error) {
@@ -94,7 +88,7 @@ productRouter.get('/:productId', async (req, res, next) => {
         const product = await productService.getProductById(productId);
         const reviews = await reviewService.getReviewByProduct(productId);
 
-        res.status(200).json({product, reviews});
+        res.status(200).json({ product, reviews });
     } catch (error) {
         next(error);
     }
