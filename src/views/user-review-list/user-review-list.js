@@ -149,9 +149,8 @@ function refreshModalContents() {
 }
 
 registerButton.addEventListener('click', async (e) => {
-  
   const rate = parseInt(starSpan.style.width) / 10;
-  
+
   if (!contentValue.value) {
     alert('리뷰 내용을 입력해주세요');
   } else {
