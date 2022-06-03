@@ -17,6 +17,10 @@ const navCategory = document.getElementById('category');
 })();
 /*******************************************************************/
 
+
+homeImageEvents();
+
+
 // 이미지 슬라이드 기능
 const slide = document.querySelector('.slide');
 slide.style.backgroundImage = 'url( "/home-slide1.jpg" )';
@@ -39,4 +43,22 @@ function showSlides() {
   }
 
   setTimeout(showSlides, 3000);
+}
+
+
+
+// 홈 이미지 이벤트 리스너 등록 (마우스 호버시 글자 및 배경색 변화)
+function homeImageEvents() {
+  const imgFloats = document.getElementsByClassName('imgFloat');
+  for (let elem of imgFloats) {
+    elem.addEventListener('mouseover', (e) => {
+      e.target.style.color = 'rgb(0,0,0,1)';
+      e.target.style.backgroundColor = 'rgb(255,255,255, 0.9)';
+    });
+
+    elem.addEventListener('mouseout', (e) => {
+      e.target.style.color = 'rgb(0,0,0,0)';
+      e.target.style.backgroundColor = 'rgb(255,255,255,0)';
+    });
+  }
 }

@@ -42,6 +42,19 @@ const ProductSchema = new Schema(
         collection: 'products',
         timestamps: true,
     }
+).index(
+    {
+        productName: 'text',
+        info: 'text',
+        'option.color': 'text'
+    },
+    {
+        weights: {
+            productName: 3,
+            info: 2,
+            'option.color': 1
+        }
+    }
 );
 
 export { ProductSchema };

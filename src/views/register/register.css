@@ -26,6 +26,7 @@
 
 #submitButton {
   background-color: #474747;
+  margin-top: 2rem;
 }
 
 #submitButton:hover {

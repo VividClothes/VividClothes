@@ -61,7 +61,7 @@ const isCheckedArray = [];
           // body에 요소 추가
           cartProducts.forEach((product, index) => {
             itemsBody.insertAdjacentHTML('beforeend', makeItemContainerHTML(product, index));
-            productIdArray.push(product.productId);
+            productIdArray.push(`${product.productId}${product.size}${product.color}`);
             isCheckedArray.push(false);
           })
           setItemHeaderContent(cartProducts);
@@ -97,7 +97,7 @@ const isCheckedArray = [];
             
             const deleteItemsList = productIdArray
                                       .filter((elem, index) => isCheckedArray[index])
-            console.log(deleteItemsList);
+            
             const isDelete = confirm('선택한 상품을 삭제하시겠습니까?');
             if (isDelete) {
               const transaction = db.transaction('cart', 'readwrite');
@@ -156,6 +156,8 @@ const isCheckedArray = [];
                   else {
                     checkAll.checked = false;
                   }
+
+                  getTotalPriceSum();
                  })
                })
         }
@@ -173,6 +175,7 @@ const isCheckedArray = [];
                 .forEach((checkOneBox, index) => {
                   checkOneBox.checked = true;
                   isCheckedArray[index] = true;
+                  getTotalPriceSum();
                 })
           }
 
@@ -182,6 +185,7 @@ const isCheckedArray = [];
                 .forEach((checkOneBox, index) => {
                   checkOneBox.checked = false;
                   isCheckedArray[index] = false;
+                  getTotalPriceSum();
                 })
           }
         })
@@ -272,15 +276,19 @@ const isCheckedArray = [];
         /*************************주문하기 버튼 이벤트 추가****************************/
         orderButton.addEventListener('click', (e) => {
           e.preventDefault();
-          
-          const transaction = db.transaction('cart', 'readwrite');
-          cartProducts.forEach((productInfo, index) => {
-                          transaction.objectStore('cart').put({
-                            ...productInfo,
-                            isChecked: isCheckedArray[index]
+          const totalSum = convertToNumber(totalPriceSum.textContent);
+          if (totalSum === 0) {
+            alert('주문할 상품을 선택해주세요.');
+          } else {
+            const transaction = db.transaction('cart', 'readwrite');
+            cartProducts.forEach((productInfo, index) => {
+                            transaction.objectStore('cart').put({
+                              ...productInfo,
+                              isChecked: isCheckedArray[index]
+                            })
                           })
-                        })
-          window.location.href = '/order?storeName=cart';          
+            window.location.href = '/order?storeName=cart';   
+          }      
         })
         /************************************************************************/
       }
@@ -333,9 +341,16 @@ function makeItemContainerHTML(product, index) {
 
 function setItemHeaderContent(cartProducts) {
   headerItemNumber.textContent = `전체 ${cartProducts.length}개`;
-  const totalPriceSumText = cartProducts.reduce((acc, cur) => {
-    return acc + (cur.quantity * cur.price)
-  }, 0);
-  totalPriceSum.textContent = `${addCommas(totalPriceSumText)}원`
+  totalPriceSum.textContent = '0원';
 }
 
+function getTotalPriceSum() {
+  const totalPrices = document.getElementsByClassName('total-price');
+  let sum = 0;
+  Array.from(totalPrices).forEach((elem, index) => {
+    if(isCheckedArray[index]) {
+      sum += convertToNumber(elem.textContent);
+    }
+  })
+  totalPriceSum.textContent = `${addCommas(sum)}원`;
+}

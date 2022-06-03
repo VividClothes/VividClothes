@@ -174,52 +174,13 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
-    const userData = await userService.verify(credential);
+    await verify(credential);
 
     res.status(200).redirect('/');
   } catch (err) {
     next(err);
   }
 });
-
-passport.use(
-  'kakao',
-  new KakaoStrategy(
-    {
-      clientID: process.env.KAKAO_ID,
-      callbackURL: '/api/login/kakao/callback',
-    },
-    async (accessToken, refreshToken, profile, done) => {
-      console.log(profile);
-      try {
-        const exUser = await userService.getUserByEmail(profile.email);
-        if (exUser) {
-          done(null, exUser);
-        } else {
-          const newUser = await userService.addUser({
-            email,
-            password,
-          });
-          done(null, newUser);
-        }
-      } catch (error) {
-        console.error(error);
-      }
-    }
-  )
-);
-// 카카오 로그인을 하게 되면 이 라우터로 요청이 옴
-// userRouter.get('/login/kakao', passport.authenticate('kakao'));
-// // 카카오 로그인이 되면 callback url(redirect url)로 오게 됨
-// userRouter.get(
-//   '/login/kakao/callback',
-//   passport.authenticate('kakao', {
-//     failureRedirect: '/',
-//   }),
-//   (req, res) => {
-//     res.redirect('/');
-//   }
-// );
 
 //비밀번호 찾기
 userRouter.post('/reset-password', async (req, res) => {
