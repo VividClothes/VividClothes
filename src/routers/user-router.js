@@ -3,7 +3,7 @@ import { Router } from 'express';
 import { userService } from '../services';
 import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import * as userValidator from '../middlewares/user-validator';
-import generateRandomPassword from '../util/generate-random-password';
+import generateRandomPassword from '../utils/generate-random-password';
 import passport from 'passport';
 // import { Strategy as KakaoStrategy } from 'passport-kakao';
 // import { UserSchema } from '../db/schemas/user-schema';
