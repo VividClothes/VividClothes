@@ -31,7 +31,7 @@ userRouter.post(
       const password = req.body.password;
 
       // 위 데이터를 유저 db에 추가하기
-      const newUser = await userService.addUser({
+      const { token, userRole, hashedEmail } = await userService.addUser({
         fullName,
         email,
         password,
@@ -39,7 +39,7 @@ userRouter.post(
 
       // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
       // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-      res.status(201).json(newUser);
+      res.status(201).json({ token, userRole, hashedEmail });
     } catch (error) {
       next(error);
     }
@@ -152,7 +152,7 @@ userRouter.patch(
 userRouter.delete('/user', loginRequired, async (req, res, next) => {
   try {
     const currentPassword = req.body.currentPassword;
-
+    console.log(currentPassword);
     // currentPassword 없을 시, 진행 불가
     if (!currentPassword) {
       throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
@@ -164,8 +164,8 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
     if (!userId) {
       return res.status(400);
     }
-    const deleteUserInfo = await userService.deleteUser(userInfoRequired);
-    res.status(204).json(deleteUserInfo); //no content
+    await userService.deleteUser(userInfoRequired);
+    res.status(204); //no content
   } catch (error) {
     next(error);
   }
@@ -174,9 +174,22 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
-    await verify(credential);
-
-    res.status(200).redirect('/');
+    const user = await verify(credential);
+    const findUser = await userService.getUserByEmail(user.email);
+    if (!findUser) {
+      const { token, userRole, hashedEmail } = await userService.addUser({
+        fullName: user.fullName,
+        email: user.email,
+        password: 'google',
+      });
+      res.status(200).json({ token, userRole, hashedEmail });
+      return;
+    }
+    const { token, userRole, hashedEmail } = await userService.getUserToken({
+      email: user.email,
+      password: 'google',
+    });
+    res.status(200).json({ token, userRole, hashedEmail });
   } catch (err) {
     next(err);
   }
