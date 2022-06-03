@@ -25,6 +25,7 @@ class UserService {
     }
 
     // 우선 비밀번호 해쉬화(암호화)
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUserInfo = { fullName, email, password: hashedPassword };
