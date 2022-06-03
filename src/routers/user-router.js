@@ -31,7 +31,7 @@ userRouter.post(
       const password = req.body.password;
 
       // 위 데이터를 유저 db에 추가하기
-      await userService.addUser({
+      const newUser = await userService.addUser({
         fullName,
         email,
         password,
@@ -39,7 +39,7 @@ userRouter.post(
 
       // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
       // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-      res.status(201).redirect('/');
+      res.status(201).json(newUser);
     } catch (error) {
       next(error);
     }
@@ -174,12 +174,8 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
-    const userData = await verify(credential);
-    await userService.addUser({
-      fullName: userData.name,
-      email: userData.email,
-      password: 'google',
-    });
+    await verify(credential);
+
     res.status(200).redirect('/');
   } catch (err) {
     next(err);
