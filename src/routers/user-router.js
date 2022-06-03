@@ -152,7 +152,7 @@ userRouter.patch(
 userRouter.delete('/user', loginRequired, async (req, res, next) => {
   try {
     const currentPassword = req.body.currentPassword;
-    console.log(currentPassword);
+
     // currentPassword 없을 시, 진행 불가
     if (!currentPassword) {
       throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
@@ -175,18 +175,24 @@ userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
     const user = await verify(credential);
+
     const findUser = await userService.getUserByEmail(user.email);
-    if (!findUser) {
-      const { token, userRole, hashedEmail } = await userService.addUser({
-        fullName: user.fullName,
-        email: user.email,
-        password: 'google',
-      });
-      res.status(200).json({ token, userRole, hashedEmail });
-      return;
-    }
+    console.log(findUser);
+    // if (findUser) {
+    //   const { token, userRole, hashedEmail } = await userService.getUserToken({
+    //     email: user.email,
+    //     password: 'google',
+    //   });
+    //   res.status(200).json({ token, userRole, hashedEmail });
+    //   return;
+    // }
+    // const { token, userRole, hashedEmail } = await userService.addUser({
+    //   fullName: user.name,
+    //   email: user.email,
+    //   password: 'google',
+    // });
     const { token, userRole, hashedEmail } = await userService.getUserToken({
-      email: user.email,
+      email: findUser.email,
       password: 'google',
     });
     res.status(200).json({ token, userRole, hashedEmail });
