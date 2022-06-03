@@ -1,15 +1,33 @@
 import * as Api from '/api.js';
 
 import productGridStyle from '/products/products-grid-style.js';
+import { createPaginationBar } from '/pagination/pagination-bar.js';
 
 const productGrid = async (props = {}) => {
   let products;
 
-  if (!props.categoryId || props.categoryId === 'default') {
-    products = await Api.get('/product/list');
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+  const category = urlParams.get('category');
+  const perPage = 10;
+
+  let createPageUrl = (page) => `/admin-product?page=${page}`;
+
+  if (!category || category === 'default') {
+    products = await Api.get('/product', `list?page=${page}&perPage=${perPage}`);
   } else {
-    products = await Api.get(`/product/category/${props.categoryId}`);
+    products = await Api.get(`/product`, `category/${category}?page=${page}&perPage=${perPage}`);
+    createPageUrl = (page) => `/admin-product?category=${category}&page=${page}`;
   }
+
+  const pageData = {
+    page: products.page,
+    perPage: products.perPage,
+    totalPage: products.totalPage,
+    pageUrl: createPageUrl,
+  };
+
+  document.getElementById('pagination').innerHTML = await createPaginationBar({ data: pageData });
 
   return /* html */ `
     ${productGridStyle}
@@ -20,7 +38,7 @@ const productGrid = async (props = {}) => {
 
         return /* html */ `
         <li class="col">
-          <a class="a-link" href=/product?id=${_id}>
+          <a class="a-link" href="/product?id=${_id}?page=1">
             <div class="card">
               <div class="card-image">
                 <div class="img-container">
@@ -32,7 +50,7 @@ const productGrid = async (props = {}) => {
               <div>
                 <div class="grid-media">
                   <div class="media-content">
-                    <a class="a-link" href=/product?id=${_id}><p class="title font-16">${productName}</p></a>
+                    <a class="a-link" href="/product?id=${_id}?page=1"><p class="title font-16">${productName}</p></a>
                   </div>
                 </div>
   

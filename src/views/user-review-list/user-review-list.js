@@ -49,7 +49,7 @@ exitButton.addEventListener('click', close);
   /**** 페이지 네이션 ****/
   const urlParams = new URLSearchParams(window.location.search);
   const page = urlParams.get('page');
-  const perPage = 10;
+  const perPage = 5;
 
   const results = await Api.get('/review', `list?page=${page}&perPage=${perPage}`);
   const reviews = results.datas;

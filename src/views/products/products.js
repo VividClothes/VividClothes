@@ -25,7 +25,6 @@ const urlParams = new URLSearchParams(window.location.search);
 const categoryTarget = urlParams.get('category');
 const searchInput = urlParams.get('searchInput');
 
-
 async function render() {
   await addAllElements();
   addAllEvents();
@@ -36,22 +35,20 @@ async function addAllElements() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const page = urlParams.get('page');
-  const perPage = 20;
+
+  const perPage = 10;
   let products;
-  
+
   if (categoryTarget) {
     products = await Api.get(
       `/product/category`,
       `${categoryHash[categoryTarget]}?page=${page}&perPage=${perPage}`
     );
-  }
-  else if (searchInput) {
-    products = await Api.get(
-      '/product/search',
-      `${searchInput}?page=${page}&perPage=${perPage}`
-    )
+  } else if (searchInput) {
+    products = await Api.get('/product/search', `${searchInput}?page=${page}&perPage=${perPage}`);
     console.log(products);
   }
+
   console.log(products);
 
   createProductsList(products);
@@ -59,20 +56,19 @@ async function addAllElements() {
   let pageData = {
     page: products.page,
     perPage: products.perPage,
-    totalPage: products.totalPage
-  }
+    totalPage: products.totalPage,
+  };
 
   if (categoryTarget) {
     pageData = {
       ...pageData,
-      pageUrl: (page) => `/products/?category=${categoryTarget}&page=${page}`
-    }
-  }
-  else if (searchInput) {
+      pageUrl: (page) => `/products/?category=${categoryTarget}&page=${page}`,
+    };
+  } else if (searchInput) {
     pageData = {
       ...pageData,
-      pageUrl: (page) => `/products/?searchInput=${searchInput}&page=${page}`
-    }
+      pageUrl: (page) => `/products/?searchInput=${searchInput}&page=${page}`,
+    };
   }
 
   pagination.insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
@@ -82,8 +78,6 @@ function addAllEvents() {
   addPaginationBarListener(pagination);
 }
 
-
-
 // grid - 카테고리인지, 검색어인지 구분할 필요 있음. 공유 함수 아님
 if (categoryTarget) {
   categoryName.innerHTML = `
@@ -92,8 +86,7 @@ if (categoryTarget) {
   </h2>
   <hr>
   `;
-}
-else if (searchInput) {
+} else if (searchInput) {
   categoryName.innerHTML = `
   <h2 class="title is-2">
     Search / <span class="is-italic is-capitalized is-size-4 ">${searchInput}</span>
@@ -101,7 +94,6 @@ else if (searchInput) {
   <hr>
   `;
 }
-
 
 // 리스트에 카테고리 입력용. 공유함수.
 async function createCategoryHash() {
