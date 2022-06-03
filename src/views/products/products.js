@@ -1,12 +1,12 @@
 import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
-import { createCategory, addCategoryListener} from '/category/category.js';
-
+import { createCategory, addCategoryListener } from '/category/category.js';
+import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
 
 /***************************헤더*************************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async() => {
+(async () => {
   nav.insertAdjacentElement('afterbegin', header);
   const categories = await Api.get('/category/list');
   navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
@@ -15,19 +15,49 @@ const navCategory = document.getElementById('category');
 })();
 /*******************************************************************/
 
-
-
 const categoryName = document.querySelector('.category-name');
 const productGrid = document.querySelector('.main-content');
+const pagination = document.getElementById('pagination');
 
 const categoryHash = {};
 
 const urlParams = new URLSearchParams(window.location.search);
 const categoryTarget = urlParams.get('category');
 
-createCategoryHash().then(() => {
-  createProductsList();
-});
+async function render() {
+  await addAllElements();
+  addAllEvents();
+}
+
+async function addAllElements() {
+  await createCategoryHash();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+  const perPage = 2;
+
+  const products = await Api.get(
+    `/product/category`,
+    `${categoryHash[categoryTarget]}?page=${page}&perPage=${perPage}`
+  );
+
+  console.log(products);
+
+  await createProductsList(products);
+
+  const pageData = {
+    page: products.page,
+    perPage: products.perPage,
+    totalPage: products.totalPage,
+    pageUrl: (page) => `/products/?category=${categoryTarget}&page=${page}`,
+  };
+
+  pagination.insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
+}
+
+function addAllEvents() {
+  addPaginationBarListener(pagination);
+}
 
 // grid
 categoryName.innerHTML = `
@@ -35,9 +65,7 @@ categoryName.innerHTML = `
   Category / <span class="is-italic is-capitalized is-size-4 ">${categoryTarget}</span>
 </h2>
 <hr>
-
 `;
-
 
 async function createCategoryHash() {
   const categories = await Api.get('/category/list');
@@ -46,8 +74,7 @@ async function createCategoryHash() {
   });
 }
 
-async function createProductsList() {
-  const products = await Api.get(`/product/category/${categoryHash[categoryTarget]}`);
+async function createProductsList(products) {
   const insertedEl = products.datas
     .map(({ _id, productName, category, price, imagePath, info, option }) => {
       return `
@@ -79,7 +106,8 @@ async function createProductsList() {
       </li>`;
     })
     .join('');
-  console.log(products);
 
   productGrid.innerHTML = `<ul class="grid">${insertedEl}</ul>`;
 }
+
+render();

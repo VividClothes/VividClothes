@@ -26,7 +26,7 @@ class ProductService {
     // 홈화면 상품 조회(인기 상품 및 최신 상품)
     async getPopularAndRecent() {
         const popularProducts = await this.productModel.findPopular(4);
-        const recentProducts = await this.productModel.findRecent(8);
+        const recentProducts = await this.productModel.findRecent(40);
 
         return { popularProducts, recentProducts };
     }
