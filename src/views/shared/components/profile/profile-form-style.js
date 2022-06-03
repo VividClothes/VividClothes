@@ -3,8 +3,15 @@ const profileStyle = /* html */ `
 
 h4 {
   color: #f0a500;
-  margin: 5px 0;
-  font-size: 17px;
+  margin: 15px 0;
+  font-size: 20.5px;
+  font-weight: bold;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+h4 > span {
+  color: #f0a500;
+  font-size: 14px;
   font-weight: bold;
 }
 
@@ -44,6 +51,42 @@ input {
 
 .post-inputs {
   margin: 10px 0;
+}
+
+.tooltip-wrapper {
+  position: relative;
+}
+
+.tooltip {
+  position: absolute;
+  font-size: 13px;
+  right: 0;
+  top: 0px;
+  padding: 4px 10px;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  background-color: rgb(238, 238, 238);
+  border-radius: 25px;
+  box-shadow: 0 3px 3px rgba(0,0,0,0.1);
+  opacity: 0;
+  pointer-events: none;
+  transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.tooltip-hover-effect {
+  top: -70%;
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.tooltip::before {
+  position: absolute;
+  content: "";
+  width: 10px;
+  height: 10px;
+  background-color: rgb(238, 238, 238);
+  bottom: -6px;
+  left: 50%;
+  transform: translateX(-50%) rotate(45deg);
 }
 
 .user-info-edit-btn {
