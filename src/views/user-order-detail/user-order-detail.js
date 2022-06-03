@@ -38,7 +38,7 @@ const PREPARE = '상품 준비중';
 const DELIVER = '상품 배송중';
 const COMPLETE = '배송 완료';
 let rate = -1;
-let reviewProductId = 0;
+let orderProductId = 0;
 /*********************************************************************/
 
 
@@ -46,7 +46,7 @@ let reviewProductId = 0;
 /****************************모달**********************************/
 const open = (e, index, orderItems) => {
   modal.classList.remove("hidden");
-  reviewProductId = orderItems[index].productId;
+  orderProductId = orderItems[index].reviewId;
   starSpan.style.width = `100%`;
 }
 const close = () => {
@@ -173,7 +173,8 @@ function getProducts(ordersInfo) {
             quantity: order.quantity,
             priceSum: order.quantity * order.product[0].price,
             productId: order.product[0]._id,
-            hasReview: order.hasReview
+            hasReview: order.hasReview,
+            reviewId: order._id
         };
 
         items.push(item);
@@ -275,7 +276,7 @@ registerButton.addEventListener('click', async (e) => {
     const imagePath = await res.json();
     
     const reqBody = {
-      productId: reviewProductId,
+      orderProductId,
       content: contentValue.value,
       rate,
       imagePath
