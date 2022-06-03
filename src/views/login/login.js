@@ -45,11 +45,11 @@ function handleGoogleSubmit(e) {
 function handleKakaoSubmit(e) {
   e.preventDefault();
   const KAKAO_CLIENT_ID = 'f390eb8319016e70088af018796dcdeb';
-  const KAKAO_REDIRECT_URI = 'http://kdt-sw2-seoul-team06.elicecoding.com/api/login/kakao/callback';
+  const KAKAO_REDIRECT_URI =
+    'http://kdt-sw2-seoul-team06.elicecoding.com/api/login/kakao/callback';
 
   window.location.href = `https://kauth.kakao.com/oauth/authorize?client_id=${KAKAO_CLIENT_ID}&redirect_uri=${KAKAO_REDIRECT_URI}&response_type=code`;
 }
-
 
 // 로컬 로그인 진행
 async function handleLocalSubmit(e) {

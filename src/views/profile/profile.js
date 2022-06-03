@@ -65,12 +65,14 @@ class Profile {
     return /* html */ `
       <style>
         .delete-user-btn {
-          padding: 4px;
+          background-color: bisque;
+          padding: 8px 12px;
+          border-radius: 10px;
+          font-weight: bold;
+          color: black;
         }
       </style>
       <div class="delete-wrapper">
-        <a href="#" >비밀번호 변경</a>
-        <span> • </span>
         <a href="#" class="delete-user-btn">회원탈퇴</a>
       </div>
     `;

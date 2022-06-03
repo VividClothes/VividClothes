@@ -13,10 +13,10 @@ const paginationStyle = /* html */ `
 
 .items-list {
   max-width: 90vw;
-  margin: 2rem;
+  margin: 20px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-gap: 3rem;
+  grid-gap: 30px;
   justify-content: center;
   align-content: center;
 }
@@ -28,8 +28,8 @@ const paginationStyle = /* html */ `
 }
 
 .item {
-  width: 10rem;
-  height: 10rem;
+  width: 100px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,11 +59,11 @@ const paginationStyle = /* html */ `
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 5rem;
-  margin: 3rem;
-  border-radius: 0.6rem;
+  height: 50px;
+  margin: 30px;
+  border-radius: 6px;
   background: #ffffff;
-  box-shadow: 0 0.8rem 2rem rgba(#5a6181, 0.05);
+  box-shadow: 0 0.8rem 20px rgba(#5a6181, 0.05);
 }
 
   .page-numbers,
@@ -72,22 +72,23 @@ const paginationStyle = /* html */ `
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 0.8rem;
-    font-size: 1.4rem;
+    margin: 8px;
+    font-size: 14px;
     cursor: pointer;
   }
 
   .page__dots {
-    width: 2.6rem;
-    height: 2.6rem;
+    width: 26px;
+    height: 26px;
     color: var(--greyLight);
     cursor: initial;
   }
 
   .page-numbers {
-    width: 2.6rem;
-    height: 2.6rem;
-    border-radius: 0.4rem;
+    width: 26px;
+    height: 26px;
+    border-radius: 26px;
+    color: var(--greyLight);
   }
 
   .page-numbers:hover {
