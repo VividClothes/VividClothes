@@ -168,8 +168,10 @@ userRouter.get('/login/kakao/callback',
     passport.authenticate('kakao', {
         failureRedirect: '/login'
     }),
-    (req, res) => {
-        res.redirect('/login');
+    (error, user, errorInfo) => {
+        console.log(user);
+
+        res.redirect('/')
     }
 );
 
