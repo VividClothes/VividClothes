@@ -104,7 +104,6 @@ async function handleKakaoSubmit(e) {
   // 로그인 api 요청
   try {
     const result = await Api.get('/api/login/kakao');
-
     const token = result.token;
     const role = result.userRole;
     const hashedEmail = result.hashedEmail;
