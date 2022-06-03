@@ -25,6 +25,7 @@ const urlParams = new URLSearchParams(window.location.search);
 const categoryTarget = urlParams.get('category');
 const searchInput = urlParams.get('searchInput');
 
+
 async function render() {
   await addAllElements();
   addAllEvents();
@@ -49,6 +50,7 @@ async function addAllElements() {
       '/product/search',
       `${searchInput}?page=${page}&perPage=${perPage}`
     )
+    console.log(products);
   }
   console.log(products);
 
@@ -83,7 +85,7 @@ function addAllEvents() {
 
 
 // grid - 카테고리인지, 검색어인지 구분할 필요 있음. 공유 함수 아님
-if (categoryName) {
+if (categoryTarget) {
   categoryName.innerHTML = `
   <h2 class="title is-2">
     Category / <span class="is-italic is-capitalized is-size-4 ">${categoryTarget}</span>
