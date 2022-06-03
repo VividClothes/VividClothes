@@ -98,8 +98,10 @@ productRouter.get('/Id/:productId', async (req, res, next) => {
 productRouter.get('/search', async (req, res, next) => {
     try {
         const { keyword } = req.body;
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
 
-        const products = await productService.searchKeyword(keyword);
+        const products = await productService.searchKeyword(keyword, page, perPage);
 
         res.status(200).json(products);
     } catch (error) {

@@ -85,12 +85,11 @@ export class ProductModel {
     }
 
     // 상품명, info, color 옵션에서 keyword 검색
-    async findByKeyword(keyword) {
-        const products = await Product
-            .find(
-                { $text: { $search: keyword } }
-            )
-            .sort({ score: { $meta: 'textScore' } })
+    async findByKeyword(keyword, page, perPage) {
+        const filter = { $text: { $search: keyword } };
+        const sort = { score: { $meta: 'textScore' } };
+        
+        const products = pagination(page, perPage, Product, filter, {}, sort);
 
         return products;
     }

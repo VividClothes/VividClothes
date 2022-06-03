@@ -53,8 +53,8 @@ class ProductService {
     }
 
     // 키워드 검색
-    async searchKeyword(keyword){
-        const products = await this.productModel.findByKeyword(keyword);
+    async searchKeyword(keyword, page, perPage){
+        const products = await this.productModel.findByKeyword(keyword, page, perPage);
 
         return products;
     }
