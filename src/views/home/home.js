@@ -8,35 +8,27 @@ const navCategory = document.getElementById('category');
 (async () => {
   nav.insertAdjacentElement('afterbegin', header);
   const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML(
-    'afterbegin',
-    await createCategory({ categories })
-  );
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
   addHeaderEventListener();
   addCategoryListener(navCategory);
 })();
 /*******************************************************************/
 
-
-
-
 // 이미지 슬라이드 기능
 const slide = document.querySelector('.slide');
 const mainImageContainer = document.querySelector('.main-img-container');
 
-
-(async() => {
+(async () => {
   const result = await Api.get('/product/main');
-  
+
   const bestItems = getBestItems(result.popularProducts);
   const recentItems = getRecentItems(result.recentProducts);
 
-  const bestItemsImagePaths = bestItems.map(item => item.imagePath);
+  const bestItemsImagePaths = bestItems.map((item) => item.imagePath);
   slide.style.backgroundImage = `url("${bestItemsImagePaths[0]}")`;
 
   let slideIndex = 0;
   showSlides();
-
 
   mainImageContainer.insertAdjacentHTML('beforeend', makeMainImageHTML(bestItems));
 
@@ -48,14 +40,12 @@ const mainImageContainer = document.querySelector('.main-img-container');
     if (slideIndex === bestItemsImagePaths.length - 1) {
       slideIndex = -1;
     }
-  
+
     setTimeout(showSlides, 3000);
   }
 
-  renderNewProducts(recentItems );
-
-})()
-
+  renderNewProducts(recentItems);
+})();
 
 function makeMainImageHTML(bestItems) {
   return `
@@ -79,10 +69,8 @@ function makeMainImageHTML(bestItems) {
   onclick='window.location.href="/product?id=${bestItems[3].productId}"'>
     <div class="imgFloat">BEST ${bestItems[3].category}</div>
   </div>
-  `
+  `;
 }
-
-
 
 function getBestItems(items) {
   return items.map((item) => {
@@ -92,11 +80,10 @@ function getBestItems(items) {
       productId: item.product._id,
       productName: item.product.productName,
       price: item.product.price,
-      info: item.product.info
-    }
-  })
+      info: item.product.info,
+    };
+  });
 }
-
 
 function getRecentItems(items) {
   return items.map((item) => {
@@ -106,11 +93,10 @@ function getRecentItems(items) {
       productId: item._id,
       productName: item.productName,
       price: item.price,
-      info: item.info
-    }
-  })
+      info: item.info,
+    };
+  });
 }
-
 
 // 홈 이미지 이벤트 리스너 등록 (마우스 호버시 글자 및 배경색 변화)
 function homeImageEvents() {
@@ -128,13 +114,10 @@ function homeImageEvents() {
   }
 }
 
-
-
 // 신상품 렌더링
 function renderNewProducts(recentItems) {
   const categoryName = document.querySelector('.category-name');
   const productGrid = document.querySelector('.main-content');
-
 
   // grid
   categoryName.innerHTML = `
@@ -147,14 +130,13 @@ function renderNewProducts(recentItems) {
 
   createProductsList(recentItems);
 
-
   async function createProductsList(products) {
     console.log(products);
     const insertedEl = products
       .map(({ productId, productName, price, imagePath, info }) => {
         return `
         <li class="col">
-          <a class="a-link" href=/product?id=${productId}>
+          <a class="a-link" href=/product?id=${productId}&page=1>
             <div class="card">
               <div class="card-image">
                 <div class="img-container">
@@ -167,7 +149,7 @@ function renderNewProducts(recentItems) {
               <div>
                 <div class="medias">
                   <div class="media-content">
-                    <a class="a-link" href=/product?id=${productId}><p class="title font-16">${productName}</p></a>
+                    <a class="a-link" href=/product?id=${productId}&page=1><p class="title font-16">${productName}</p></a>
                   </div>
                 </div>
 

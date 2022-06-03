@@ -44,6 +44,50 @@ const headerStyle = /* html */ `
 .clicked {
   color: gold;
 }
+
+
+
+.wrapper {
+  width: 200px;
+  display: inline-block;
+  margin-left: 150px;
+}
+
+
+.searchBar {
+  width: 100%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+}
+
+#searchQueryInput {
+  width: 100%;
+  height: 2.8rem;
+  background: #ebebeb;
+  outline: none;
+  border: none;
+  border-radius: 1.625rem;
+  padding: 0 3.5rem 0 1.5rem;
+  font-size: 1rem;
+}
+
+#searchQuerySubmit {
+  width: 3.5rem;
+  height: 2.8rem;
+  margin-left: -3.5rem;
+  background: none;
+  border: none;
+  outline: none;
+}
+
+#searchQuerySubmit:hover {
+  cursor: pointer;
+}
+
+.hamburger-menu {
+  display: inline-block;
+}
 </style>
 
 `;

@@ -1,60 +1,59 @@
 <!DOCTYPE html>
 <html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>마이 리뷰</title>
+    <!-- 아이콘 -->
+    <link rel="icon" type="image/png" sizes="16x16" href="/vividclothes-fabicon.png" />
+    <!-- bulma css -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
+    <!-- 폰트 어썸: 아이콘 -->
+    <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
+    <!-- 커스텀 css, js -->
+    <link rel="stylesheet" href="user-review-list.css" />
+    <script src="user-review-list.js" type="module" defer></script>
+    <!-- 카카오 우편번호 API -->
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  </head>
 
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>마이 리뷰</title>
-  <!-- 아이콘 -->
-  <link rel="icon" type="image/png" sizes="16x16" href="/vividclothes-fabicon.png" />
-  <!-- bulma css -->
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
-  <!-- 폰트 어썸: 아이콘 -->
-  <script defer src="https://kit.fontawesome.com/7630448495.js" crossorigin="anonymous"></script>
-  <!-- 커스텀 css, js -->
-  <link rel="stylesheet" href="user-review-list.css" />
-  <script src="user-review-list.js" type="module" defer></script>
-  <!-- 카카오 우편번호 API -->
-  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-</head>
-
-<body>
-  <div id="header"></div>
-  <div id="category"></div>
-  <div class="modal hidden">
-    <div class="modal-background"></div>
-    <div class="modalBox">
-      <!-- <input type="file" class="input-file" multiple>
+  <body>
+    <div id="header"></div>
+    <div id="category"></div>
+    <div class="modal hidden">
+      <div class="modal-background"></div>
+      <div class="modalBox">
+        <!-- <input type="file" class="input-file" multiple>
           <button class="button-upload">Upload Files</button>
           <div class="modal-image-container"></div> -->
-      <div class="exit-button fa-solid fa-x"></div>
-      <h2 class="modal-title">후기 작성</h2>
-      <div class="modal-rate-container">
-        <span class="modal-kor">별점</span>
-        <span class="star span">
-          ★★★★★
-          <span class="span">★★★★★</span>
-          <input type="range" value="1" step="1" min="0" max="10" class="star-input">
-        </span>
-      </div>
-      <div class="modal-content-container">
-        <div class="modal-kor">내용</div>
-        <textarea class="content-value"></textarea>
-      </div>
-      <div class="modal-image-container">
-        <div class="modal-kor">사진</div>
-        <input type="file" name="uploads" class="input-file" multiple>
-        <div class="modal-images"></div>
-      </div>
-      <div class="review-register-button">
-        <div>수정</div>
+        <div class="exit-button fa-solid fa-x"></div>
+        <h2 class="modal-title">후기 작성</h2>
+        <div class="modal-rate-container">
+          <span class="modal-kor">별점</span>
+          <span class="star span">
+            ★★★★★
+            <span class="span">★★★★★</span>
+            <input type="range" value="1" step="1" min="0" max="10" class="star-input" />
+          </span>
+        </div>
+        <div class="modal-content-container">
+          <div class="modal-kor">내용</div>
+          <textarea class="content-value"></textarea>
+        </div>
+        <div class="modal-image-container">
+          <div class="modal-kor">사진</div>
+          <input type="file" name="uploads" class="input-file" multiple />
+          <div class="modal-images"></div>
+        </div>
+        <div class="review-register-button">
+          <div>수정</div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="review-article-container">
-    <h1 class="review-title">마이 리뷰</h1>
-    <div class="review-container-helper"></div>
-  </div>
-</body>
-
+    <div class="review-article-container">
+      <h1 class="review-title">마이 리뷰</h1>
+      <div class="review-container-helper"></div>
+      <div id="pagination"></div>
+    </div>
+  </body>
 </html>

@@ -1,12 +1,12 @@
 import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
-import { createCategory, addCategoryListener} from '/category/category.js';
-
+import { createCategory, addCategoryListener } from '/category/category.js';
+import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
 
 /***************************헤더*************************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async() => {
+(async () => {
   nav.insertAdjacentElement('afterbegin', header);
   const categories = await Api.get('/category/list');
   navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
@@ -14,7 +14,6 @@ const navCategory = document.getElementById('category');
   addCategoryListener(navCategory);
 })();
 /*******************************************************************/
-
 
 /*****************************요소모음*******************************/
 const reviewBody = document.querySelector('.review-container-helper');
@@ -27,36 +26,48 @@ const contentValue = document.querySelector('.content-value');
 const inputFile = document.querySelector('.input-file');
 const modalImages = document.querySelector('.modal-images');
 const registerButton = document.querySelector('.review-register-button');
+const pagination = document.getElementById('pagination');
 let reviewId = 0;
 /*********************************************************************/
 
-
-
 /****************************모달**********************************/
 const open = (e, review) => {
-  modal.classList.remove("hidden");
+  modal.classList.remove('hidden');
   contentValue.value = review.content;
   starSpan.style.width = `${10 * review.rate}%`;
   reviewId = review._id;
-}
+};
 const close = () => {
-  modal.classList.add("hidden");
+  modal.classList.add('hidden');
   refreshModalContents();
-}
-modalBackground.addEventListener("click", close);
-exitButton.addEventListener("click", close);
+};
+modalBackground.addEventListener('click', close);
+exitButton.addEventListener('click', close);
 /*********************************************************************/
 
-
-
 (async () => {
-  const results = await Api.get('/review/list');
+  /**** 페이지 네이션 ****/
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+  const perPage = 10;
+
+  const results = await Api.get('/review', `list?page=${page}&perPage=${perPage}`);
   const reviews = results.datas;
+
+  const pageData = {
+    page: results.page,
+    perPage: results.perPage,
+    totalPage: results.totalPage,
+    pageUrl: (page) => `/user-review-list?page=${page}`,
+  };
+
+  pagination.insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
+  addPaginationBarListener(pagination);
+  /***********************/
 
   reviews.forEach((review) => {
     reviewBody.insertAdjacentHTML('beforeend', makeReviewContainerHTML(review));
-  })
-
+  });
 
   // 삭제 버튼 이벤트 등록
   const deleteButtons = reviewBody.getElementsByClassName('delete-button');
@@ -71,18 +82,15 @@ exitButton.addEventListener("click", close);
         alert('리뷰가 삭제되었습니다.');
         window.location.reload();
       }
-    })
-  })
-  
+    });
+  });
 
   // 수정 버튼 이벤트 등록
   const updateButtons = reviewBody.getElementsByClassName('update-button');
   Array.from(updateButtons).forEach((updateButton, index) => {
     updateButton.addEventListener('click', (e) => open(e, reviews[index]));
-  })
-
-})()
-
+  });
+})();
 
 function makeReviewContainerHTML(review) {
   return `
@@ -117,45 +125,39 @@ function makeReviewContainerHTML(review) {
         ${imageComponent(review.imagePath)}
     </div>
   </div>
-  `
+  `;
 }
 
 function imageComponent(imagePaths) {
   return imagePaths.reduce((acc, path) => {
-    return acc + `<img src="${path}" alt="review image" class="review-image-unit"></img>`
-  }, '')
+    return acc + `<img src="${path}" alt="review image" class="review-image-unit"></img>`;
+  }, '');
 }
 
 // 날짜 전처리
 function getDate(orderDate) {
   let [date, time] = orderDate.split('T');
   date = date.replaceAll('-', '.');
-  time = time.split('.')[0]
+  time = time.split('.')[0];
   return `${date} ${time}`;
 }
-
 
 function refreshModalContents() {
   contentValue.value = ''; // 글 내용 지우기
   inputFile.value = ''; // 이미지 지우기
-  modalImages.innerHTML = '';// 이미지 테그 지우기
+  modalImages.innerHTML = ''; // 이미지 테그 지우기
 }
 
-
 registerButton.addEventListener('click', async (e) => {
-  
   const rate = parseInt(starSpan.style.width) / 10;
-  
+
   if (!contentValue.value) {
     alert('리뷰 내용을 입력해주세요');
-  }
-
-  else {
-
+  } else {
     const formData = new FormData();
-    
+
     for (const file of inputFile.files) {
-      formData.append("images", file);
+      formData.append('images', file);
     }
 
     const res = await fetch('/image/register', {
@@ -164,22 +166,19 @@ registerButton.addEventListener('click', async (e) => {
     });
 
     const imagePath = await res.json();
-    
+
     const reqBody = {
       content: contentValue.value,
       rate,
-      imagePath
-    }
+      imagePath,
+    };
 
     await Api.patch(`/review/${reviewId}/update`, '', reqBody);
-    
+
     alert('리뷰가 수정되었습니다.');
     window.location.reload();
   }
-  
-})
-
-
+});
 
 inputFile.addEventListener('change', (event) => {
   for (const image of event.target.files) {
@@ -190,14 +189,13 @@ inputFile.addEventListener('change', (event) => {
       img.setAttribute('src', e.target.result);
       modalImages.appendChild(img);
       modalImages.lastElementChild.classList.add('modal-image-unit');
-    }
+    };
     reader.readAsDataURL(image);
   }
-})
-
+});
 
 /*********************별점 관련 이벤트********************/
 starInput.addEventListener('input', (e) => {
   starSpan.style.width = `${e.target.value * 10}%`;
-})
+});
 /********************************************************/
