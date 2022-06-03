@@ -4,6 +4,7 @@ import { pagination } from '../../utils/pagination';
 
 const Review = model('reviews', ReviewSchema);
 
+const sort = { createAt: -1 };
 const populate = [
     {
         path: 'writer',
@@ -32,7 +33,6 @@ export class ReviewModel {
     // 유저별 리뷰 조회
     findByUser(userId, page, perPage) {
         const filter = { writer: userId };
-        const sort = { createAt: -1 };
 
         const reviews = pagination(page, perPage, Review, filter, {}, sort, populate);
 
@@ -42,7 +42,6 @@ export class ReviewModel {
     // 상품별 리뷰 조회
     findByProduct(productId, page, perPage) {
         const filter = { productId };
-        const sort = { rate: -1 };
 
         const reviews = pagination(page, perPage, Review, filter, {}, sort, populate);
 
