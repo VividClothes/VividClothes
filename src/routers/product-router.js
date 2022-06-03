@@ -79,7 +79,7 @@ productRouter.get('/category/:categoryId', async (req, res, next) => {
 });
 
 // 특정 상품 조회
-productRouter.get('/Id/:productId', async (req, res, next) => {
+productRouter.get('/id/:productId', async (req, res, next) => {
     try {
         // req의 params에서 데이터 가져옴
         const { productId } = req.params;

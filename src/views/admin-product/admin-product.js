@@ -113,7 +113,7 @@ class AdminProduct {
       btn.addEventListener('click', async () => {
         const {
           product: { _id, productName, category, price, image, info, option },
-        } = await Api.get(`/product/${btn.dataset.id}`);
+        } = await Api.get(`/product/id/${btn.dataset.id}`);
 
         console.log(_id);
 
