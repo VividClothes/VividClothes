@@ -30,9 +30,17 @@ addAllEvents();
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
   localSubmitButton.addEventListener('click', handleLocalSubmit);
-  //googleSubmitButton.addEventListener('click', handleGoogleSubmit);
+  googleSubmitButton.addEventListener('click', handleGoogleSubmit);
   kakaoSubmitButton.addEventListener('click', handleKakaoSubmit);
 }
+
+function handleGoogleSubmit(e) {
+  e.preventDefault();
+  const GOOGLE_CLIENT_ID = '196598776648-dbu1p15dcgeotoi1rirs6eu63v3l5qom.apps.googleusercontent.com';
+  const GOOGLE_REDIRECT_URI = 'http://localhost:5000/api/google/callback';
+  window.location.href = `https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email`;
+}
+
 
 function handleKakaoSubmit(e) {
   e.preventDefault();
