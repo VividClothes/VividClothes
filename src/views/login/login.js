@@ -44,7 +44,7 @@ function handleGoogleSubmit(e) {
 
 function handleKakaoSubmit(e) {
   e.preventDefault();
-
+  
   window.location.href = `http://localhost:5000/api/login/kakao`;
 }
 

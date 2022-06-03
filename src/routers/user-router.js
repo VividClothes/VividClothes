@@ -188,10 +188,14 @@ userRouter.get('/login/kakao', passport.authenticate('kakao'));
 // 카카오 로그인 인증
 userRouter.get('/login/kakao/callback',
     passport.authenticate('kakao', {
-        failureRedirect: '/login'
+        failureRedirect: '/login',
+        session: false
     }),
-    (error, user, errorInfo) => {
-        console.log(user);
+    async (req, res, next) => {
+        const user = await userService.getUserToken({
+            email: req.user.email,
+            password: 'kakao'+req.user.email
+        })
 
         res.redirect('/')
     }

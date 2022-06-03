@@ -10,21 +10,17 @@ export default () => {
         },
         async (accessToken, refreshToken, profile, done) => {
             try{
-                const user = await userService.getUserByEmail(profile.id);
-
+                const { provider, id, username} = profile;
+                const user = await userService.getUserByEmail(id);
+                
                 if(user){
-                    user.accessToken = accessToken;
-                    user.refreshToken = refreshToken;
-
                     done(null, user);
                 }else{
                     const newUser = await userService.addUser({
-                        email: profile.id,
-                        fullName: profile.username,
-                        password: profile.provider
+                        email: id,
+                        fullName: username,
+                        password: provider+id
                     });
-                    newUser.accessToken = accessToken;
-                    newUser.refreshToken = refreshToken;
 
                     done(null, newUser);
                 }
