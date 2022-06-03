@@ -61,6 +61,13 @@ let optionKeys = [];
   let currentImageIndex = 0;
   const imagePaths = result.imagePath;
 
+  for(let i = 0; i < result.option.size.length; i++){
+    sizeSelectBox.innerHTML += `<option value="${result.option.size[i]}">${result.option.size[i]}</option>`;
+  }
+  for(let i = 0; i < result.option.color.length; i++){
+    colorSelectBox.innerHTML += `<option value="${result.option.color[i]}">${result.option.color[i]}</option>`;
+  }
+
   /********************사이즈 박스 선택 이벤트*********************/
   sizeSelectBox.addEventListener('change', (e) => {
     selectedSizeColor.size = e.target.value; // 값 변경
