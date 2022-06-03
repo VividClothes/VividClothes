@@ -8,7 +8,9 @@ async function verify(credential) {
     audience: process.env.ClIENT_ID,
   });
   const payload = ticket.getPayload();
-  return payload;
+  const { email, name } = payload;
+  const isRegister = await userModel.findByEmail(payload.email);
+  return { isRegister, email, fullName: name };
 }
 
 //https://yohanpro.com/posts/codereview

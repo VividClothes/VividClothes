@@ -31,21 +31,9 @@ class UserService {
     const newUserInfo = { fullName, email, password: hashedPassword };
 
     // db에 저장
-    const createdNewUser = await this.userModel.create(newUserInfo);
+    await this.userModel.create(newUserInfo);
 
     // 회원가입 성공 -> JWT 웹 토큰 생성
-
-    // 2개 프로퍼티를 jwt 토큰에 담음
-    const token = jwt.sign(
-      { userId: createdNewUser._id, userRole: createdNewUser.role },
-      secretKey
-    );
-    const hashedEmail = crypto
-      .createHash('sha256')
-      .update(email)
-      .digest('base64');
-    const userRole = createdNewUser.role;
-    return { token, userRole, hashedEmail };
   }
 
   // 로그인

@@ -10,14 +10,6 @@ import { UserSchema } from '../db/schemas/user-schema';
 import verify from '../services/google';
 const userRouter = Router();
 
-// app.use(
-//   session({
-//     secret: 'secret key',
-//     store: sessionStore,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 userRouter.post(
   '/register',
@@ -31,12 +23,15 @@ userRouter.post(
       const password = req.body.password;
 
       // 위 데이터를 유저 db에 추가하기
-      const { token, userRole, hashedEmail } = await userService.addUser({
+      await userService.addUser({
         fullName,
         email,
         password,
       });
-
+      const { token, userRole, hashedEmail } = await userService.getUserToken({
+        email,
+        password,
+      });
       // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
       // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
       res.status(201).json({ token, userRole, hashedEmail });
@@ -174,25 +169,18 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
-    const user = await verify(credential);
+    const { email, fullName, isRegister } = await verify(credential);
 
-    const findUser = await userService.getUserByEmail(user.email);
-    console.log(findUser);
-    // if (findUser) {
-    //   const { token, userRole, hashedEmail } = await userService.getUserToken({
-    //     email: user.email,
-    //     password: 'google',
-    //   });
-    //   res.status(200).json({ token, userRole, hashedEmail });
-    //   return;
-    // }
-    // const { token, userRole, hashedEmail } = await userService.addUser({
-    //   fullName: user.name,
-    //   email: user.email,
-    //   password: 'google',
-    // });
+    if (!isRegister) {
+      await userService.addUser({
+        fullName,
+        email,
+        password: 'google',
+      });
+    }
+
     const { token, userRole, hashedEmail } = await userService.getUserToken({
-      email: findUser.email,
+      email: email,
       password: 'google',
     });
     res.status(200).json({ token, userRole, hashedEmail });
