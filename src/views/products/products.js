@@ -56,7 +56,7 @@ async function addAllElements() {
 
   createProductsList(products);
 
-  const pageData = {
+  let pageData = {
     page: products.page,
     perPage: products.perPage,
     totalPage: products.totalPage
