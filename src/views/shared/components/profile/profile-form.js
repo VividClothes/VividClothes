@@ -1,31 +1,39 @@
 import profileStyle from '/profile/profile-form-style.js';
 
 const createProfile = (props) => {
+  const { email, fullName, phoneNumber, address } = props;
+
   return /* html */ `
   ${profileStyle}
   <div class="user-info-container">
     <form class="user-info-form">
       <div class="row">
-        <h4>00님의 계정 정보</h4>
+        <h4>${fullName}<span>  님의 기본 정보</span></h4>
+        <div class="tooltip-wrapper">
           <label class="user-info-label">◾  Email</label>
-        <div class="input-group input-group-icon">
-          <input type="email" disabled />
+          <span class="tooltip">해당 영역은 수정하실 수 없습니다.</span>
+        </div>
+        <div class="tooltip-effect input-group-icon">
+          <input class="user-info-email" type="email" value="${email}" disabled />
           <div class="input-icon">
             <i class="fa-solid fa-envelope"></i>
           </div>
         </div>
-
         <label class="user-info-label">◾ Name</label>
         <div class="input-group input-group-icon">
-          <input type="text" value="" />
+          <input class="user-info-name" type="text" value="${fullName}" />
           <div class="input-icon">
             <i class="fa fa-user"></i>
           </div>
         </div>
-      
-        <label class="user-info-label">◾ Phone Number</label>
-        <div class="input-group input-group-icon">
-          <input type="text" />
+        <div class="tooltip-wrapper">
+          <label class="user-info-label">◾ Phone Number</label>
+          <span class="tooltip">연락처는 "-"를 제외해주세요.</span>
+        </div>
+        <div class="tooltip-effect input-group input-group-icon">
+          <input class="user-info-phone-number" type="text" value="${
+            phoneNumber ? phoneNumber : ''
+          }" />
           <div class="input-icon">
             <i class="fa-solid fa-phone"></i>
           </div>
@@ -33,14 +41,20 @@ const createProfile = (props) => {
         
         <label class="user-info-label">◾ Adress</label>
         <div class="input-group input-group-icon">
-          <input class="post-number" type="text" id="post-number" placeholder="우편번호" disabled>
+          <input class="post-number" type="text" id="post-number" placeholder="우편번호" value="${
+            address ? address.postalCode : ''
+          }" disabled>
           <div class="input-icon">
             <i class="fa-solid fa-map-location"></i>
           </div>
           <button class="post-btn">주소 찾기</button>
           <span id="guide" style="color:#999;display:none"></span>
-          <input class="post-inputs" type="text" id="post-road-adress" placeholder="도로명주소" disabled>
-          <input class="post-inputs" type="text" id="post-detail-adress" placeholder="상세주소" disabled>
+          <input class="post-inputs" type="text" id="post-road-adress" placeholder="도로명주소" value="${
+            address ? address.address1 : ''
+          }" disabled>
+          <input class="post-inputs" type="text" id="post-detail-adress" placeholder="상세주소" value="${
+            address ? address.address2 : ''
+          }" disabled>
         </div>
       </div>
       <div>
@@ -53,6 +67,7 @@ const createProfile = (props) => {
 
 function addProfileListener(component) {
   onClickAdressBtn(component);
+  onMouseoverInputs(component);
   onSubmitForm(component);
 }
 
@@ -122,11 +137,31 @@ function onClickAdressBtn(component) {
   });
 }
 
+function onMouseoverInputs(component) {
+  const inputs = component.querySelectorAll('.tooltip-effect');
+  const tooltips = component.querySelectorAll('.tooltip');
+
+  Array.from(inputs).forEach((input, index) => {
+    input.addEventListener('mouseenter', () => {
+      tooltips[index].classList.add('tooltip-hover-effect');
+    });
+  });
+
+  Array.from(inputs).forEach((input, index) => {
+    input.addEventListener('mouseleave', () => {
+      tooltips[index].classList.remove('tooltip-hover-effect');
+    });
+  });
+}
+
 function onSubmitForm(component) {
   const userInfoForm = component.querySelector('.user-info-form');
 
   userInfoForm.addEventListener('submit', (e) => {
     e.preventDefault();
+    const modalForm = document.querySelector('.modal-form');
+    modalForm.setAttribute('id', 'edit-user');
+    document.querySelector('#password-modal > .modal-layout').classList.add('show-modal');
   });
 }
 

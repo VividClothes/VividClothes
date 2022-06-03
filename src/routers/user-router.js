@@ -10,14 +10,6 @@ import { UserSchema } from '../db/schemas/user-schema';
 import verify from '../services/google';
 const userRouter = Router();
 
-// app.use(
-//   session({
-//     secret: 'secret key',
-//     store: sessionStore,
-//     resave: false,
-//     saveUninitialized: false,
-//   })
-// );
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 userRouter.post(
   '/register',
@@ -31,15 +23,18 @@ userRouter.post(
       const password = req.body.password;
 
       // 위 데이터를 유저 db에 추가하기
-      const newUser = await userService.addUser({
+      await userService.addUser({
         fullName,
         email,
         password,
       });
-
+      const { token, userRole, hashedEmail } = await userService.getUserToken({
+        email,
+        password,
+      });
       // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
       // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-      res.status(201).json(newUser);
+      res.status(201).json({ token, userRole, hashedEmail });
     } catch (error) {
       next(error);
     }
@@ -164,8 +159,8 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
     if (!userId) {
       return res.status(400);
     }
-    const deleteUserInfo = await userService.deleteUser(userInfoRequired);
-    res.status(204).json(deleteUserInfo); //no content
+    await userService.deleteUser(userInfoRequired);
+    res.status(204); //no content
   } catch (error) {
     next(error);
   }
@@ -174,9 +169,21 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 userRouter.post('/google/login', async (req, res, next) => {
   try {
     const { credential } = req.body; //token jwt
-    await verify(credential);
+    const { email, fullName, isRegister } = await verify(credential);
 
-    res.status(200).redirect('/');
+    if (!isRegister) {
+      await userService.addUser({
+        fullName,
+        email,
+        password: 'google',
+      });
+    }
+
+    const { token, userRole, hashedEmail } = await userService.getUserToken({
+      email: email,
+      password: 'google',
+    });
+    res.status(200).json({ token, userRole, hashedEmail });
   } catch (err) {
     next(err);
   }

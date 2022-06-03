@@ -37,7 +37,7 @@ const PREPARE = '상품 준비중';
 const DELIVER = '상품 배송중';
 const COMPLETE = '배송 완료';
 let rate = -1;
-let reviewProductId = 0;
+let orderProductId = 0;
 let orderId = 0;
 /*********************************************************************/
 
@@ -46,7 +46,7 @@ let orderId = 0;
 /****************************모달**********************************/
 const open = (e, item) => {
   modal.classList.remove("hidden");
-  reviewProductId = item.productId;
+  orderProductId = item.orderProductId;
   orderId = item.orderId; 
   starSpan.style.width = '100%';
 }
@@ -66,8 +66,8 @@ exitButton.addEventListener("click", close);
   let orderItems = getOrderItems(orders.datas);
   const urlParams = new URLSearchParams(window.location.search);
   const listType = urlParams.get('type');
-  //console.log(orders)
-  //console.log(orderItems);
+  console.log(orders)
+  console.log(orderItems);
   
   // 상품 준비중, 상품 배송중, 배송 완료 텍스트 및 개수 표시
   setStateLinkText(orderItems);
@@ -116,7 +116,7 @@ exitButton.addEventListener("click", close);
           const realCancel = confirm('상품 주문을 취소하시겠습니까?');
 
           if(realCancel) {
-            await Api.patch(`/order/${item.orderId}/product/${item.productId}/cancel`);
+            await Api.patch(`/order/${item.orderId}/product/${item.orderProductId}/cancel`);
             alert('상품 주문이 취소되었습니다.');
             window.location.reload();
           }
@@ -242,7 +242,8 @@ function getOrderItems(orders) {
         imagePath: item.product[0].imagePath[0],
         productName: item.product[0].productName,
         productId: item.product[0]._id,
-        hasReview: item.hasReview
+        hasReview: item.hasReview,
+        orderProductId: item._id
       }
       orderItems.push(pushItem);
     })
@@ -295,7 +296,7 @@ registerButton.addEventListener('click', async (e) => {
     const imagePath = await res.json();
     
     const reqBody = {
-      productId: reviewProductId,
+      orderProductId,
       content: contentValue.value,
       rate,
       imagePath
