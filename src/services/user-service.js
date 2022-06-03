@@ -105,9 +105,9 @@ class UserService {
     let user = await this.userModel.findByEmail(email);
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
-    if (!user) {
-      throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
-    }
+    // if (!user) {
+    //   throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    // }
     return await user;
   }
 
