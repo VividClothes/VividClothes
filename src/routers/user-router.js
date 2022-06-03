@@ -5,9 +5,10 @@ import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import * as userValidator from '../middlewares/user-validator';
 import generateRandomPassword from '../util/generate-random-password';
 import passport from 'passport';
-import { Strategy as KakaoStrategy } from 'passport-kakao';
-import { UserSchema } from '../db/schemas/user-schema';
-import verify from '../services/google';
+// import { Strategy as KakaoStrategy } from 'passport-kakao';
+// import { UserSchema } from '../db/schemas/user-schema';
+import verify from '../services/google-passport';
+
 const userRouter = Router();
 
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
@@ -166,21 +167,16 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
   }
 });
 
-//
+userRouter.get('/login/kakao', passport.authenticate('kakao'));
 userRouter.get(
-  '/google',
-  passport.authenticate('google', { scope: ['profile'] })
-);
-
-userRouter.get(
-  '/google/login',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
+  '/login/kakao/callback',
+  passport.authenticate('kakao', {
+    failureRedirect: '/',
+  }),
+  (req, res) => {
+    res.redirect('/login');
   }
 );
-
 //비밀번호 찾기
 userRouter.post('/reset-password', async (req, res) => {
   const { email } = req.body;

@@ -31,7 +31,8 @@ addAllEvents();
 function addAllEvents() {
   localSubmitButton.addEventListener('click', handleLocalSubmit);
   //googleSubmitButton.addEventListener('click', handleGoogleSubmit);
-  kakaoSubmitButton.addEventListener('click', handleKakaoSubmit);
+  // kakaoSubmitButton.addEventListener('click', handleKakaoSubmit);
+  // googleSubmitButton.addEventListener('click', handleGoogleSubmit);
 }
 
 // 로컬 로그인 진행
@@ -104,6 +105,55 @@ async function handleKakaoSubmit(e) {
   // 로그인 api 요청
   try {
     const result = await Api.get('/api/login/kakao');
+    const token = result.token;
+    const role = result.userRole;
+    const hashedEmail = result.hashedEmail;
+
+    // 로그인 성공, 토큰을 세션 스토리지에 저장
+    // 물론 다른 스토리지여도 됨
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', role);
+    localStorage.setItem('hashedEmail', hashedEmail);
+
+    // indexedDB 생성
+    const onRequest = indexedDB.open(hashedEmail, 1);
+
+    onRequest.onsuccess = () => {
+      //alert('indexedDB onsuccess');
+    };
+
+    onRequest.onupgradeneeded = (e) => {
+      //alert('indexedDB onupgradeneeded');
+      const db = onRequest.result;
+      db.createObjectStore('order', { keyPath: 'shortId' });
+      db.createObjectStore('cart', { keyPath: 'shortId' });
+    };
+
+    onRequest.onerror = () => {
+      //alert('Error creating or accessing db')
+    };
+
+    alert(`정상적으로 로그인되었습니다.`);
+
+    // 로그인 성공
+
+    // 기본 페이지로 이동
+    window.location.href = '/';
+  } catch (err) {
+    console.error(err.stack);
+    alert(`문제가 발생하였습니다. 확인 후 다시 시도해 주세요: ${err.message}`);
+  }
+}
+
+// 구글 로그인 진행
+async function handleGoogleSubmit(e) {
+  e.preventDefault();
+
+  // 로그인 api 요청
+  try {
+    console.log('dd');
+    const { result } = await Api.get('/api/google/callback');
+    console.log(result);
     const token = result.token;
     const role = result.userRole;
     const hashedEmail = result.hashedEmail;
