@@ -1,7 +1,26 @@
 import { model } from 'mongoose';
 import { ProductSchema } from '../schemas/product-schema';
+import { CategorySchema } from '../schemas/category-schema';
+import { pagination } from '../../utils/pagination';
 
 const Product = model('products', ProductSchema);
+const Category = model('categories', CategorySchema);
+
+const select = {
+    _id: true,
+    productName: true,
+    price: true,
+    imagePath: true,
+    info: true,
+};
+const sort = {
+    orderCount: -1,
+    createdAt: -1,
+};
+const populate = {
+    path: 'category',
+    select: 'categoryName'
+};
 
 export class ProductModel {
     // 새 상품 등록
@@ -11,41 +30,73 @@ export class ProductModel {
         return createdNewProduct;
     }
 
-    // 모든 상품 출력
-    async findAll() {
+    // 모든 상품 조회
+    async findAll(page, perPage) {
+        const products = pagination(page, perPage, Product, {}, select, sort);
+
+        return products;
+    }
+
+    // n개 카테고리별 Best 상품 조회
+    async findPopular(count) {
+        const products = await Product
+            .aggregate([
+                {
+                    $sort: {orderCount: -1, createdAt: -1}
+                },
+                {
+                    $group: {
+                        _id: '$category',
+                        product: {$first: "$$ROOT"}
+                    }
+                }
+            ])
+            .sort('-product.orderCount -product.createAt')
+            .limit(count);
+        Category.populate(products, 'product.category');
+
+        return products;
+    }
+
+    // 최신 n개 상품 조회
+    async findRecent(count) {
         const products = await Product.find({})
-            .populate({
-                path: 'category',
-                select: 'categoryName'
-            });
+            .sort('-createdAt')
+            .limit(count)
+            .populate(populate);
 
         return products;
     }
 
     // 카테고리별 상품 출력
-    async findByCategory(category) {
-        const product = await Product.find({ category })
-            .populate({
-                path: 'category',
-                select: 'categoryName'
-            });
+    findByCategory(category, page, perPage) {
+        const filter = { category };
 
-        return product;
+        const products = pagination(page, perPage, Product, filter, select, sort);
+
+        return products;
     }
 
     // objectId를 이용해 특정 상품 출력
     async findById(productId) {
         const product = await Product.findOne({ _id: productId })
-            .populate({
-                path: 'category',
-                select: 'categoryName'
-            });
+            .populate(populate);
 
         return product;
     }
 
+    // 상품명, info, color 옵션에서 keyword 검색
+    async findByKeyword(keyword, page, perPage) {
+        const filter = { $text: { $search: keyword } };
+        const sort = { score: { $meta: 'textScore' } };
+        
+        const products = pagination(page, perPage, Product, filter, {}, sort);
+
+        return products;
+    }
+
     // 상품 정보 수정
-    async update({ productId, update }) {
+    async update(productId, update) {
         const filter = { _id: productId };
         const option = { returnOriginal: false };
 

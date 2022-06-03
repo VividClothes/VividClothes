@@ -1,0 +1,24 @@
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
+
+.a-link {
+  color: rgb(40, 40, 40);
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+.cart-status-container {
+  padding: 120px 200px;
+}
+
+.card {
+  position: relative;
+  height: 100%;
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+}
+
+.button-container {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  padding: 10px;
+  font-size: 14px;
+}

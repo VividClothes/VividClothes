@@ -1,46 +1,101 @@
 import * as Api from '/api.js';
-import { validateEmail } from '/useful-functions.js';
-import { header } from '/header.js';
+import { header, addHeaderEventListener } from '/header/header.js';
+import { createCategory, addCategoryListener } from '/category/category.js';
+import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
+
+/***************************헤더*************************************/
+const nav = document.getElementById('header');
+const navCategory = document.getElementById('category');
+(async () => {
+  nav.insertAdjacentElement('afterbegin', header);
+  const categories = await Api.get('/category/list');
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+})();
+/*******************************************************************/
 
 const categoryName = document.querySelector('.category-name');
 const productGrid = document.querySelector('.main-content');
+const pagination = document.getElementById('pagination');
 
 const categoryHash = {};
 
 const urlParams = new URLSearchParams(window.location.search);
 const categoryTarget = urlParams.get('category');
+const searchInput = urlParams.get('searchInput');
 
-createCategoryHash().then(() => {
-  createProductsList();
-});
+async function render() {
+  await addAllElements();
+  addAllEvents();
+}
 
-// grid
-categoryName.innerHTML = `
-<h2 class="title is-2">
-  Category / <span class="is-italic is-capitalized is-size-4 ">${categoryTarget}</span>
-</h2>
-<hr>
-
-`;
-
-// 요소(element), input 혹은 상수
-
-addAllElements();
-addAllEvents();
-
-// html에 요소를 추가하는 함수들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 async function addAllElements() {
-  insertHeader();
+  await createCategoryHash();
+
+  const urlParams = new URLSearchParams(window.location.search);
+  const page = urlParams.get('page');
+
+  const perPage = 10;
+  let products;
+
+  if (categoryTarget) {
+    products = await Api.get(
+      `/product/category`,
+      `${categoryHash[categoryTarget]}?page=${page}&perPage=${perPage}`
+    );
+  } else if (searchInput) {
+    products = await Api.get('/product/search', `${searchInput}?page=${page}&perPage=${perPage}`);
+    console.log(products);
+  }
+
+  console.log(products);
+
+  createProductsList(products);
+
+  let pageData = {
+    page: products.page,
+    perPage: products.perPage,
+    totalPage: products.totalPage,
+  };
+
+  if (categoryTarget) {
+    pageData = {
+      ...pageData,
+      pageUrl: (page) => `/products/?category=${categoryTarget}&page=${page}`,
+    };
+  } else if (searchInput) {
+    pageData = {
+      ...pageData,
+      pageUrl: (page) => `/products/?searchInput=${searchInput}&page=${page}`,
+    };
+  }
+
+  pagination.insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
 }
 
-// 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
-function addAllEvents() {}
-
-function insertHeader() {
-  document.body.insertAdjacentElement('afterbegin', header);
+function addAllEvents() {
+  addPaginationBarListener(pagination);
 }
 
-// 카테고리 요청 중복(이미 카테고리 컴포넌트에서 요청하였음) -> 그냥 id 값으로 페이지 전환해도 될듯.. 해당 funtion 필요없음
+// grid - 카테고리인지, 검색어인지 구분할 필요 있음. 공유 함수 아님
+if (categoryTarget) {
+  categoryName.innerHTML = `
+  <h2 class="title is-2">
+    Category / <span class="is-italic is-capitalized is-size-4 ">${categoryTarget}</span>
+  </h2>
+  <hr>
+  `;
+} else if (searchInput) {
+  categoryName.innerHTML = `
+  <h2 class="title is-2">
+    Search / <span class="is-italic is-capitalized is-size-4 ">${searchInput}</span>
+  </h2>
+  <hr>
+  `;
+}
+
+// 리스트에 카테고리 입력용. 공유함수.
 async function createCategoryHash() {
   const categories = await Api.get('/category/list');
   categories.forEach(({ _id, categoryName }) => {
@@ -48,13 +103,13 @@ async function createCategoryHash() {
   });
 }
 
-async function createProductsList() {
-  const products = await Api.get(`/product/category/${categoryHash[categoryTarget]}`);
-  const insertedEl = products
+// 제품 목록 HTML 생성. 공유 함수.
+function createProductsList(products) {
+  const insertedEl = products.datas
     .map(({ _id, productName, category, price, imagePath, info, option }) => {
       return `
       <li class="col">
-        <a class="a-link" href=/product?id=${_id}>
+        <a class="a-link" href=/product?id=${_id}&page=1>
           <div class="card">
             <div class="card-image">
               <div class="img-container">
@@ -67,7 +122,7 @@ async function createProductsList() {
             <div>
               <div class="medias">
                 <div class="media-content">
-                  <a class="a-link" href=/product?id=${_id}><p class="title font-16">${productName}</p></a>
+                  <a class="a-link" href=/product?id=${_id}&page=1><p class="title font-16">${productName}</p></a>
                 </div>
               </div>
 
@@ -81,7 +136,8 @@ async function createProductsList() {
       </li>`;
     })
     .join('');
-  console.log(products);
 
   productGrid.innerHTML = `<ul class="grid">${insertedEl}</ul>`;
 }
+
+render();

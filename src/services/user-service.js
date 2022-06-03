@@ -1,9 +1,10 @@
 import { userModel } from '../db';
-
+import { authModel } from '../db';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 
+const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
 class UserService {
   // 본 파일의 맨 아래에서, new UserService(userModel) 하면, 이 함수의 인자로 전달됨
   constructor(userModel) {
@@ -23,17 +24,16 @@ class UserService {
       );
     }
 
-    // 이메일 중복은 이제 아니므로, 회원가입을 진행함
-
     // 우선 비밀번호 해쉬화(암호화)
+
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const newUserInfo = { fullName, email, password: hashedPassword };
 
     // db에 저장
-    const createdNewUser = await this.userModel.create(newUserInfo);
+    await this.userModel.create(newUserInfo);
 
-    return createdNewUser;
+    // 회원가입 성공 -> JWT 웹 토큰 생성
   }
 
   // 로그인
@@ -68,10 +68,10 @@ class UserService {
     }
 
     // 이메일 헤시값
-    const hashedEmail = crypto.createHash('sha256').update(email).digest('base64');
-
-    // 로그인 성공 -> JWT 웹 토큰 생성
-    const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
+    const hashedEmail = crypto
+      .createHash('sha256')
+      .update(email)
+      .digest('base64');
 
     // 2개 프로퍼티를 jwt 토큰에 담음
     const token = jwt.sign(
@@ -91,12 +91,23 @@ class UserService {
   //특정 유저
   async getUserById(userId) {
     // 우선 해당 id의 유저가 db에 있는지 확인
-    let user = await this.userModel.findById(userId);
+
+    const user = await this.userModel.findById(userId);
 
     // db에서 찾지 못한 경우, 에러 메시지 반환
     if (!user) {
       throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
     }
+    return await user;
+  }
+
+  async getUserByEmail(email) {
+    let user = await this.userModel.findByEmail(email);
+
+    // db에서 찾지 못한 경우, 에러 메시지 반환
+    // if (!user) {
+    //   throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
+    // }
     return await user;
   }
 
@@ -128,8 +139,6 @@ class UserService {
       );
     }
 
-    // 이제 드디어 업데이트 시작
-
     // 비밀번호도 변경하는 경우에는, 회원가입 때처럼 해쉬화 해주어야 함.
     const { password } = toUpdate;
 
@@ -146,12 +155,26 @@ class UserService {
 
     return user;
   }
+
+  //비밀번호 업데이트
+  // async updatePassword(email, password) {
+  //   user = await this.userModel.update({
+  //     email,
+  //     password: toUpdate,
+  //   });
+
+  //   return user;
+  // }
+  async createAuth(newUserInfo) {
+    const createdNewAuth = await this.authModel.create(newUserInfo);
+    return createdNewUser;
+  }
   async deleteUser(userInfoRequired) {
+    const { userId, currentPassword } = userInfoRequired;
     let user = await this.userModel.findById(userId);
     if (!user) {
       throw new Error('가입 내역이 없습니다. 다시 한 번 확인해 주세요.');
     }
-    const { userId, currentPassword } = userInfoRequired;
     const correctPasswordHash = user.password;
     const isPasswordCorrect = await bcrypt.compare(
       currentPassword,
@@ -163,10 +186,11 @@ class UserService {
         '현재 비밀번호가 일치하지 않습니다. 다시 한 번 확인해 주세요.'
       );
     }
-    return await this.userModel.delete(userId);
+    await this.userModel.delete(userId);
   }
 }
 
 const userService = new UserService(userModel);
 
 export { userService };
+//https://www.passportjs.org/packages/passport-kakao/

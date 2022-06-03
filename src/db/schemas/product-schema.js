@@ -33,10 +33,27 @@ const ProductSchema = new Schema(
             }),
             required: true,
         },
+        orderCount: {
+            type: Number,
+            default: 0
+        },
     },
     {
         collection: 'products',
         timestamps: true,
+    }
+).index(
+    {
+        productName: 'text',
+        info: 'text',
+        'option.color': 'text'
+    },
+    {
+        weights: {
+            productName: 3,
+            info: 2,
+            'option.color': 1
+        }
     }
 );
 

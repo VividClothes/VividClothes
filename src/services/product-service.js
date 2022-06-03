@@ -17,23 +17,26 @@ class ProductService {
     }
 
     // 전체 상품 조회
-    async getProducts() {
-        const products = await this.productModel.findAll();
+    async getProducts(page, perPage) {
+        const products = await this.productModel.findAll(page, perPage);
 
         return products;
     }
 
-    // 카테고리별 상품 조회
-    async getProductByCategory(categoryId) {
-        // 우선 해당 카테고리의 상품 정보가 db에 존재하는지 확인
-        const product = await this.productModel.findByCategory(categoryId);
-        if (!product) {
-            throw new Error(
-                '해당 카테고리에 상품이 없습니다.'
-            );
-        }
+    // 홈화면 상품 조회(인기 상품 및 최신 상품)
+    async getPopularAndRecent() {
+        const popularProducts = await this.productModel.findPopular(4);
+        const recentProducts = await this.productModel.findRecent(40);
 
-        return product;
+        return { popularProducts, recentProducts };
+    }
+
+    // 카테고리별 상품 조회
+    async getProductByCategory(categoryId, page, perPage) {
+        // 우선 해당 카테고리의 상품 정보가 db에 존재하는지 확인
+        const products = await this.productModel.findByCategory(categoryId, page, perPage);
+
+        return products;
     }
 
     // 특정 상품 조회
@@ -45,6 +48,23 @@ class ProductService {
                 '해당 상품이 존재하지 않습니다. 다시 확인해 주세요.'
             );
         }
+
+        return product;
+    }
+
+    // 키워드 검색
+    async searchKeyword(keyword, page, perPage){
+        const products = await this.productModel.findByKeyword(keyword, page, perPage);
+
+        return products;
+    }
+
+    // 상품의 orderCount 증감
+    async increaseOrderCount(productId, amount) {
+        const product = await this.productModel.update(
+            productId,
+            { $inc: { "orderCount": amount } }
+        );
 
         return product;
     }
@@ -62,7 +82,7 @@ class ProductService {
             }
         });
 
-        const product = await this.productModel.update({ productId, update });
+        const product = await this.productModel.update(productId, update);
 
         return product;
     }
@@ -70,7 +90,10 @@ class ProductService {
     // 상품 정보 삭제
     async deleteProduct(productId) {
         const product = await this.productModel.delete(productId);
-        imageService.imageDelete(product.imagePath);
+
+        if (product.imagePath.length > 0) {
+            imageService.imageDelete(product.imagePath);
+        }
 
         return product;
     }

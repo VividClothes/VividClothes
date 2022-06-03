@@ -1,42 +1,41 @@
 import { Router } from 'express';
-import is from '@sindresorhus/is';
-// 폴더에서 import하면, 자동으로 폴더의 index.js에서 가져옴
-import { loginRequired } from '../middlewares';
-import { userRoleCheck } from '../middlewares/userRole-check';
-import { userService } from '../services';
 
+import { userService } from '../services';
+import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import * as userValidator from '../middlewares/user-validator';
+import generateRandomPassword from '../util/generate-random-password';
+import passport from 'passport';
+// import { Strategy as KakaoStrategy } from 'passport-kakao';
+// import { UserSchema } from '../db/schemas/user-schema';
+import verify from '../services/google-passport';
+
 const userRouter = Router();
 
 // 회원가입 api (아래는 /register이지만, 실제로는 /api/register로 요청해야 함.)
 userRouter.post(
   '/register',
+  checkBody,
   userValidator.validateSignup,
   async (req, res, next) => {
     try {
-      // Content-Type: application/json 설정을 안 한 경우, 에러를 만들도록 함.
-      // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          'headers의 Content-Type을 application/json으로 설정해주세요'
-        );
-      }
-
       // req (request)의 body 에서 데이터 가져오기
       const fullName = req.body.fullName;
       const email = req.body.email;
       const password = req.body.password;
 
       // 위 데이터를 유저 db에 추가하기
-      const newUser = await userService.addUser({
+      await userService.addUser({
         fullName,
         email,
         password,
       });
-
+      const { token, userRole, hashedEmail } = await userService.getUserToken({
+        email,
+        password,
+      });
       // 추가된 유저의 db 데이터를 프론트에 다시 보내줌
       // 물론 프론트에서 안 쓸 수도 있지만, 편의상 일단 보내 줌
-      res.status(201).json(newUser);
+      res.status(201).json({ token, userRole, hashedEmail });
     } catch (error) {
       next(error);
     }
@@ -46,16 +45,10 @@ userRouter.post(
 // 로그인 api (아래는 /login 이지만, 실제로는 /api/login로 요청해야 함.)
 userRouter.post(
   '/login',
+  checkBody,
   userValidator.validateCredential,
   async function (req, res, next) {
     try {
-      // application/json 설정을 프론트에서 안 하면, body가 비어 있게 됨.
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          'headers의 Content-Type을 application/json으로 설정해주세요'
-        );
-      }
-
       // req (request) 에서 데이터 가져오기
       const email = req.body.email;
       const password = req.body.password;
@@ -65,7 +58,7 @@ userRouter.post(
         email,
         password,
       });
-      
+
       // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
       res.status(200).json({ token, userRole, hashedEmail });
     } catch (error) {
@@ -94,12 +87,11 @@ userRouter.get(
 );
 
 //특정 유저
-userRouter.get('/userlist/:userId', async (req, res, next) => {
+userRouter.get('/user', loginRequired, async (req, res, next) => {
   try {
     // req의 params에서 데이터 가져옴
-    const { userId } = req.params;
+    const userId = req.currentUserId;
     const user = await userService.getUserById(userId);
-
     res.status(200).json(user);
   } catch (error) {
     next(error);
@@ -109,27 +101,18 @@ userRouter.get('/userlist/:userId', async (req, res, next) => {
 // 사용자 정보 수정
 // (예를 들어 /api/users/abc12345 로 요청하면 req.params.userId는 'abc12345' 문자열로 됨)
 userRouter.patch(
-  '/users/:userId',
+  '/users',
+  checkBody,
   loginRequired,
   async function (req, res, next) {
     try {
-      // content-type 을 application/json 로 프론트에서
-      // 설정 안 하고 요청하면, body가 비어 있게 됨.
-      if (is.emptyObject(req.body)) {
-        throw new Error(
-          'headers의 Content-Type을 application/json으로 설정해주세요'
-        );
-      }
-
       // params로부터 id를 가져옴
-      const userId = req.params.userId;
+      const userId = req.currentUserId;
 
       // body data 로부터 업데이트할 사용자 정보를 추출함.
       const fullName = req.body.fullName;
-      const password = req.body.password;
       const address = req.body.address;
       const phoneNumber = req.body.phoneNumber;
-      const role = req.body.role;
 
       // body data로부터, 확인용으로 사용할 현재 비밀번호를 추출함.
       const currentPassword = req.body.currentPassword;
@@ -145,10 +128,8 @@ userRouter.patch(
       // 보내주었다면, 업데이트용 객체에 삽입함.
       const toUpdate = {
         ...(fullName && { fullName }),
-        ...(password && { password }),
         ...(address && { address }),
         ...(phoneNumber && { phoneNumber }),
-        ...(role && { role }),
       };
       // 사용자 정보를 업데이트함.
       const updatedUserInfo = await userService.setUser(
@@ -164,7 +145,7 @@ userRouter.patch(
   }
 );
 // 사용자 정보 삭제 사용자는 개인 페이지에서 자신의 회원 정보를 삭제(탈퇴)할 수 있다.
-userRouter.delete('/users/:userId', async (req, res, next) => {
+userRouter.delete('/user', loginRequired, async (req, res, next) => {
   try {
     const currentPassword = req.body.currentPassword;
 
@@ -173,17 +154,71 @@ userRouter.delete('/users/:userId', async (req, res, next) => {
       throw new Error('정보를 변경하려면, 현재의 비밀번호가 필요합니다.');
     }
 
+    const userId = req.currentUserId;
     const userInfoRequired = { userId, currentPassword };
-
-    const { userId } = req.params;
 
     if (!userId) {
       return res.status(400);
     }
-    const deleteUserInfo = await userService.deleteUser(userInfoRequired);
-    res.status(204).json(deleteUserInfo); //no content
+    await userService.deleteUser(userInfoRequired);
+    res.status(204).json({ message: '해당 유저는 없습니다.' }); //no content
   } catch (error) {
     next(error);
   }
+});
+
+//
+userRouter.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile'] })
+);
+
+userRouter.get(
+  '/google/login',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
+
+// 카카오 로그인 요청
+userRouter.get('/login/kakao', passport.authenticate('kakao'));
+
+// 카카오 로그인 인증
+userRouter.get('/login/kakao/callback',
+    passport.authenticate('kakao', {
+        failureRedirect: '/login',
+        session: false
+    }),
+    async (req, res, next) => {
+        const user = await userService.getUserToken({
+            email: req.user.email,
+            password: 'kakao'+req.user.email
+        })
+
+        res.redirect('/')
+    }
+);
+
+//비밀번호 찾기
+userRouter.post('/reset-password', async (req, res) => {
+  const { email } = req.body;
+  if (email == '') {
+    res.status(400).send('email required');
+  }
+  // 해당 email이 있는지 확인
+  const userInfo = await userService.getUserByEmail(email);
+  const passwordToken = generateRandomPassword();
+  console.log(userInfo); //userinfo 값 먼저 확인해보고
+  // 밑에 email에 어떻게 넣을지 생각해보기 uiserInfo.email??
+  const data = {
+    passwordToken,
+    email: userInfo.email,
+    ttl: 300, //ttl 값 설정 (5분)
+  };
+  // 5. 인증 코드 테이블에 데이터 입력
+  // 예) db.EmailAuth.create(data);
+  userService.createAuth(data);
 });
 export { userRouter };

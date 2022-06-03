@@ -13,7 +13,9 @@ class ImageService {
             }
         }, function (error) {
             if (error) {
-                next(error);
+                throw new Error(
+                    '삭제할 이미지가 없습니다. 다시 확인해주세요.'
+                )
             }
         });
     }

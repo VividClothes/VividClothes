@@ -27,3 +27,53 @@ export const convertToNumber = (string) => {
 export const wait = (ms) => {
   return new Promise((r) => setTimeout(r, ms));
 };
+
+
+export const maskingFunc = {
+	checkNull : function (str){
+		if(typeof str == "undefined" || str == null || str == ""){
+			return true;
+		}
+		else{
+			return false;
+		}
+	},
+	
+	email (str){
+		let originStr = str;
+		let emailStr = originStr.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+		let strLength;
+		
+		if(this.checkNull(originStr) == true || this.checkNull(emailStr) == true){
+			return originStr;
+		}else{
+			strLength = emailStr.toString().split('@')[0].length - 3;
+			
+			// ex1) abcdefg12345@naver.com => ab**********@naver.com
+			// return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
+
+			// ex2) abcdefg12345@naver.com => ab**********@nav******
+			return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*').replace(/.{6}$/, "******");
+		}
+	},
+
+  name (str){
+		let originStr = str;
+		let maskingStr;
+		let strLength;
+		
+		if(this.checkNull(originStr) == true){
+			return originStr;
+		}
+		
+		strLength = originStr.length;
+		
+		if(strLength < 3){
+			maskingStr = originStr.replace(/(?<=.{1})./gi, "*");
+		}else {
+			maskingStr = originStr.replace(/(?<=.{2})./gi, "*");
+		}
+		
+		return maskingStr;
+	}
+}

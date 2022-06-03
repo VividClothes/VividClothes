@@ -3,9 +3,9 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>쇼핑-데모</title>
+    <title>상품 관리</title>
     <!-- 아이콘 -->
-    <link rel="icon" type="image/png" sizes="16x16" href="/elice-rabbit-favicon.png" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/vividclothes-fabicon.png" />
     <!-- bulma css 관련 -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.3/css/bulma.min.css" />
     <!-- 폰트 어썸: 아이콘 -->
@@ -19,15 +19,28 @@
     <script src="admin-product.js" type="module" defer></script>
   </head>
   <body>
+    <div id="root">
+      <div id="header"></div>
+      <div id="category"></div>
+      <div id="add-product-modal"></div>
+      <div id="edit-product-modal"></div>
+      <div id="layout">
+        <div id="title-section"></div>
+        <div id="main">
+          <div id="products-grid"></div>
+          <div id="pagination"></div>
+        </div>
+      </div>
+    </div>
     <!-- <custom-modal></custom-modal> -->
-    <div class="products-layout">
+    <!-- <div class="products-layout">
       <div class="content-space">
         <div>
           <span class="category-name"></span>
         </div>
         <div class="main-content"></div>
       </div>
-    </div>
+    </div> -->
     <!-- <div id="header"></div>
     <custom-layout>
       <custom-title-section>
