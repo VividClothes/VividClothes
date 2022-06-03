@@ -189,6 +189,19 @@ userRouter.post('/google/login', async (req, res, next) => {
   }
 });
 
+// 카카오 로그인 요청
+userRouter.get('/login/kakao', passport.authenticate('kakao'));
+
+// 카카오 로그인 인증
+userRouter.get('/login/kakao/callback',
+    passport.authenticate('kakao', {
+        failureRedirect: '/login'
+    }),
+    (req, res) => {
+        res.redirect('/login');
+    }
+);
+
 //비밀번호 찾기
 userRouter.post('/reset-password', async (req, res) => {
   const { email } = req.body;
