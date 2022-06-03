@@ -4,7 +4,6 @@ import { pagination } from '../../utils/pagination';
 
 const Product = model('products', ProductSchema);
 
-
 const select = {
     _id: true,
     productName: true,
@@ -83,6 +82,17 @@ export class ProductModel {
             .populate(populate);
 
         return product;
+    }
+
+    // 상품명, info, color 옵션에서 keyword 검색
+    async findByKeyword(keyword) {
+        const products = await Product
+            .find(
+                { $text: { $search: keyword } }
+            )
+            .sort({ score: { $meta: 'textScore' } })
+
+        return products;
     }
 
     // 상품 정보 수정

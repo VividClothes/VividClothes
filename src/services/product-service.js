@@ -52,6 +52,13 @@ class ProductService {
         return product;
     }
 
+    // 키워드 검색
+    async searchKeyword(keyword){
+        const products = await this.productModel.findByKeyword(keyword);
+
+        return products;
+    }
+
     // 상품의 orderCount 증감
     async increaseOrderCount(productId, amount) {
         const product = await this.productModel.update(
