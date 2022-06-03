@@ -27,7 +27,7 @@ const createAdminOrderList = (orders) => /* html */ `
         <div class="order-content">
           <div class="order-number order-side-content flex-box">
             <span>${_id}</span>
-            <span>${orderer.email}</span>
+            <span>${orderer ? orderer.email : ''}</span>
             <span>${convertedDate}</span>
             <button data-orderid="${_id}" class="order-cancel-btn">주문취소</button>
         </div>
