@@ -60,9 +60,18 @@ function onClickSubmitBtn(component) {
     }
 
     if (submitForm.getAttribute('id') === 'delete-user') {
+      const reqBody = JSON.stringify({ currentPassword: password.value });
+      console.log(reqBody);
       try {
-        const data = await Api.delete('/api', 'user', { currentPassword: password.value });
-        console.log(data);
+        await fetch('/api/user', {
+          method: 'DELETE',
+          headers: {
+            'Content-Type': 'application/json',
+            Authorization: `Bearer ${localStorage.getItem('token')}`,
+          },
+          body: reqBody,
+        });
+
         alert('회원정보 삭제가 완료되었습니다.');
         localStorage.removeItem('token');
         localStorage.removeItem('role');
