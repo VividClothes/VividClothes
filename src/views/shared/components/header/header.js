@@ -59,7 +59,7 @@ searchProductButton.addEventListener('click', (e) => {
     alert('제품명을 입력해주세요.');
   }
   else {
-    window.location.href=`/products?searchInput=${searchInput}`;
+    window.location.href=`/products?searchInput=${searchInput}&page=1`;
   }
 })
 
