@@ -180,8 +180,12 @@ function onClickImgTagCancelBtn(component) {
   imgCancelBtn.forEach((btn) => {
     btn.addEventListener('click', (e) => {
       delete imgsHash[e.target.dataset.key];
-
       e.target.parentNode.parentNode.remove();
+
+      if (Object.keys(imgsHash).length === 0 && imgsHash.constructor === Object) {
+        const uploadBtn = component.querySelector('.img-upload-btn-container');
+        uploadBtn.remove();
+      }
     });
   });
 }
