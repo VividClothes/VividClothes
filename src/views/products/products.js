@@ -34,7 +34,7 @@ async function addAllElements() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const page = urlParams.get('page');
-  const perPage = 2;
+  const perPage = 20;
 
   const products = await Api.get(
     `/product/category`,
@@ -79,7 +79,7 @@ async function createProductsList(products) {
     .map(({ _id, productName, category, price, imagePath, info, option }) => {
       return `
       <li class="col">
-        <a class="a-link" href=/product?id=${_id}>
+        <a class="a-link" href=/product?id=${_id}&page=1>
           <div class="card">
             <div class="card-image">
               <div class="img-container">
@@ -92,7 +92,7 @@ async function createProductsList(products) {
             <div>
               <div class="medias">
                 <div class="media-content">
-                  <a class="a-link" href=/product?id=${_id}><p class="title font-16">${productName}</p></a>
+                  <a class="a-link" href=/product?id=${_id}&page=1><p class="title font-16">${productName}</p></a>
                 </div>
               </div>
 
