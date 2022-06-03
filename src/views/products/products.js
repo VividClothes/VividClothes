@@ -34,7 +34,7 @@ async function addAllElements() {
 
   const urlParams = new URLSearchParams(window.location.search);
   const page = urlParams.get('page');
-  const perPage = 20;
+  const perPage = 10;
 
   const products = await Api.get(
     `/product/category`,

@@ -392,7 +392,7 @@ let optionKeys = [];
   console.log(reviews);
 
   const page = urlParams.get('page');
-  const perPage = 10;
+  const perPage = 5;
 
   const reviewResult = await Api.get(
     `/review/product`,
