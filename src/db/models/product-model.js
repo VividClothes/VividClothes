@@ -1,8 +1,10 @@
 import { model } from 'mongoose';
 import { ProductSchema } from '../schemas/product-schema';
+import { CategorySchema } from '../schemas/category-schema';
 import { pagination } from '../../utils/pagination';
 
 const Product = model('products', ProductSchema);
+const Category = model('categories', CategorySchema);
 
 const select = {
     _id: true,
@@ -35,24 +37,23 @@ export class ProductModel {
         return products;
     }
 
-    // 인기 상위 n개 상품 조회
+    // n개 카테고리별 Best 상품 조회
     async findPopular(count) {
-        // const groupByCategory = await Product
-        //     .aggregate([
-        //         {
-        //             $group: {
-        //                 _id: '$category',
-        //                 maxCount: {$max: '$orderCount'}
-        //             }
-        //         }
-        //     ])
-        //     .sort('-maxCount')
-        //     .limit(4);
-        // const popularProducts = await Category.populate(groupByCategory, {path: '_id', select: 'categoryName'});
-        const products = await Product.find({})
-            .sort('-orderCount')
-            .limit(count)
-            .populate(populate);
+        const products = await Product
+            .aggregate([
+                {
+                    $sort: {orderCount: -1, createdAt: -1}
+                },
+                {
+                    $group: {
+                        _id: '$category',
+                        product: {$first: "$$ROOT"}
+                    }
+                }
+            ])
+            .sort('-product.orderCount -product.createAt')
+            .limit(count);
+        Category.populate(products, 'product.category');
 
         return products;
     }

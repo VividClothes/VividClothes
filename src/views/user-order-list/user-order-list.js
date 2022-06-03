@@ -46,7 +46,7 @@ let orderId = 0;
 /****************************모달**********************************/
 const open = (e, item) => {
   modal.classList.remove("hidden");
-  orderProductId = item.reviewId;
+  orderProductId = item.orderProductId;
   orderId = item.orderId; 
   starSpan.style.width = '100%';
 }
@@ -116,7 +116,7 @@ exitButton.addEventListener("click", close);
           const realCancel = confirm('상품 주문을 취소하시겠습니까?');
 
           if(realCancel) {
-            await Api.patch(`/order/${item.orderId}/product/${item.productId}/cancel`);
+            await Api.patch(`/order/${item.orderId}/product/${item.orderProductId}/cancel`);
             alert('상품 주문이 취소되었습니다.');
             window.location.reload();
           }
@@ -243,7 +243,7 @@ function getOrderItems(orders) {
         productName: item.product[0].productName,
         productId: item.product[0]._id,
         hasReview: item.hasReview,
-        reviewId: item._id
+        orderProductId: item._id
       }
       orderItems.push(pushItem);
     })

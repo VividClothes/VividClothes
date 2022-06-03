@@ -30,7 +30,7 @@ addAllEvents();
 // 여러 개의 addEventListener들을 묶어주어서 코드를 깔끔하게 하는 역할임.
 function addAllEvents() {
   localSubmitButton.addEventListener('click', handleLocalSubmit);
-  googleSubmitButton.addEventListener('click', handleGoogleSubmit);
+  //googleSubmitButton.addEventListener('click', handleGoogleSubmit);
   kakaoSubmitButton.addEventListener('click', handleKakaoSubmit);
 }
 
@@ -104,7 +104,6 @@ async function handleKakaoSubmit(e) {
   // 로그인 api 요청
   try {
     const result = await Api.get('/api/login/kakao');
-
     const token = result.token;
     const role = result.userRole;
     const hashedEmail = result.hashedEmail;

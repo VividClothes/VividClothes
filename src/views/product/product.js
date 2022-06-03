@@ -168,7 +168,7 @@ let optionKeys = [];
                     const [ size, color ] = option.split(' / ');
                     const optionKey = `${size}${color}`;
                     optionKeys = optionKeys.filter(elem => elem !== optionKey);
-
+                    
                     e.target.parentNode.remove();
                 })
             }
@@ -283,6 +283,7 @@ let optionKeys = [];
                     optionKeys = optionKeys.filter(elem => elem !== optionKey);
 
                     e.target.parentNode.remove();
+                    setTotalPriceSum();
                 })
             }
         }
