@@ -11,8 +11,10 @@ import {
 } from './routers';
 import { errorHandler } from './middlewares';
 import passport from 'passport';
+
 // import socialLogin from './services/social-login-service';
 const app = express();
+
 //passport 설정
 // passportconfig();
 // app.use(
@@ -49,10 +51,23 @@ app.use('/category', categoryRouter);
 app.use('/order', orderRouter);
 app.use('/review', reviewRouter);
 
-// app.use(passport.initialize());
 // app.use(passport.session());
 // 순서 중요 (errorHandler은 다른 일반 라우팅보다 나중에 있어야 함)
 // 그래야, 에러가 났을 때 next(error) 했을 때 여기로 오게 됨
+userRouter.get(
+  '/api/google',
+  passport.authenticate('google', { scope: ['profile'] })
+);
+
+userRouter.get(
+  '/api/google/callback',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
+  }
+);
+
 app.use(errorHandler);
 
 export { app };

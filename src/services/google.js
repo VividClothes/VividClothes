@@ -3,22 +3,22 @@ import { userModel } from '../db';
 import { Strategy as GoogleStrategy } from 'passport-google-oauth20';
 import passport from 'passport';
 // const GoogleStrategy = GoolePassport.Strategy;
-passport.use(
-  new GoogleStrategy(
-    {
-      clientID: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_KEY,
-      callbackURL: 'http://localhost:5000/api/google/login',
-    },
-    async function (accessToken, refreshToken, profile, cb) {
-      console.log(profile);
-      // const isRegister = await userModel.findByEmail(payload.email);
-      User.findOrCreate({ googleId: profile.id }, function (err, user) {
-        return cb(err, user);
-      });
-    }
-  )
-);
+// passport.use(
+//   new GoogleStrategy(
+//     {
+//       clientID: process.env.GOOGLE_CLIENT_ID,
+//       clientSecret: process.env.GOOGLE_CLIENT_KEY,
+//       callbackURL: 'http://localhost:5000/api/google/login',
+//     },
+//     async function (accessToken, refreshToken, profile, cb) {
+//       console.log(profile);
+//       // const isRegister = await userModel.findByEmail(payload.email);
+//       User.findOrCreate({ googleId: profile.id }, function (err, user) {
+//         return cb(err, user);
+//       });
+//     }
+//   )
+// );
 // async function verify(credential) {
 //   const client = new OAuth2Client(process.env.ClIENT_ID);
 //   const ticket = await client.verifyIdToken({

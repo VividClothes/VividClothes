@@ -75,7 +75,7 @@ exitButton.addEventListener('click', close);
     deleteButton.addEventListener('click', async (e) => {
       e.preventDefault();
 
-      const isDelete = confirm('리뷰를 삭제하시겠습니까?');
+      const isDelete = confirm('리뷰를 삭제하시겠습니까?\n리뷰는 다시 등록할 수 없습니다.');
 
       if (isDelete) {
         await Api.delete(`/review/${reviews[index]._id}/delete`);
@@ -149,8 +149,9 @@ function refreshModalContents() {
 }
 
 registerButton.addEventListener('click', async (e) => {
-  const rate = parseInt(starSpan.style.width);
-
+  
+  const rate = parseInt(starSpan.style.width) / 10;
+  
   if (!contentValue.value) {
     alert('리뷰 내용을 입력해주세요');
   } else {
