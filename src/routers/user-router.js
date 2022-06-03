@@ -166,28 +166,20 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
   }
 });
 
-userRouter.post('/google/login', async (req, res, next) => {
-  try {
-    const { credential } = req.body; //token jwt
-    const { email, fullName, isRegister } = await verify(credential);
+//
+userRouter.get(
+  '/google',
+  passport.authenticate('google', { scope: ['profile'] })
+);
 
-    if (!isRegister) {
-      await userService.addUser({
-        fullName,
-        email,
-        password: 'google',
-      });
-    }
-
-    const { token, userRole, hashedEmail } = await userService.getUserToken({
-      email: email,
-      password: 'google',
-    });
-    res.status(200).json({ token, userRole, hashedEmail });
-  } catch (err) {
-    next(err);
+userRouter.get(
+  '/google/login',
+  passport.authenticate('google', { failureRedirect: '/login' }),
+  function (req, res) {
+    // Successful authentication, redirect home.
+    res.redirect('/');
   }
-});
+);
 
 //비밀번호 찾기
 userRouter.post('/reset-password', async (req, res) => {
