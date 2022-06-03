@@ -50,7 +50,7 @@ let optionKeys = [];
 (async () => {
     const urlParams = new URLSearchParams(window.location.search);
     const productID = urlParams.get('id');
-    let results = await Api.get(`/product/${productID}`);
+    let results = await Api.get(`/product/id/${productID}`);
     const result = results.product;
     console.log(result);
 

@@ -79,7 +79,7 @@ productRouter.get('/category/:categoryId', async (req, res, next) => {
 });
 
 // 특정 상품 조회
-productRouter.get('/:productId', async (req, res, next) => {
+productRouter.get('/id/:productId', async (req, res, next) => {
     try {
         // req의 params에서 데이터 가져옴
         const { productId } = req.params;
@@ -89,6 +89,21 @@ productRouter.get('/:productId', async (req, res, next) => {
         const reviews = await reviewService.getReviewByProduct(productId);
 
         res.status(200).json({ product, reviews });
+    } catch (error) {
+        next(error);
+    }
+});
+
+// 키워드 검색
+productRouter.get('/search', async (req, res, next) => {
+    try {
+        const { keyword } = req.body;
+        const page = Number(req.query.page || 1);
+        const perPage = Number(req.query.perPage || 10);
+
+        const products = await productService.searchKeyword(keyword, page, perPage);
+
+        res.status(200).json(products);
     } catch (error) {
         next(error);
     }
