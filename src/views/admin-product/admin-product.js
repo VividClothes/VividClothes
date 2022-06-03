@@ -12,6 +12,7 @@ import titleSection from '/layout/title-section.js';
 import productGrid from '/products/products-grid.js';
 import { createModal, addModalListener } from '/modal/modal.js';
 import { addProducttModalData, editProductModalData } from '/modal/product-modal-data.js';
+import { addPaginationBarListener } from '/pagination/pagination-bar.js';
 
 class AdminProduct {
   constructor() {
@@ -27,13 +28,14 @@ class AdminProduct {
     this.layout = document.getElementById('layout');
     this.titleSection = document.getElementById('title-section');
     this.productGrid = document.getElementById('products-grid');
+    this.pagination = document.getElementById('pagination');
   }
 
   async createDOM() {
     this.header.insertAdjacentElement('afterbegin', header);
     this.layout.insertAdjacentHTML('afterbegin', layout());
 
-    const categories = await Api.get('/category/list');
+    const categories = await Api.get('/category', `list?page=`);
     this.category.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
 
     this.titleSection.insertAdjacentHTML(
@@ -56,6 +58,19 @@ class AdminProduct {
       'afterbegin',
       createModal({ data: editProductModalData, apiData: categories })
     );
+    const urlParams = new URLSearchParams(window.location.search);
+    const category = urlParams.get('category');
+
+    const options = this.titleSection.querySelectorAll('.select-box > option');
+
+    const newOptions = Array.from(options);
+
+    for (let i = 0; i < newOptions.length; i++) {
+      if (newOptions[i].value === category) {
+        newOptions[i].selected = true;
+        break;
+      }
+    }
   }
 
   addAllEvents() {
@@ -64,6 +79,7 @@ class AdminProduct {
     addModalListener(this.editProductModal);
     addCategoryListener(this.category);
     addComponentEvents(this.titleSection);
+    addPaginationBarListener(this.pagination);
 
     this.addSelectCategoryEvent();
     this.addCreateProductEvent();
@@ -93,9 +109,8 @@ class AdminProduct {
     const selectBox = this.titleSection.querySelector('.select-box');
 
     selectBox.addEventListener('change', async (e) => {
-      this.productGrid.innerHTML = await productGrid({
-        categoryId: e.target.value,
-      });
+      window.location.href = `/admin-product/?category=${e.target.value}&page=1`;
+      this.productGrid.innerHTML = await productGrid();
     });
   }
 
