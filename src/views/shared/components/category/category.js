@@ -16,7 +16,7 @@ const createCategory = async (props) => {
           .map(({ categoryName }) => {
             return /* html */ `
             <li>
-              <a class="link" href="/products?category=${categoryName}">
+              <a class="link" href="/products?category=${categoryName}&page=1">
                 <span class="link-text">${categoryName}</span>
               </a>
             </li>`;
