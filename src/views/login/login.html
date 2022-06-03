@@ -62,10 +62,6 @@
           </div>
         </div>
 
-        <button class="button is-info is-fullwidth" id="submitButton">
-          로그인하기
-        </button>
-
         <div class="button is-info is-fullwidth" id="localSubmitButton">
           로그인
         </div>
@@ -85,15 +81,11 @@
           data-login_uri="http://localhost:5000/api/google/login"
           data-auto_select="true"
         ></div>
-        <div
-          class="g_id_signin"
-          data-type="standard"
-          data-size="large"
-          data-theme="outline"
-          data-text="sign_in_with"
-          data-shape="rectangular"
-          data-logo_alignment="left"
-        ></div>
+        <div class="g_id_signin"></div>
+        <div class="button is-info is-fullwidth" id="googleSubmitButton">
+          <img src="/google_logo.png" alt="google logo" class="googleLogo" />
+          구글 로그인
+        </div>
       </form>
     </div>
   </body>
