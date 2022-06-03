@@ -35,6 +35,7 @@ header.insertAdjacentHTML('afterbegin', createHeader()); // 헤더 생성. 여�
 header.querySelector('#header-nav-root').insertAdjacentElement('afterbegin', headerNav);
 
 const searchProductButton = header.querySelector('#searchQuerySubmit');
+const searchQuerySubmit = header.querySelector('#searchQueryInput');
 
 function addHeaderEventListener() {
   hamburgerEventListnener();
@@ -59,8 +60,23 @@ searchProductButton.addEventListener('click', (e) => {
     alert('제품명을 입력해주세요.');
   }
   else {
-    window.location.href=`/products?searchInput=${searchInput}`;
+    window.location.href=`/products?searchInput=${searchInput}&page=1`;
   }
 })
+
+searchQuerySubmit.addEventListener('keyup', (e) => {
+  e.preventDefault();
+  console.log(1)
+  if (window.event.keyCode == 13) {
+    const searchInput = header.querySelector('#searchQueryInput').value;
+    if (!searchInput) {
+      alert('제품명을 입력해주세요.');
+    }
+    else {
+      window.location.href=`/products?searchInput=${searchInput}&page=1`;
+    }
+  }
+})
+
 
 export { header, addHeaderEventListener };
