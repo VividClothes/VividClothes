@@ -95,9 +95,9 @@ productRouter.get('/id/:productId', async (req, res, next) => {
 });
 
 // 키워드 검색
-productRouter.get('/search', async (req, res, next) => {
+productRouter.get('/search/:keyword', async (req, res, next) => {
     try {
-        const { keyword } = req.body;
+        const { keyword } = req.params;
         const page = Number(req.query.page || 1);
         const perPage = Number(req.query.perPage || 10);
 
