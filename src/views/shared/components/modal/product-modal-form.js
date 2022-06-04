@@ -119,7 +119,7 @@ const createProductModalForm = (props) => {
 
 const imgsHash = {};
 const colors = new Set();
-let imagePaths = '';
+let imagePaths = [];
 
 const TagsHTML = (tagName, tagType) => {
   const cancelClassName = tagType === 'img' ? 'img-cancel' : 'color-cancel';
@@ -200,6 +200,7 @@ function onClickUploadBtn(component) {
     for (const fileName in imgsHash) {
       formData.append('images', imgsHash[fileName]);
     }
+
     const res = await fetch('/image/register', {
       method: 'post',
       body: formData,
@@ -261,6 +262,26 @@ function onClickSubmitBtn(component) {
     const sizeInputs = component.querySelectorAll('.size-radio-input');
     const color = [...colors];
 
+    if (!productName) {
+      alert('상품 이름이 공백입니다.');
+      return;
+    }
+
+    if (!info) {
+      alert('상품 설명이 공백입니다.');
+      return;
+    }
+
+    if (!price) {
+      alert('가격이 공백입니다.');
+      return;
+    }
+
+    if (imagePath.length === 0) {
+      alert('이미지 등록이 정상적으로 이루어지지 않았습니다.');
+      return;
+    }
+
     let size = [];
 
     if (sizeInputs.length > 0) {
@@ -271,6 +292,16 @@ function onClickSubmitBtn(component) {
           return [...acc];
         }
       }, []);
+    }
+
+    if (size.length === 0) {
+      alert('사이즈를 체크해주세요');
+      return;
+    }
+
+    if (color.length === 0) {
+      alert('색을 추가해주세요.');
+      return;
     }
 
     const data = { productName, info, price, category, imagePath, size, color };
