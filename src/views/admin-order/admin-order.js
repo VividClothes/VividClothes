@@ -12,6 +12,7 @@ import { createAdminOrderList, addAdminOrderListener } from '/admin-order/admin-
 import { createCategory, addCategoryListener } from '/category/category.js';
 import layout from '/layout/layout.js';
 import titleSection from '/layout/title-section.js';
+import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
 
 class AdminOrder {
   constructor() {
@@ -44,7 +45,27 @@ class AdminOrder {
       })
     );
 
-    const orders = await Api.get('/order/list');
+    const urlParams = new URLSearchParams(window.location.search);
+    const page = urlParams.get('page');
+
+    const perPage = 10;
+
+    const orders = await Api.get(`/order`, `list?page=${page}&perPage=${perPage}`);
+
+    let pageData = {
+      page: orders.page,
+      perPage: orders.perPage,
+      totalPage: orders.totalPage,
+    };
+
+    pageData = {
+      ...pageData,
+      pageUrl: (page) => `/admin-order?page=${page}`,
+    };
+
+    document
+      .getElementById('pagination')
+      .insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
 
     this.orderList.insertAdjacentHTML('afterbegin', createAdminOrderList(orders.datas));
   }
