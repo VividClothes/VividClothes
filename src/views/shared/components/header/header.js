@@ -11,7 +11,7 @@ const createHeader = () => {
       </div>
       <div class="wrapper">
         <div class="searchBar">
-          <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="제품명 검색" value="" />
+          <input id="searchQueryInput" type="text" name="searchQueryInput" placeholder="제품 검색" value="" />
           <button id="searchQuerySubmit" type="submit" name="searchQuerySubmit">
             <i class="fa-solid fa-magnifying-glass"></i>
           </button>
