@@ -6,7 +6,7 @@ const headerNavAdmin = () => {
   <a href="/admin-category" class="dropdown-item ">
     카테고리 관리
   </a>
-  <a href="/admin-order" class="dropdown-item">
+  <a href="/admin-order?page=1" class="dropdown-item">
     주문 관리
   </a>
 `;
