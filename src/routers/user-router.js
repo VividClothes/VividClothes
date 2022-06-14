@@ -4,7 +4,7 @@ import { userService } from '../services';
 import { checkBody, loginRequired, userRoleCheck } from '../middlewares';
 import * as userValidator from '../middlewares/user-validator';
 import generateRandomPassword from '../utils/generate-random-password';
-import passport from 'passport';
+// import passport from 'passport';
 // import { Strategy as KakaoStrategy } from 'passport-kakao';
 // import { UserSchema } from '../db/schemas/user-schema';
 import verify from '../services/google-passport';
@@ -168,38 +168,38 @@ userRouter.delete('/user', loginRequired, async (req, res, next) => {
 });
 
 //
-userRouter.get(
-  '/google',
-  passport.authenticate('google', { scope: ['profile'] })
-);
+// userRouter.get(
+//   '/google',
+//   passport.authenticate('google', { scope: ['profile'] })
+// );
 
-userRouter.get(
-  '/google/login',
-  passport.authenticate('google', { failureRedirect: '/login' }),
-  function (req, res) {
-    // Successful authentication, redirect home.
-    res.redirect('/');
-  }
-);
+// userRouter.get(
+//   '/google/login',
+//   passport.authenticate('google', { failureRedirect: '/login' }),
+//   function (req, res) {
+//     // Successful authentication, redirect home.
+//     res.redirect('/');
+//   }
+// );
 
-// 카카오 로그인 요청
-userRouter.get('/login/kakao', passport.authenticate('kakao'));
+// // 카카오 로그인 요청
+// userRouter.get('/login/kakao', passport.authenticate('kakao'));
 
-// 카카오 로그인 인증
-userRouter.get('/login/kakao/callback',
-    passport.authenticate('kakao', {
-        failureRedirect: '/login',
-        session: false
-    }),
-    async (req, res, next) => {
-        const user = await userService.getUserToken({
-            email: req.user.email,
-            password: 'kakao'+req.user.email
-        })
+// // 카카오 로그인 인증
+// userRouter.get('/login/kakao/callback',
+//     passport.authenticate('kakao', {
+//         failureRedirect: '/login',
+//         session: false
+//     }),
+//     async (req, res, next) => {
+//         const user = await userService.getUserToken({
+//             email: req.user.email,
+//             password: 'kakao'+req.user.email
+//         })
 
-        res.redirect('/')
-    }
-);
+//         res.redirect('/')
+//     }
+// );
 
 //비밀번호 찾기
 userRouter.post('/reset-password', async (req, res) => {
