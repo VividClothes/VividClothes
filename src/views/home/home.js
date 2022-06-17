@@ -32,8 +32,6 @@ const mainImageContainer = document.querySelector('.main-img-container');
 
   mainImageContainer.insertAdjacentHTML('beforeend', makeMainImageHTML(bestItems));
 
-  homeImageEvents();
-
   function showSlides() {
     slideIndex++;
     slide.style.backgroundImage = `url("${bestItemsImagePaths[slideIndex]}")`;
@@ -52,22 +50,22 @@ function makeMainImageHTML(bestItems) {
   <div class="img1"
   style='background-image: url("${bestItems[0].imagePath}")'
   onclick='window.location.href="/product?id=${bestItems[0].productId}"'>
-    <div class="imgFloat">BEST ${bestItems[0].category}</div>
+    <div class="imgFloat"><div>BEST ${bestItems[0].category}</div></div>
   </div>
   <div class="img2"
   style='background-image:url("${bestItems[1].imagePath}")'
   onclick='window.location.href="/product?id=${bestItems[1].productId}"'>
-    <div class="imgFloat">BEST ${bestItems[1].category}</div>
+    <div class="imgFloat"><div>BEST ${bestItems[1].category}</div></div>
   </div>
   <div class="img3"
   style='background-image:url("${bestItems[2].imagePath}")'
   onclick='window.location.href="/product?id=${bestItems[2].productId}"'>
-    <div class="imgFloat">BEST ${bestItems[2].category}</div>
+    <div class="imgFloat"><div>BEST ${bestItems[2].category}</div></div>
   </div>
   <div class="img4"
   style='background-image:url("${bestItems[3].imagePath}")'
   onclick='window.location.href="/product?id=${bestItems[3].productId}"'>
-    <div class="imgFloat">BEST ${bestItems[3].category}</div>
+    <div class="imgFloat"><div>BEST ${bestItems[3].category}</<div>></div>
   </div>
   `;
 }
@@ -96,22 +94,6 @@ function getRecentItems(items) {
       info: item.info,
     };
   });
-}
-
-// 홈 이미지 이벤트 리스너 등록 (마우스 호버시 글자 및 배경색 변화)
-function homeImageEvents() {
-  const imgFloats = document.getElementsByClassName('imgFloat');
-  for (let elem of imgFloats) {
-    elem.addEventListener('mouseover', (e) => {
-      e.target.style.color = 'rgb(0,0,0,1)';
-      e.target.style.backgroundColor = 'rgb(255,255,255, 0.9)';
-    });
-
-    elem.addEventListener('mouseout', (e) => {
-      e.target.style.color = 'rgb(0,0,0,0)';
-      e.target.style.backgroundColor = 'rgb(255,255,255,0)';
-    });
-  }
 }
 
 // 신상품 렌더링
