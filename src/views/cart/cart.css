@@ -5,7 +5,7 @@ input {
 }
 
 .cart-container {
-  width: 90vw;
+  width: 100vw;
   margin-right: auto;
   margin-left: auto;
   margin-top: 10vh;
@@ -16,6 +16,7 @@ input {
   font-weight: bold;
   padding-bottom: 10px;
   border-bottom: solid #ddd 1px;
+  padding-left: 20px;
 }
 
 .delete-container {
@@ -30,6 +31,10 @@ input {
   font-size: 12px;
   font-weight: bold;
   text-decoration: none;
+}
+
+.delete-all-button {
+  margin-left: 15px;
 }
 
 .items-header {
@@ -248,6 +253,23 @@ input {
   align-items: center;
 }
 
+
+
+
+/********** Tablet **********/
+@media (min-width: 768px) {
+  .cart-container {
+    width: 90vw;
+  }
+
+  .cart-title {
+    padding-left: 0px;
+  }
+
+  .delete-all-button {
+    margin-left: 0px;
+  }
+}
 
 
 
