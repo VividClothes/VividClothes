@@ -320,17 +320,13 @@ function makeItemContainerHTML(product, index) {
       </div>
     </div>
     <div class="price">${addCommas(product.price)}</div>
+
     <div class="product-quantity-container">
-      <span class="quantity-container">
-        <a href="#" class="quantity-wrap up-button">
-          <img src="/btn_count_up.gif" alt="수량증가">
-        </a>
+        <span class="fa-solid fa-plus quantity-wrap up-button"></span>
         <input class="quantity" value="${product.quantity}" type="text">
-        <a href="#" class="quantity-wrap down-button">
-          <img src="/btn_count_down.gif" alt="수량감소">
-        </a>
-      </span>
+        <span class="fa-solid fa-minus quantity-wrap down-button"></span>
     </div>
+    
     <div class="total-price">${addCommas(product.price * product.quantity)}</div>
     <div class="delete-button-container">
       <input class="delete-button" type="button" value="삭제하기" data-item-index="${index}">
