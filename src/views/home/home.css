@@ -96,12 +96,14 @@
 /* 데스크탑 */
 @media (min-width: 1024px) {
   .div-container {
-    margin: 3% 0;
+    margin: 70px 0;
   }
 
   .main-img-container {
-    height: 40vmax;
-    width: 63vmax;
+    /* max-height: 630px;
+    max-width: 900px; */
+    height: 70vmin;
+    width: 105vmin;
   }
   
   .imgFloat {
