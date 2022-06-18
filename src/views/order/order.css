@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
 
 .order-container {
-    width: 1400px;
+    width: 100vw;
     margin-right: auto;
     margin-left: auto;
     margin-top: 10vh;
@@ -12,6 +12,7 @@
     font-size: 1.2rem;
     font-weight: bold;
     padding-bottom: 10px;
+    padding-left: 20px;
     border-bottom: solid #ddd 1px;
 }
 
@@ -53,8 +54,16 @@
 
 /* 수령인, 휴대전화, 배송지 주소 컨테이너 */
 .recipient-info-all {
-    padding: 15px 15px;
-    border: solid #ccc 1px;
+    padding: 10px 30px;
+}
+
+.recipient-info-all:first-of-type {
+    border-top: solid #ccc 1px;
+}
+
+.recipient-info-all:last-of-type {
+    border-bottom: solid #ccc 1px;
+    padding-bottom: 20px;
 }
 
 /* 휴대전화 컨테이너 */
@@ -62,17 +71,12 @@
     margin: -1px 0px;
 }
 
-/* 주소 컨테이너 */
-.address-container {
-    display: flex;
-    flex-direction: row;
-    justify-content: flex-start;
-}
 
 /* 수령자 정보 왼쪽 글자들 박스 */
 .recipient-info-kor {
-    display: inline-block;
+    display: block;
     width: 200px;
+    margin-bottom: 10px;
 }
 
 
@@ -94,7 +98,7 @@
 /* 주소1, 주소2 입력란 */
 .address1,
 .address2 {
-    width: 500px;
+    width: 330px;
     display: block;
     margin-top: 5px;
 }
@@ -112,7 +116,6 @@
 /* 주소찾기 버튼 */
 .postcodeButton {
     background-color: #eee;
-    ;
     width: 90px;
     height: 40px;
     font-weight: bold;
@@ -129,7 +132,6 @@
 
 
 /******************상품정보*******************/
-
 .items-container {
     margin-top: 15px;
 }
@@ -147,8 +149,11 @@
 
 .item-container {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr;
-    place-items: center;
+    grid-template-columns: 1.5fr 1fr 130px;
+    grid-template-areas: 
+        "pno pno pno"
+        "pq pq tp";
+    place-items: start;
     text-align: center;
     font-size: 12.5px;
     font-weight: bold;
@@ -156,13 +161,17 @@
     margin-top: -1px;
 }
 
+.product-name-options { grid-area: pno }
+.product-quantity { grid-area: pq }
+.total-price { grid-area: tp }
+
 .product-name-options {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
     height: 100%;
-    padding: 2% 0% 2% 20%;
+    padding: 10px 20px 10px 40px; 
 }
 
 .image-box {
@@ -172,7 +181,6 @@
     background-position: center center;
     background-repeat: none;
     cursor: pointer;
-    background-image: url('/home-img3.jpg');
 }
 
 .options-box {
@@ -197,7 +205,7 @@
 
 /* 결제하기 버튼 부분 */
 .foot-container {
-    margin: 100px 0px 150px 0px;
+    margin: 80px 0px 100px 0px;
     text-align: center;
 }
 
@@ -205,9 +213,149 @@
     background-color: #0078FF;
     border: none;
     color: white;
-    padding: 15px 100px;
+    padding: 15px 80px;
     font-size: 18px;
     font-weight: bold;
     text-decoration: none;
     cursor: pointer;
-  }
+}
+
+
+
+/* 세부 정보 추가 - 반응형에서 삭제 필요 */
+.items-header {
+    display: none;
+}
+
+.product-quantity { 
+    padding: 0px 0px 20px 60px; 
+}
+
+.product-quantity:before {
+    content: '수량: ';
+}
+
+.total-price:after {
+    content: ' 원';
+}
+
+.product-name-options {
+    font-size: 11.5px;
+}
+
+.recipient-header-eng {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+.product-header-eng {
+    display: inline-block;
+    margin-left: 20px;
+}
+
+
+
+
+/********** Tablet **********/
+@media (min-width: 768px) {
+    .order-container {
+        width: 90vw;
+    }
+
+    .order-title {
+        padding-left: 0px;
+    }
+
+    .product-name-options {
+        font-size: 12.5px;
+    }
+
+    .recipient-header-eng {
+        margin-left: 0px;
+    }
+    
+    .product-header-eng {
+        margin-left: 0px;
+    }
+
+    .recipient-info-kor {
+        display: inline-block;
+        width: 200px;
+        margin: 0px;
+    }
+    
+    /* 주소 컨테이너 */
+    .address-container {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+    }
+
+    .recipient-info-all {
+        padding: 15px 15px;
+        border: solid #ccc 1px;
+    }
+
+    /* 주소1, 주소2 입력란 */
+    .address1,
+    .address2 {
+        width: 400px;
+    }
+}
+
+
+
+
+/********** Laptop **********/
+@media (min-width: 1024px) {
+    .order-container {
+        max-width: 1400px;
+    }
+
+
+    /* 주소1, 주소2 입력란 */
+    .address1,
+    .address2 {
+        width: 500px;
+    }
+
+
+    /******************상품정보*******************/
+    .item-container {
+        grid-template-columns: 3fr 1fr 1fr;
+        grid-template-areas: "pno pq tp";
+        place-items: center;
+    }
+
+    .product-name-options {
+        padding: 2% 0% 2% 20%;
+    }
+
+
+    /* 결제하기 버튼 부분 */
+    .foot-container {
+        margin: 100px 0px 150px 0px;
+    }
+
+    .order-button {
+        padding: 15px 100px;
+    }
+
+
+    /* 세부정보 삭제*/
+    .items-header {
+        display: grid;
+    }
+
+    .product-quantity { 
+        padding: 0;
+    }
+
+    .product-quantity:before {
+        content: '';
+    }
+
+    .total-price:after {
+        content: '';
+    }
+}
