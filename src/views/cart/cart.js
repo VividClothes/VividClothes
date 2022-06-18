@@ -334,6 +334,7 @@ function makeItemContainerHTML(product, index) {
     <div class="total-price">${addCommas(product.price * product.quantity)}</div>
     <div class="delete-button-container">
       <input class="delete-button" type="button" value="삭제하기" data-item-index="${index}">
+      <input class="delete-button delete-button-responsive" type="button" value="X" data-item-index="${index}">
     </div>
   </div>
   `
