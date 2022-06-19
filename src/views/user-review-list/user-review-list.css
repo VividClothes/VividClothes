@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
 
 .review-article-container {
-    width: 80vw;
+    width: 100vw;
     margin-right: auto;
     margin-left: auto;
     margin-top: 10vh;
@@ -13,7 +13,7 @@
     font-weight: bold;
     padding-bottom: 2vh;
     border-bottom: solid #ccc 1px;
-    margin-bottom: 7vh;
+    padding-left: 20px;
 }
 
 
@@ -323,6 +323,10 @@
 
 /********** Tablet **********/
 @media (min-width: 768px) {
+    .review-article-container {
+        width: 600px;
+    }
+
     .review-container-helper {
         width: 600px;
     }
@@ -338,6 +342,9 @@
 
 /********** Laptop **********/
 @media (min-width: 1024px) {
+    .review-article-container {
+        width: 800px;
+    }
     .review-container-helper {
         width: 800px;
     }
