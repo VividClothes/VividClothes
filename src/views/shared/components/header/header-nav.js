@@ -5,7 +5,7 @@ const notLoginHeaderNav = () => /* html */ `
 <ul class="flex-style">
   <li>
     <a class="link" href="/login">로그인</a>
-    <span class="mx-3">/</span>
+    <span class="span-dash">/</span>
   </li>
   <li>
     <a class="link" href="/register">회원가입</a>
@@ -17,7 +17,7 @@ const loginHeaderNav = (config, dropdownContent) => /* html */ `
   <ul class="flex-style">
     <li>
       <a class="link" href="/profile">회원정보</a>
-      <span class="mx-3">/</span>
+      <span class="span-dash">/</span>
     </li>
     
     <li id="nav-mid">
@@ -31,7 +31,7 @@ const loginHeaderNav = (config, dropdownContent) => /* html */ `
           ${dropdownContent()}
         </div class="dropdown-content">
       </div>
-      <span class="mx-3">/</span>
+      <span class="span-dash">/</span>
       </div>
     </li>
   
