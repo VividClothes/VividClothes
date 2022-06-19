@@ -35,6 +35,7 @@ function onClickSubmitBtn(component) {
 
   submitForm.addEventListener('submit', async (e) => {
     e.preventDefault();
+
     if (submitForm.getAttribute('id') === 'edit-user') {
       const address = {
         postalCode: addressCode.value,
@@ -52,18 +53,21 @@ function onClickSubmitBtn(component) {
       try {
         const result = await Api.patch('/api/users', '', data);
         console.log(result);
-        alert('회원정보 수정이 완료되었습니다.');
-        window.location.reload();
       } catch (err) {
         console.log(err);
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
       }
+
+      alert('회원정보 수정이 완료되었습니다.');
+      window.location.reload();
     }
 
     if (submitForm.getAttribute('id') === 'delete-user') {
       const reqBody = JSON.stringify({ currentPassword: password.value });
-      console.log(reqBody);
+
       try {
-        await fetch('/api/user', {
+        const res = await fetch('/api/user', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -72,14 +76,23 @@ function onClickSubmitBtn(component) {
           body: reqBody,
         });
 
-        alert('회원정보 삭제가 완료되었습니다.');
-        localStorage.removeItem('token');
-        localStorage.removeItem('role');
-        localStorage.removeItem('hashedEmail');
-        window.location.href = '/';
+        if (!res.ok) {
+          const errorContent = await res.json();
+          const { reason } = errorContent;
+
+          throw new Error(reason);
+        }
       } catch (err) {
         console.log(err);
+        alert('비밀번호가 일치하지 않습니다.');
+        return;
       }
+
+      alert('회원정보 삭제가 완료되었습니다.');
+      localStorage.removeItem('token');
+      localStorage.removeItem('role');
+      localStorage.removeItem('hashedEmail');
+      window.location.href = '/';
     }
   });
 }
