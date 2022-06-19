@@ -7,6 +7,17 @@ const createCategory = async (props) => {
   return /* html */ `
   ${categoryStyle}
   <aside class="sidebar">
+    <div class="mobile-search">
+      <div class="wrapper">
+        <div class="searchBar">
+          <input class="searchQueryInput" type="text" name="searchQueryInput" placeholder="제품 검색" value="" />
+          <button class="searchQuerySubmit" type="submit" name="searchQuerySubmit">
+            <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+
     <button class="close-button link">
       <i class="fa-solid fa-xmark"></i>
     </button>
@@ -30,6 +41,7 @@ const createCategory = async (props) => {
 
 function addCategoryListener(component) {
   onClickCancelBtn(component);
+  searchEvents(component);
 }
 
 function onClickCancelBtn(component) {
@@ -38,6 +50,34 @@ function onClickCancelBtn(component) {
 
   closeButton.addEventListener('click', () => {
     sidebar.classList.remove('open');
+  });
+}
+
+function searchEvents(component) {
+  const searchProductButton = component.querySelector('.searchQuerySubmit');
+  const searchQuerySubmit = component.querySelector('.searchQueryInput');
+
+  searchProductButton.addEventListener('click', (e) => {
+    e.preventDefault();
+    const searchInput = component.querySelector('.searchQueryInput').value;
+    if (!searchInput) {
+      alert('제품명을 입력해주세요.');
+    } else {
+      window.location.href = `/products?searchInput=${searchInput}&page=1`;
+    }
+  });
+
+  searchQuerySubmit.addEventListener('keyup', (e) => {
+    e.preventDefault();
+    console.log(1);
+    if (window.event.keyCode == 13) {
+      const searchInput = component.querySelector('.searchQueryInput').value;
+      if (!searchInput) {
+        alert('제품명을 입력해주세요.');
+      } else {
+        window.location.href = `/products?searchInput=${searchInput}&page=1`;
+      }
+    }
   });
 }
 
