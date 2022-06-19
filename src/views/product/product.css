@@ -3,32 +3,20 @@
 .article-container {
     display: flex;
     justify-content: center;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    height: 89vh;
-    width: 100vw;
-    user-select: none;
 }
 
 .image-container {
-    width: 50vmin;
-    height: 64vmin;
-    margin-right: 22vmin;
     display: flex;
     flex-direction: row;
     justify-content: center;
     align-items: center;
     position: relative;
-    /* background-size: cover;
-    background-position: center center;
-    background-repeat: none; */
-    /* box-shadow: 0px 0px 20px 1px rgb(230, 230, 230); */
 }
 
 .main-image {
     display: block;
-    /* max-width: 100%;
-    height: auto; */
     max-height: 100%;
     width: auto;
     margin-left: auto;
@@ -37,7 +25,7 @@
 
 
 .prev, .next {
-    font-size: 2.5vmin;
+    font-size: 3vmin;
     color: white;
     display: inline-block;
 }
@@ -52,8 +40,8 @@
     flex-direction: row;
     justify-content: center;
     align-items: center;
-    width: 4vmin;
-    height: 4vmin;
+    width: 6vmin;
+    height: 6vmin;
     background-color: rgba(0,0,0,0.3);
     cursor: pointer;
     visibility: hidden;
@@ -70,30 +58,33 @@
 }
 
 .info-container {
-    width: 50vmin;
-    height: 64vmin;
+    padding-top: 20px;
+    width: 80vw;
+    height: 550px;
+    margin-right: 5%;
 }
 
 .product-name-container {
     font-weight: bold;
-    font-size: 20px;
-    padding-bottom: 1.2vmin;
+    font-size: 18px;
+    padding-bottom: 10px;
 }
 
 .product-info-container {
     color: #777;
-    font-size: 15px;
+    font-size: 14px;
 }
 
 .product-size-container {
-    padding-top: 1.5vmin;
-    padding-bottom: 1.5vmin;
+    padding-top: 10px;
+    padding-bottom: 10px;
 }
 
 .price-kor, .size-kor, .color-kor, .quantity-kor, .total-price-kor {
     display: inline-block;
-    width: 130px;
+    width: 110px;
     font-weight: bold;
+    font-size: 13px;
 }
 
 
@@ -124,6 +115,7 @@
     background-color: #777;
     color:white;
     font-weight: bold;
+    font-size: 14px;
 } 
 
 .cart-container {
@@ -132,6 +124,7 @@
     margin-top: 1vmin;
     font-weight: bold;
     border: #aaa solid 1px;
+    font-size: 14px;
 }
 
 .buy-container, .cart-container {
@@ -159,6 +152,7 @@
     width: 40%;
     background-color: white;
     border: solid #ccc 1px;
+    width: 170px;
 }
 
 .selected-option {
@@ -166,7 +160,7 @@
     font-size: 12px;
     font-weight: bold;
     display: grid;
-    grid-template-columns: 2.5fr 1.5fr 1fr 0.3fr;
+    grid-template-columns: 1.8fr 1.8fr 1.3fr 0.2fr;
     padding: 1vh 1vw;
     margin-top: -1px;
 }
@@ -185,17 +179,10 @@
 }
 
 
-
-
-/********************* 리뷰 *************************/
-
+/* 리뷰 */
 .review-container-helper {
-    width:800px;
-    
-    margin-left: auto;
-    margin-right: auto;
-    margin-bottom: 20vh;
-
+    width: 90vw;
+    margin: 10vh auto;
     font-weight: bold;
     font-size: 14px;
 }
@@ -226,10 +213,6 @@
 }
 
 .review-head {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
     margin-top: 5px;
 }
 
@@ -280,8 +263,8 @@
 
 .review-date {
     color: #999;
+    margin-bottom: 25px;
 }
-
 
 
 /* 별점 css */
@@ -298,4 +281,113 @@
     color: #FFB900;
     overflow: hidden;
     pointer-events: none;
+}
+
+
+
+
+/********** Tablet **********/
+@media (min-width: 768px) {
+    .article-container {
+        justify-content: center;
+        flex-direction: row;
+        margin: 10vh auto;
+        /* user-select: none; */
+    }
+    
+    .info-container {
+        padding-top: 50px;
+        width: 500px;
+        height: 600px;
+        margin-right: 5%;
+    }
+
+    .image-container {
+        width: 500px;
+        height: 500px;
+        margin-right: 10%;
+        margin-left: 5%;
+    }
+
+    .main-image {
+        max-width: 100%;
+        height: auto;
+    }
+    
+    .prev, .next {
+        font-size: 2.5vmin;
+    }
+    
+    .prev-box, .next-box {
+        width: 4vmin;
+        height: 4vmin;
+    }
+        
+    .review-container-helper {
+        width:600px;
+    }
+}
+
+
+
+
+/********** Laptop **********/
+@media (min-width: 1024px) {
+
+    .image-container {
+        width: 500px;
+        height: 640px;
+        margin-right: 10%;
+        margin-left: 5%;
+    }
+
+    .info-container {
+        padding-top: 50px;
+        width: 500px;
+        height: 600px;
+        margin-right: 5%;
+    }
+
+    .product-selected-container {
+        padding: 1vh 1vw;
+    }
+
+    .price-kor, .size-kor, .color-kor, .quantity-kor, .total-price-kor {
+        width: 130px;
+        font-size: 15px;
+    }
+    
+
+    .select {
+        font-size: 0.7rem;
+        width: 200px;
+    }
+    
+    .selected-option {
+        font-size: 12px;
+        padding: 7px 10px;
+        margin-top: -1px;
+        grid-template-columns: 2.3fr 1.5fr 1.2fr 0.3fr;
+    }
+    
+    .option-sort-helper {
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-start;
+        align-items: center;
+    }
+    
+    .cancel {
+        font-size: 18px;
+    }
+
+    .buy-container,
+    .cart-container {
+        font-size: 16px;
+    }
+    
+
+    .review-container-helper {
+        width: 800px;
+    }
 }

@@ -1,28 +1,23 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
 
+* {
+  margin: 0;
+  padding: 0;
+}
+
 .div-container {
   display: flex;
-  align-items: center;
+  flex-direction: row;
   justify-content: center;
-  height: 90vh;
+  align-items: center;
 }
-
 
 .main-img-container {
-  display: grid;
-  grid-gap: 5px;
-  height: 85%;
-  width: 60%;
-  grid-template-columns: 2.3fr 1fr 1fr;
-  grid-template-rows: 1fr 1fr;
-  grid-template-areas: "sl img1 img2"
-                       "sl img3 img4";
-}
-
-.main-img-container div {
-  display: grid;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
   align-items: center;
-  justify-items: center;
+  flex-wrap: wrap;
 }
 
 .slide, .img1, .img2, .img3, .img4 {
@@ -33,38 +28,98 @@
   font-size: 1rem;
 }
 
-.slide { 
-  grid-area: sl;
+.slide {
+  width: 100vw;
+  height: 70vh;;
 }
 
-.img1 { 
-  grid-area: img1;
-  cursor: pointer;
-}
-
-.img2 { 
-  grid-area: img2;
-  cursor: pointer;
-}
-
-.img3 { 
-  grid-area: img3; 
-  cursor: pointer;
-}
-
-.img4 { 
-  grid-area: img4; 
+.img1, .img2, .img3, .img4 {
+  width: calc(calc(100vw / 2) - 8px);
+  height: calc(calc(70vh / 2));
+  margin-top: 4px;
   cursor: pointer;
 }
 
 .imgFloat {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 100%;
-  color: rgb(255,255,255, 0);
+  color: #222;
+  background: rgb(255,255,255,0.2);
 }
 
 
-/* 이미지 컨테이너 */
+/* 테블릿 */
+@media (min-width: 768px) {
+  .div-container {
+    margin: 7% 0;
+  }
+  
+  .main-img-container {
+    display: grid;
+    grid-gap: 5px;
+    height: 60vmax;
+    width: 87vmax;
+    grid-template-columns: 2.3fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    grid-template-areas: "sl img1 img2"
+                         "sl img3 img4";
+  }
+  
+  .main-img-container div {
+    display: grid;
+  }
+  
+  .slide, .img1, .img2, .img3, .img4 {
+    width: 100%;
+    height: 100%;
+  }
+  
+  .slide { grid-area: sl; }
+  .img1 { grid-area: img1; }
+  .img2 { grid-area: img2; }
+  .img3 { grid-area: img3; }
+  .img4 { grid-area: img4; }
+  
+  .imgFloat {
+    width: 100%;
+    height: 100%;
+    color: #222;
+    background: rgb(255,255,255,0.2);
+  }
+  
+}
+
+/* 데스크탑 */
+@media (min-width: 1024px) {
+  .div-container {
+    margin: 70px 0;
+  }
+
+  .main-img-container {
+    /* max-height: 630px;
+    max-width: 900px; */
+    height: 70vmin;
+    width: 105vmin;
+  }
+  
+  .imgFloat {
+    color: rgb(0,0,0,0);
+    background: rgb(255,255,255,0);
+  }
+  
+  .imgFloat:hover {
+    color: rgb(0,0,0,1);
+    background: rgb(255,255,255, 0.9);
+  }
+  
+}
+
+
+/* 이미지 컨테이너 - 반응형 적용 완료 */
 .a-link {
   color: rgb(40, 40, 40);
   font-family: 'Roboto', 'Noto Sans KR', sans-serif;

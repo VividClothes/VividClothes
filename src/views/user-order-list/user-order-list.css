@@ -5,22 +5,25 @@ input {
 }
 
 .order-list-container {
-    width: 1400px;
+    width: 100vw;
     margin-right: auto;
     margin-left: auto;
     margin-top: 10vh;
-    margin-bottom: 20vh;
+    margin-bottom: 150px;
 }
 
 .order-list-title {
     font-size: 1.2rem;
     font-weight: bold;
     padding-bottom: 2.5vh;
+    margin-left: 20px;
 }
 
 .order-state-container {
     border-bottom: solid #ddd 1px;
     padding-bottom: 2vh;
+    padding-left: 20px;
+    font-size: 15px;
 }
 
 .product-prepare-link,
@@ -39,8 +42,8 @@ input {
 }
 
 .product-delivery-link {
-    margin-left: 2.5vw;
-    margin-right: 2.5vw;
+    margin-left: 15px;
+    margin-right: 15px;
 }
 
 .items-header {
@@ -60,14 +63,33 @@ input {
 
 .item-container {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
-    place-items: center;
+    grid-template-columns: 1fr 90px;
+    grid-template-areas: 
+        "oda ode"
+        "pi osb"
+        "pq pq";
+    place-items: start;
     text-align: center;
     font-size: 12.5px;
     font-weight: bold;
     border: solid #ddd 1px;
     margin-top: -1px;
+    padding: 30px 30px;
 }
+
+.product-info { grid-area: pi }
+.order-date { grid-area: oda }
+.price-quantity { grid-area: pq }
+.order-state-box { grid-area: osb }
+.order-detail { grid-area: ode }
+
+.order-state-box,
+.order-detail {
+    place-self: end;
+    height: 100%;
+    font-size: 11.5px;
+}
+
 
 .product-info {
     display: flex;
@@ -75,7 +97,7 @@ input {
     justify-content: flex-start;
     width: 100%;
     height: 100%;
-    padding: 2% 0% 2% 15%;
+    padding: 20px 0;
 }
 
 .image-box {
@@ -98,7 +120,6 @@ input {
 
 .product-name {
     display: inline-block;
-
 }
 
 .options {
@@ -108,15 +129,25 @@ input {
 }
 
 .price-quantity {
+    width: 100%;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 }
 
+.price {
+    order: -1;
+}
+
 .quantity {
+    order: -2;
     margin-top: 0.5vh;
     color: #777
+}
+
+.quantity:before {
+    content: '수량: ';
 }
 
 .order-detail-link:hover,
@@ -158,15 +189,13 @@ input {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .modal .modal-background {
-    width: 100%;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
 }
@@ -174,8 +203,8 @@ input {
 .modalBox {
     position: absolute;
     background-color: #fff;
-    width: 500px;
-    height: 750px;
+    width: 80vw;
+    height: 70vh;
     padding: 15px;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -202,14 +231,14 @@ input {
 .modal-image-container,
 .review-register-container {
     width: 90%;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 14px;
     /* border: solid black 1px; */
 }
 
 .exit-button {
-    right: 10px;    
+    right: 10px;
     position: absolute;
     cursor: pointer;
 }
@@ -219,6 +248,7 @@ input {
     text-align: center;
     font-weight: bold;
     font-size: 1.2rem;
+    padding-bottom: 40px;
     border-bottom: solid #ccc 1px;
 }
 
@@ -233,7 +263,7 @@ input {
     width: 100%;
     height: 150px;
     padding: 10px 10px;
-    border:solid #ccc 1px;
+    border: solid #ccc 1px;
 }
 
 .input-file {
@@ -243,11 +273,11 @@ input {
 .review-register-button {
     font-size: 1.1rem;
     font-weight: bold;
-    width: 30%;
-    height: 5%;
     padding: 10px 15px;
     color: white;
     text-align: center;
+    width: 150px;
+    height: 40px;
     cursor: pointer;
     margin-top: 5%;
     margin-bottom: 5%;
@@ -324,4 +354,90 @@ input {
     background-color: white;
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px white;
+}
+
+
+/* 세부 정보 추가 - 반응형에서 삭제 필요*/
+.items-header {
+    display: none;
+}
+
+
+
+/********** Tablet **********/
+@media (min-width: 768px) {
+    .order-list-container {
+        width: 90vw;
+    }
+
+    .modalBox {
+        width: 500px;
+        height: 750px;
+    }
+
+    .order-list-title {
+        margin-left: 0px;
+    }
+
+    .order-state-container {
+        padding-left: 0px;
+        font-size: 16px;
+    }
+
+}
+
+
+
+/********** Laptop **********/
+@media (min-width: 1024px) {
+    .order-list-container {
+        max-width: 1400px;
+    }
+
+    .item-container {
+        grid-template-columns: 3fr 1fr 1fr 1fr 1fr;
+        grid-template-areas: "pi oda pq osb ode";
+        place-items: center;
+        padding: 0px;
+    }
+
+    .product-info {
+        padding: 20px 20px 20px 40px;
+    }
+
+    .items-header {
+        display: grid;
+    }
+
+    .price-quantity {
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .price,
+    .quantity { 
+        order: 0; 
+    }
+
+    .quantity:after {
+        content: '개'
+    }
+
+    .quantity:before { content: ''}
+
+    .order-state-box,
+    .order-detail {
+        place-self: center;
+        font-size: 11.5px;
+    }
+
+    .order-detail-link {
+        display: inline-block;
+    }
+
+    .order-detail {
+        display: flex;
+        justify-content: center;
+        align-items: center;;
+    }
 }

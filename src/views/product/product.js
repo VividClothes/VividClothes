@@ -427,8 +427,8 @@ function makeReviewContainerHTML(review) {
   return `
     <div class="review-container">
         <div class="review-head">
-            <div class="writer">${maskingFunc.email(review.writer.email)}</div>
             <div class="review-date">${getDate(review.createdAt)}</div>
+            <div class="writer">${maskingFunc.email(review.writer.email)}</div>
         </div>
         <div class="product-name-options">
             <div class="image-box"

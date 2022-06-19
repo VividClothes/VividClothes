@@ -5,8 +5,8 @@ const createHeader = () => {
   return /* html */ `
   ${headerStyle}
   <header class="flex-style">
-    <div>
-      <div class="hamburger-menu is-size-5 ml-6 link">
+    <div class="header-left-container">
+      <div class="hamburger-menu is-size-5 link">
         <i class="fa-solid fa-bars"></i><span> Category</span>
       </div>
       <div class="wrapper">
@@ -19,13 +19,17 @@ const createHeader = () => {
       </div>
     </div>
 
-    <h1 class="header-logo flex-style is-size-2">
+    <div class="mobile-hamburger-menu is-size-5 link">
+      <i class="fa-solid fa-bars"></i>
+    </div>
+
+    <h1 class="header-logo flex-style">
       <a class="link" href="/">
         <span class="">Vivid Clothes</span>
       </a>
     </h1>
 
-    <div id="header-nav-root" class="is-size-6 mr-6"></div>
+    <div id="header-nav-root" class=""></div>
   </header>
   `;
 };
@@ -45,12 +49,14 @@ function addHeaderEventListener() {
 
 function hamburgerEventListnener() {
   const hamburgerMenu = header.querySelector('.hamburger-menu');
+  const mobileHamburgerMenu = header.querySelector('.mobile-hamburger-menu');
   const sidebar = document.querySelector('.sidebar');
 
   const hamburgerHandler = () => {
     sidebar.classList.add('open');
   };
   hamburgerMenu.addEventListener('click', hamburgerHandler);
+  mobileHamburgerMenu.addEventListener('click', hamburgerHandler);
 }
 
 searchProductButton.addEventListener('click', (e) => {
@@ -58,25 +64,22 @@ searchProductButton.addEventListener('click', (e) => {
   const searchInput = header.querySelector('#searchQueryInput').value;
   if (!searchInput) {
     alert('제품명을 입력해주세요.');
+  } else {
+    window.location.href = `/products?searchInput=${searchInput}&page=1`;
   }
-  else {
-    window.location.href=`/products?searchInput=${searchInput}&page=1`;
-  }
-})
+});
 
 searchQuerySubmit.addEventListener('keyup', (e) => {
   e.preventDefault();
-  console.log(1)
+  console.log(1);
   if (window.event.keyCode == 13) {
     const searchInput = header.querySelector('#searchQueryInput').value;
     if (!searchInput) {
       alert('제품명을 입력해주세요.');
-    }
-    else {
-      window.location.href=`/products?searchInput=${searchInput}&page=1`;
+    } else {
+      window.location.href = `/products?searchInput=${searchInput}&page=1`;
     }
   }
-})
-
+});
 
 export { header, addHeaderEventListener };

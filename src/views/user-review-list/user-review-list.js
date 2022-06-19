@@ -100,8 +100,8 @@ function makeReviewContainerHTML(review) {
       <input type="button" class="delete-button" value="삭제">
     </div>
     <div class="review-head">
-        <div class="writer">${review.writer.email}</div>
-        <div class="review-date">${getDate(review.createdAt)}</div>
+      <div class="review-date">${getDate(review.createdAt)}</div>
+      <div class="writer">${review.writer.email}</div>  
     </div>
     <div class="product-name-options">
         <div class="image-box"
