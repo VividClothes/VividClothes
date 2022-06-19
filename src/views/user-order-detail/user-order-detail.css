@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
 
 .order-container {
-    width: 1400px;
+    width: 100vw;
     margin-right: auto;
     margin-left: auto;
     margin-top: 10vh;
@@ -11,26 +11,28 @@
 .order-title {
     font-size: 1.2rem;
     font-weight: bold;
-    padding-bottom: 2.5vh;
+    padding-bottom: 15px;
+    margin-left: 20px;
 }
 
 
 .order-date-container {
     border-bottom: solid #ddd 1px;
-    padding-bottom: 2vh;
+    padding-bottom: 17px;
+    padding-left: 20px;
     font-size: 14px;
     font-weight: bold;
 }
 
 .order-date {
-    margin-left: 1vw;
+    margin-left: 20px;
 }
 
 /* 수령자 정보, 상품 정보 컨테이너 */
 .recipient-info-container,
 .product-info-container {
     font-size: 13px;
-    margin-top: 5vh;
+    margin-top: 60px;
 }
 
 
@@ -39,6 +41,7 @@
 .product-header-eng,
 .payment-header-eng {
     font-size: 1.2rem;
+    margin-left: 20px;
 }
 
 .recipient-header-kor,
@@ -50,13 +53,12 @@
 }
 
 .recipient-container {
-    margin-top: 1.5vh;
+    margin-top: 17px;
 }
 
 /* 수령인, 휴대전화, 배송지 주소 컨테이너 */
 .recipient-info-all {
-    padding: 15px 15px;
-    border: solid #ccc 1px;
+    padding: 10px 20px;
 }
 
 /* 휴대전화 컨테이너 */
@@ -71,16 +73,38 @@
     width: 200px;
 }
 
+.recipient-info-all span {
+    display: block;
+}
+
+.recipient-info-all:first-of-type {
+    border-top: solid #ddd 1px;
+}
+
+.recipient-info-all:last-of-type {
+    border-bottom: solid #ddd 1px;
+    padding-bottom: 20px;
+}
+
+.recipient-info-all span:first-of-type {
+    margin-bottom: -5px;
+}
+
+.recipient-info-all span:last-of-type {
+    margin-top: 10px;
+    font-size: 11.5px;
+    color: #999;
+}
 
 
 /******************상품정보*******************/
 .items-container {
-    margin-top: 1.5vh;
+    margin-top: 17px;
 }
 
 .items-header {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr;
+    grid-template-columns: 2.5fr 1fr 1fr 1fr;
     text-align: center;
     padding: 15px 0px;
     font-size: 12.5px;
@@ -91,8 +115,11 @@
 
 .item-container {
     display: grid;
-    grid-template-columns: 3fr 1fr 1fr 1fr;
-    place-items: center;
+    grid-template-columns: 1fr 90px;
+    grid-template-areas: 
+        "pno osb"
+        "pq tp";
+    place-items: start;
     text-align: center;
     font-size: 12.5px;
     font-weight: bold;
@@ -100,13 +127,24 @@
     margin-top: -1px;
 }
 
+.product-name-options { grid-area: pno }
+.product-quantity { grid-area: pq }
+.total-price { grid-area: tp }
+.order-state-box { grid-area: osb }
+
 .product-name-options {
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
     width: 100%;
     height: 100%;
-    padding: 2% 0% 2% 20%;
+    padding: 20px 20px 20px 20px;
+    margin-top: 10px;
+}
+
+.order-state-box {
+    padding-top: 20px;
+    font-size: 11.5px;
 }
 
 .image-box {
@@ -116,7 +154,6 @@
     background-position: center center;
     background-repeat: none;
     cursor: pointer;
-    background-image: url('/home-img3.jpg');
 }
 
 .options-box {
@@ -151,24 +188,25 @@
 }
 
 .order-state-link {
-    margin-top: 0.5vh;
+    margin-top: 5px;
     display: block;
 }
 
 
 /* 최종 결제 금액란 */
 .payment-info-container {
-    margin-bottom: 20vh;
+    margin-bottom: 100px;
     font-size: 13px;
-    margin-top: 10vh;
+    margin-top: 130px;
 }
 
 .payment-container {
     border-top: solid #ddd 1px;
     margin-top: 1.5vh;
     padding-top: 4vh;
-    width: 40%;
-    font-size:20px;
+    width: 350px;
+    font-size:18px;
+    padding-left: 20px;
 }
 
 .payment-price {
@@ -183,15 +221,13 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .modal .modal-background {
-    width: 100%;
+    width: 100vw;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.6);
 }
@@ -199,8 +235,8 @@
 .modalBox {
     position: absolute;
     background-color: #fff;
-    width: 500px;
-    height: 750px;
+    width: 80vw;
+    height: 70vh;
     padding: 15px;
     overflow-y: scroll;
     scrollbar-width: none;
@@ -227,14 +263,14 @@
 .modal-image-container,
 .review-register-container {
     width: 90%;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin-top: 5px;
+    margin-bottom: 5px;
     font-size: 14px;
     /* border: solid black 1px; */
 }
 
 .exit-button {
-    right: 10px;    
+    right: 10px;
     position: absolute;
     cursor: pointer;
 }
@@ -244,6 +280,7 @@
     text-align: center;
     font-weight: bold;
     font-size: 1.2rem;
+    padding-bottom: 40px;
     border-bottom: solid #ccc 1px;
 }
 
@@ -258,7 +295,7 @@
     width: 100%;
     height: 150px;
     padding: 10px 10px;
-    border:solid #ccc 1px;
+    border: solid #ccc 1px;
 }
 
 .input-file {
@@ -268,11 +305,11 @@
 .review-register-button {
     font-size: 1.1rem;
     font-weight: bold;
-    width: 30%;
-    height: 5%;
     padding: 10px 15px;
     color: white;
     text-align: center;
+    width: 150px;
+    height: 40px;
     cursor: pointer;
     margin-top: 5%;
     margin-bottom: 5%;
@@ -349,4 +386,125 @@
     background-color: white;
     border-radius: 10px;
     box-shadow: inset 0px 0px 5px white;
+}
+
+
+/* 세부 정보 추가 - 반응형에서 삭제 필요 */
+.items-header {
+    display: none;
+}
+
+.product-quantity {
+    padding: 0px 0px 20px 20px;
+}
+
+.product-quantity:before {
+    content: '수량: ';
+}
+
+.total-price:after {
+    content: ' 원';
+}
+
+.product-name-options {
+    font-size: 11.5px;
+}
+
+
+
+
+/********** Tablet **********/
+@media (min-width: 768px) {
+    .order-container {
+        width: 90vw;
+    }
+
+    .modalBox {
+        width: 500px;
+        height: 750px;
+    }
+
+    .product-name-options {
+        font-size: 12.5px;
+    }
+
+    .payment-container {
+        width: 400px;
+        font-size: 20px;
+    }
+
+    .order-title,
+    .recipient-header-eng,
+    .product-header-eng,
+    .payment-header-eng {
+        margin-left: 0px;
+    }
+
+    .order-date-container
+    .payment-container {
+        padding-left: 0px;
+    }
+
+
+    /* 수령인, 휴대전화, 배송지 주소 컨테이너 */
+    .recipient-info-all {
+        padding: 15px 15px;
+        border: solid #ccc 1px;
+    }
+
+    .recipient-info-all span {
+        display: inline-block;
+    }
+
+    .recipient-info-all span:first-of-type {
+        margin-bottom: 0px;
+    }
+
+    .recipient-info-all span:last-of-type {
+        margin-top: 0px;
+        font-size: 13px;
+        color: #4a4a4a;
+    }
+
+    /******************상품정보*******************/
+    .item-container {
+        grid-template-columns: 2.5fr 1fr 1fr 1fr;
+        grid-template-areas: "pno pq tp osb";
+        place-items: center;
+    }
+
+
+    /* 세부정보 삭제 */
+    .items-header {
+        display: grid;
+    }
+
+    .product-name-options {
+        padding-left: 40px;
+    }
+
+    .product-quantity {
+        padding: 0px;
+    }
+
+    .product-quantity::before {
+        content: '';
+    }
+
+    .total-price:after {
+        content: '';
+    }
+
+    .order-state-box {
+        padding-top: 0px;
+    }
+}
+
+
+
+/********** Laptop **********/
+@media (min-width: 1024px) {
+    .order-container {
+        max-width: 1400px;
+    }
 }
