@@ -160,8 +160,8 @@ function makeItemContainerHTML(item) {
     </div>
     <div class="order-date">${item.createdAt}</div>
     <div class="price-quantity">
-      <div class="price">${addCommas(item.priceSum)}원</div>
-      <div class="quantity">${item.quantity}개</div>
+      <div class="price">${addCommas(item.priceSum)} 원</div>
+      <div class="quantity">${item.quantity}</div>
     </div>
     <div class="order-state-box">
       ${stateComponent(item.state)}
