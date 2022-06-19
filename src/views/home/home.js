@@ -65,7 +65,7 @@ function makeMainImageHTML(bestItems) {
   <div class="img4"
   style='background-image:url("${bestItems[3].imagePath}")'
   onclick='window.location.href="/product?id=${bestItems[3].productId}"'>
-    <div class="imgFloat"><div>BEST ${bestItems[3].category}</<div>></div>
+    <div class="imgFloat"><div>BEST ${bestItems[3].category}<div></div>
   </div>
   `;
 }
