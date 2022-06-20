@@ -1,5 +1,6 @@
 import * as Api from '/api.js';
 import categoryStyle from '/category/category-style.js';
+import { createHeaderNav } from '/header/header-nav.js';
 
 const createCategory = async (props) => {
   const categories = !props ? await Api.get('/category/list') : props.categories;
@@ -22,6 +23,7 @@ const createCategory = async (props) => {
       <i class="fa-solid fa-xmark"></i>
     </button>
     <div class="sidebar-links">
+      ${createHeaderNav()}
       <ul>
         ${categories
           .map(({ categoryName }) => {
@@ -42,6 +44,8 @@ const createCategory = async (props) => {
 function addCategoryListener(component) {
   onClickCancelBtn(component);
   searchEvents(component);
+  dropdownEventListener(component);
+  logoutEventListener(component);
 }
 
 function onClickCancelBtn(component) {
@@ -79,6 +83,36 @@ function searchEvents(component) {
       }
     }
   });
+}
+
+function dropdownEventListener(component) {
+  const dropdownTrigger = component.querySelector('.dropdown-trigger');
+  const dropdownMenu = component.querySelector('.dropdown-menu');
+
+  if (!dropdownTrigger) return;
+
+  const dropdownHandler = () => {
+    dropdownTrigger.classList.toggle('clicked');
+    dropdownMenu.classList.toggle('show');
+  };
+
+  dropdownTrigger.addEventListener('click', dropdownHandler);
+}
+
+function logoutEventListener(component) {
+  const logoutBtn = component.querySelector('.logout');
+
+  if (!logoutBtn) return;
+
+  const logoutHandler = (e) => {
+    e.preventDefault();
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    localStorage.removeItem('hashedEmail');
+    window.location.href = '/';
+  };
+
+  logoutBtn.addEventListener('click', (e) => logoutHandler(e));
 }
 
 export { createCategory, addCategoryListener };

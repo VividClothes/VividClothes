@@ -89,4 +89,4 @@ function logoutEventListener() {
   logoutBtn.addEventListener('click', (e) => logoutHandler(e));
 }
 
-export { headerNav, addHeaderNavEventListener };
+export { headerNav, addHeaderNavEventListener, createHeaderNav };
