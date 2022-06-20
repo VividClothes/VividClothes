@@ -77,3 +77,11 @@ export const maskingFunc = {
 		return maskingStr;
 	}
 }
+
+// 날짜 전처리
+export const getDate = (orderDate) => {
+	let [date, time] = orderDate.split('T');
+	date = date.replaceAll('-', '.');
+	time = time.split('.')[0];
+	return `${date} ${time}`;
+}

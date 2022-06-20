@@ -2,6 +2,7 @@ import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createCategory, addCategoryListener } from '/category/category.js';
 import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
+import { getDate } from '/useful-functions.js';
 
 /***************************헤더*************************************/
 const nav = document.getElementById('header');
@@ -132,14 +133,6 @@ function imageComponent(imagePaths) {
   return imagePaths.reduce((acc, path) => {
     return acc + `<img src="${path}" alt="review image" class="review-image-unit"></img>`;
   }, '');
-}
-
-// 날짜 전처리
-function getDate(orderDate) {
-  let [date, time] = orderDate.split('T');
-  date = date.replaceAll('-', '.');
-  time = time.split('.')[0];
-  return `${date} ${time}`;
 }
 
 function refreshModalContents() {

@@ -229,7 +229,7 @@ function getOrderItems(orders) {
     const sharedAttributes = {
       orderId: order._id,
       state: order.state,
-      createdAt: getDate(order.createdAt)
+      createdAt: order.createdAt.split('T')[0]
     }
 
     order.products.forEach((item) => {
@@ -250,13 +250,6 @@ function getOrderItems(orders) {
   })
 
   return orderItems;
-}
-
-
-
-// 날짜 전처리
-function getDate(date) {
-  return date.split('T')[0];
 }
 
 

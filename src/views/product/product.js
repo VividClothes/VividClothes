@@ -1,4 +1,4 @@
-import { addCommas, convertToNumber, maskingFunc } from '/useful-functions.js';
+import { addCommas, convertToNumber, maskingFunc, getDate } from '/useful-functions.js';
 import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createCategory, addCategoryListener } from '/category/category.js';
@@ -527,12 +527,4 @@ function getDataObject(result) {
   });
 
   return datas;
-}
-
-// 날짜 전처리
-function getDate(orderDate) {
-  let [date, time] = orderDate.split('T');
-  date = date.replaceAll('-', '.');
-  time = time.split('.')[0];
-  return `${date} ${time}`;
 }
