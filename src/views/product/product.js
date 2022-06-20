@@ -3,6 +3,11 @@ import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createCategory, addCategoryListener } from '/category/category.js';
 import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
+import { 
+  handleUpDownButton, 
+  handleQuantityInput,
+  handleCancelButton 
+} from '/product/handler-functions.js';
 
 /***************************헤더*************************************/
 const nav = document.getElementById('header');
@@ -60,13 +65,15 @@ let optionKeys = [];
 
   let currentImageIndex = 0;
   const imagePaths = result.imagePath;
+  
+  result.option.size.forEach((size) => {
+    sizeSelectBox.innerHTML += `<option value="${size}">${size}</option>`;    
+  })
 
-  for(let i = 0; i < result.option.size.length; i++){
-    sizeSelectBox.innerHTML += `<option value="${result.option.size[i]}">${result.option.size[i]}</option>`;
-  }
-  for(let i = 0; i < result.option.color.length; i++){
-    colorSelectBox.innerHTML += `<option value="${result.option.color[i]}">${result.option.color[i]}</option>`;
-  }
+  result.option.color.forEach((color) => {
+    colorSelectBox.innerHTML += `<option value="${color}">${color}</option>`;    
+  })
+
 
   /********************사이즈 박스 선택 이벤트*********************/
   sizeSelectBox.addEventListener('change', (e) => {
@@ -105,74 +112,17 @@ let optionKeys = [];
         const quantityInput = newElement.querySelector('.quantity');
         const cancelButton = newElement.querySelector('.cancel');
 
-        // 수량 증가 버튼
-        upButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          const totalPriceText = e.target.parentNode.nextElementSibling;
-          const quantity = e.target.previousElementSibling;
-          let quantityNum = parseInt(quantity.value);
+        // 수량 증가 버튼 이벤트 등록 
+        upButton.addEventListener('click', (e) => handleUpDownButton(e, result, 'up', setTotalPriceSum));
+        
+        // 수량 감소 버튼 이벤트 등록
+        downButton.addEventListener('click', (e) => handleUpDownButton(e, result, 'down', setTotalPriceSum));
+        
+        // 수량 직접 입력 이벤트 등록
+        quantityInput.addEventListener('change', (e) => handleQuantityInput(e, result, setTotalPriceSum))
 
-          if (quantityNum === 99) {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-          } else {
-            quantityNum++;
-            quantity.value = quantityNum;
-            totalPriceText.textContent = `${addCommas(quantityNum * result.price)}원`;
-          }
-
-          if (!quantityNum) {
-            quantity.value = 1;
-            totalPriceText.textContent = `${addCommas(result.price)}원`;
-          }
-          setTotalPriceSum();
-        });
-
-        // 수량 감소 버튼
-        downButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          const totalPriceText = e.target.parentNode.nextElementSibling;
-          const quantity = e.target.nextElementSibling;
-          let quantityNum = parseInt(quantity.value);
-
-          if (quantityNum === 1) {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-          } else {
-            quantityNum--;
-            quantity.value = quantityNum;
-            totalPriceText.textContent = `${addCommas(quantityNum * result.price)}원`;
-          }
-
-          if (!quantityNum) {
-            quantity.value = 1;
-            totalPriceText.textContent = `${addCommas(result.price)}원`;
-          }
-          setTotalPriceSum();
-        });
-
-        // 수량 직접 입력
-        quantityInput.addEventListener('change', (e) => {
-          const totalPriceText = e.target.parentNode.nextElementSibling;
-          const quantityNum = parseInt(e.target.value);
-          if (quantityNum >= 1 && quantityNum <= 99) {
-            totalPriceText.textContent = `${addCommas(quantityNum * result.price)}원`;
-          } else {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-            e.target.value = 1;
-            totalPriceText.textContent = `${addCommas(result.price)}원`;
-          }
-          setTotalPriceSum();
-        });
-
-        // 취소 버튼
-        cancelButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          const option = e.target.parentNode.firstElementChild.textContent;
-          const [size, color] = option.split(' / ');
-          const optionKey = `${size}${color}`;
-          optionKeys = optionKeys.filter((elem) => elem !== optionKey);
-
-          e.target.parentNode.remove();
-        });
+        // 취소 버튼 이벤트 등록
+        cancelButton.addEventListener('click', (e) => optionKeys = handleCancelButton(e, optionKeys, setTotalPriceSum));
       }
     }
   });
@@ -215,75 +165,17 @@ let optionKeys = [];
         const quantityInput = newElement.querySelector('.quantity');
         const cancelButton = newElement.querySelector('.cancel');
 
-        // 수량 증가 버튼
-        upButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          const totalPriceText = e.target.parentNode.nextElementSibling;
-          const quantity = e.target.previousElementSibling;
-          let quantityNum = parseInt(quantity.value);
+        // 수량 증가 버튼 이벤트 등록 
+        upButton.addEventListener('click', (e) => handleUpDownButton(e, result, 'up', setTotalPriceSum));
+        
+        // 수량 감소 버튼 이벤트 등록
+        downButton.addEventListener('click', (e) => handleUpDownButton(e, result, 'down', setTotalPriceSum));
+        
+        // 수량 직접 입력 이벤트 등록
+        quantityInput.addEventListener('change', (e) => handleQuantityInput(e, result, setTotalPriceSum))
 
-          if (quantityNum === 99) {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-          } else {
-            quantityNum++;
-            quantity.value = quantityNum;
-            totalPriceText.textContent = `${addCommas(quantityNum * result.price)}원`;
-          }
-
-          if (!quantityNum) {
-            quantity.value = 1;
-            totalPriceText.textContent = `${addCommas(result.price)}원`;
-          }
-          setTotalPriceSum();
-        });
-
-        // 수량 감소 버튼
-        downButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          const totalPriceText = e.target.parentNode.nextElementSibling;
-          const quantity = e.target.nextElementSibling;
-          let quantityNum = parseInt(quantity.value);
-
-          if (quantityNum === 1) {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-          } else {
-            quantityNum--;
-            quantity.value = quantityNum;
-            totalPriceText.textContent = `${addCommas(quantityNum * result.price)}원`;
-          }
-
-          if (!quantityNum) {
-            quantity.value = 1;
-            totalPriceText.textContent = `${addCommas(result.price)}원`;
-          }
-          setTotalPriceSum();
-        });
-
-        // 수량 직접 입력
-        quantityInput.addEventListener('change', (e) => {
-          const totalPriceText = e.target.parentNode.nextElementSibling;
-          const quantityNum = parseInt(e.target.value);
-          if (quantityNum >= 1 && quantityNum <= 99) {
-            totalPriceText.textContent = `${addCommas(quantityNum * result.price)}원`;
-          } else {
-            alert('1 이상 99 이하의 수량만 가능합니다.');
-            e.target.value = 1;
-            totalPriceText.textContent = `${addCommas(result.price)}원`;
-          }
-          setTotalPriceSum();
-        });
-
-        // 취소 버튼
-        cancelButton.addEventListener('click', (e) => {
-          e.preventDefault();
-          const option = e.target.parentNode.firstElementChild.textContent;
-          const [size, color] = option.split(' / ');
-          const optionKey = `${size}${color}`;
-          optionKeys = optionKeys.filter((elem) => elem !== optionKey);
-
-          e.target.parentNode.remove();
-          setTotalPriceSum();
-        });
+        // 취소 버튼 이벤트 등록
+        cancelButton.addEventListener('click', (e) => optionKeys = handleCancelButton(e, optionKeys, setTotalPriceSum));
       }
     }
   });
@@ -528,3 +420,5 @@ function getDataObject(result) {
 
   return datas;
 }
+
+
