@@ -6,8 +6,16 @@ import { createPaginationBar, addPaginationBarListener } from '/pagination/pagin
 import { 
   handleUpDownButton, 
   handleQuantityInput,
-  handleCancelButton 
+  handleCancelButton,
+  handlePrevBox,
+  handleNextBox,
+  imageSlideArrow,
+  handleBuyButton,
+  handleCartButton,
+  makeReviewContainerHTML,
+  makeItemContainerHTML
 } from '/product/handler-functions.js';
+
 
 /***************************헤더*************************************/
 const nav = document.getElementById('header');
@@ -28,6 +36,7 @@ const productName = document.querySelector('.product-name');
 const productInfo = document.querySelector('.product-info');
 const priceText = document.querySelector('.price-text');
 
+const optionContainer = document.querySelector('.option-container');
 const sizeSelectBox = document.querySelector('.size-select');
 const colorSelectBox = document.querySelector('.color-select');
 const totalPriceSum = document.querySelector('.total-price-text');
@@ -48,6 +57,7 @@ const pagination = document.getElementById('pagination');
 const selectedSizeColor = { size: '', color: '' };
 let optionKeys = [];
 
+
 /****************************렌더링**********************************/
 (async () => {
   const urlParams = new URLSearchParams(window.location.search);
@@ -55,7 +65,6 @@ let optionKeys = [];
 
   let results = await Api.get(`/product/id`, `${productID}`);
   const result = results.product;
-  console.log(result);
 
   mainImage.src = `${result.imagePath[0]}`;
   productName.textContent = result.productName;
@@ -73,11 +82,14 @@ let optionKeys = [];
   result.option.color.forEach((color) => {
     colorSelectBox.innerHTML += `<option value="${color}">${color}</option>`;    
   })
+  
 
-
-  /********************사이즈 박스 선택 이벤트*********************/
-  sizeSelectBox.addEventListener('change', (e) => {
-    selectedSizeColor.size = e.target.value; // 값 변경
+  /********************옵션 박스 선택 이벤트*********************/
+  optionContainer.addEventListener('change', (e) => {
+    e.target.name === 'size' ?
+    selectedSizeColor.size = e.target.value :
+    selectedSizeColor.color = e.target.value
+    
     const size = selectedSizeColor.size;
     const color = selectedSizeColor.color;
 
@@ -125,170 +137,33 @@ let optionKeys = [];
         cancelButton.addEventListener('click', (e) => optionKeys = handleCancelButton(e, optionKeys, setTotalPriceSum));
       }
     }
-  });
-  /*************************************************************/
-
-  /********************색상 박스 선택 이벤트*********************/
-  colorSelectBox.addEventListener('change', (e) => {
-    selectedSizeColor.color = e.target.value; // 값 변경
-    const size = selectedSizeColor.size;
-    const color = selectedSizeColor.color;
-
-    // 둘 다 선택되면 아이템 컴포넌트 추가
-    const isAllChecked = size && color;
-    if (isAllChecked) {
-      const optionKey = `${size}${color}`;
-
-      // 같은 옵션을 이미 선택했는지 검사
-      const isAlreadyChecked = optionKeys.some((elem) => elem === optionKey);
-
-      // 이미 선택한 경우는 pass
-      if (isAlreadyChecked) {
-        alert('이미 선택한 옵션입니다.');
-        resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor);
-      }
-
-      // 선택하지 않은 옵션인 경우 컴포넌트 추가
-      else {
-        optionKeys.push(`${size}${color}`); // 사이즈+색 문자열 저장
-        selectedContainer.insertAdjacentHTML(
-          'beforeend',
-          makeItemContainerHTML(size, color, result.price)
-        );
-
-        resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor);
-        setTotalPriceSum();
-        checkSize();
-        const newElement = selectedContainer.lastElementChild;
-        const upButton = newElement.querySelector('.up-button');
-        const downButton = newElement.querySelector('.down-button');
-        const quantityInput = newElement.querySelector('.quantity');
-        const cancelButton = newElement.querySelector('.cancel');
-
-        // 수량 증가 버튼 이벤트 등록 
-        upButton.addEventListener('click', (e) => handleUpDownButton(e, result, 'up', setTotalPriceSum));
-        
-        // 수량 감소 버튼 이벤트 등록
-        downButton.addEventListener('click', (e) => handleUpDownButton(e, result, 'down', setTotalPriceSum));
-        
-        // 수량 직접 입력 이벤트 등록
-        quantityInput.addEventListener('change', (e) => handleQuantityInput(e, result, setTotalPriceSum))
-
-        // 취소 버튼 이벤트 등록
-        cancelButton.addEventListener('click', (e) => optionKeys = handleCancelButton(e, optionKeys, setTotalPriceSum));
-      }
-    }
-  });
-  /*************************************************************/
+  })
+  
 
   /********************이미지 슬라이드 이벤트*********************/
-  prevBox.addEventListener('click', (e) => {
-    e.preventDefault();
+  prevBox.addEventListener('click', (e) => currentImageIndex = handlePrevBox(e, currentImageIndex, imagePaths, mainImage))
 
-    if (currentImageIndex === 0) {
-      currentImageIndex = imagePaths.length - 1;
-    } else {
-      currentImageIndex--;
-    }
-
-    mainImage.src = `${imagePaths[currentImageIndex]}`;
-  });
-
-  nextBox.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    if (currentImageIndex === imagePaths.length - 1) {
-      currentImageIndex = 0;
-    } else {
-      currentImageIndex++;
-    }
-
-    mainImage.src = `${imagePaths[currentImageIndex]}`;
-  });
+  nextBox.addEventListener('click', (e) => currentImageIndex = handleNextBox(e, currentImageIndex, imagePaths, mainImage))
   /*************************************************************/
+
 
   /********************슬라이더 화살표 표시***********************/
-  if (imagePaths.length > 1) {
-    imageContainer.addEventListener('mouseover', (e) => {
-      prevBox.style.visibility = 'visible';
-      nextBox.style.visibility = 'visible';
-    });
-
-    imageContainer.addEventListener('mouseout', (e) => {
-      prevBox.style.visibility = 'hidden';
-      nextBox.style.visibility = 'hidden';
-    });
-  }
+  imageSlideArrow(imagePaths, imageContainer, prevBox, nextBox)
   /*************************************************************/
+
 
   /********************BUY IT NOW 클릭 이벤트********************/
-  buyButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const hashedEmail = localStorage.getItem('hashedEmail');
-
-    // 로그인 안했으면 로그인으로 이동
-    if (!hashedEmail) {
-      window.location.href = '/login';
-    }
-
-    if (optionKeys.length === 0) {
-      alert('옵션을 선택해주세요.');
-    } else {
-      // indexedDB에 삽입할 요소
-
-      const datas = getDataObject(result);
-
-      //indexedDB order 요소 삭제 후 저장
-      const onRequest = indexedDB.open(hashedEmail, 1);
-      onRequest.onsuccess = async () => {
-        const db = onRequest.result;
-        const transaction = db.transaction('order', 'readwrite');
-        transaction.objectStore('order').clear();
-        datas.forEach((data) => {
-          transaction.objectStore('order').add(data);
-        });
-        window.location.href = '/order?storeName=order';
-      };
-    }
-  });
+  buyButton.addEventListener('click', (e) => handleBuyButton(e, optionKeys, result))
   /*************************************************************/
+
 
   /*******************ADD TO CART 클릭 이벤트********************/
-  cartButton.addEventListener('click', (e) => {
-    e.preventDefault();
-
-    const hashedEmail = localStorage.getItem('hashedEmail');
-
-    // 로그인 안했으면 로그인으로 이동
-    if (!hashedEmail) {
-      window.location.href = '/login';
-    }
-
-    if (optionKeys.length === 0) {
-      alert('옵션을 선택해주세요.');
-    } else {
-      // indexedDB에 삽입할 요소
-      const datas = getDataObject(result);
-
-      //indexedDB order 요소 추가 저장
-      const onRequest = indexedDB.open(hashedEmail, 1);
-
-      onRequest.onsuccess = async () => {
-        const db = onRequest.result;
-        const transaction = db.transaction('cart', 'readwrite');
-        datas.forEach((data) => {
-          transaction.objectStore('cart').add(data);
-        });
-        alert('장바구니에 추가 되었습니다.');
-      };
-    }
-  });
+  cartButton.addEventListener('click', (e) => handleCartButton(e, optionKeys, result));
   /*************************************************************/
+
 
   /************************리뷰 렌더링**************************/
   const reviews = results.reviews.datas;
-  console.log(reviews);
 
   const page = urlParams.get('page');
   const perPage = 5;
@@ -315,58 +190,6 @@ let optionKeys = [];
   });
 })();
 
-function makeReviewContainerHTML(review) {
-  return `
-    <div class="review-container">
-        <div class="review-head">
-            <div class="review-date">${getDate(review.createdAt)}</div>
-            <div class="writer">${maskingFunc.email(review.writer.email)}</div>
-        </div>
-        <div class="product-name-options">
-            <div class="image-box"
-            style="background-image:url('${review.productId.imagePath[0]}')"
-            onclick="
-            window.location.href='/product?id=${review.productId._id}'
-            "></div>
-            <div class="options-box">
-                <div class="product-name">${review.productId.productName}</div>
-                <div class="options">${review.option.size} / ${review.option.color} 구매</div>
-            </div>
-        </div>
-        <div class="review-rate">
-            <span class="star"> 
-                ★★★★★
-                <span class="star-color" style="width:${10 * review.rate}%">★★★★★</span>
-            </span>
-        </div>
-        <div class="review-content">${review.content}</div>
-        <div class="review-image">
-            ${imageComponent(review.imagePath)}
-        </div>
-    </div>
-    `;
-}
-
-function imageComponent(imagePaths) {
-  return imagePaths.reduce((acc, path) => {
-    return acc + `<img src="${path}" alt="review image" class="review-image-unit"></img>`;
-  }, '');
-}
-
-function makeItemContainerHTML(size, color, price) {
-  return `
-    <div class="selected-option">
-        <div class="option-text option-sort-helper">${size} / ${color}</div>
-        <div class="quantity-container option-sort-helper">
-            <span class="fa-solid fa-minus quantity-wrap down-button"></span>
-            <input class="quantity" value="1" type="text">
-            <span class="fa-solid fa-plus quantity-wrap up-button"></span>
-        </div> 
-        <div class="price-sum option-sort-helper">${addCommas(price)}원</div>   
-        <div class="cancel option-sort-helper">x</div>
-    </div>
-    `;
-}
 
 function resetOptionBoxes(sizeSelectBox, colorSelectBox, selectedSizeColor) {
   sizeSelectBox.value = sizeSelectBox[0].value;
@@ -395,30 +218,3 @@ function checkSize() {
     selectedContainer.style.overflowY = 'scroll';
   }
 }
-
-function getDataObject(result) {
-  const options = document.getElementsByClassName('option-text');
-  const quantities = document.getElementsByClassName('quantity');
-
-  const datas = [];
-  Array.from(options).forEach((elem, index) => {
-    const quantity = Number(quantities[index].value);
-    const [size, color] = options[index].textContent.split(' / ');
-    const shortId = result._id + size + color;
-
-    datas.push({
-      productId: result._id,
-      imagePath: result.imagePath[0],
-      productName: result.productName,
-      color,
-      size,
-      quantity,
-      price: result.price,
-      shortId,
-    });
-  });
-
-  return datas;
-}
-
-
