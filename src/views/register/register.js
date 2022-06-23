@@ -67,11 +67,39 @@ async function handleSubmit(e) {
   try {
     const data = { fullName, email, password };
 
-    await Api.post('/api/register', data);
+    const result = await Api.post('/api/register', data);
+
+    const token = result.token;
+    const role = result.userRole;
+    const hashedEmail = result.hashedEmail;
+
+    // 로그인 성공, 토큰을 세션 스토리지에 저장
+    // 물론 다른 스토리지여도 됨
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', role);
+    localStorage.setItem('hashedEmail', hashedEmail);
+
+    // indexedDB 생성
+    const onRequest = indexedDB.open(hashedEmail, 1);
+
+    onRequest.onsuccess = () => {
+      //alert('indexedDB onsuccess');
+    };
+
+    onRequest.onupgradeneeded = (e) => {
+      //alert('indexedDB onupgradeneeded');
+      const db = onRequest.result;
+      db.createObjectStore('order', { keyPath: 'shortId' });
+      db.createObjectStore('cart', { keyPath: 'shortId' });
+    };
+
+    onRequest.onerror = () => {
+      //alert('Error creating or accessing db')
+    };
 
     alert(`정상적으로 회원가입되었습니다.`);
 
-    // 메인 페이지로 이동
+    // 기본 페이지로 이동
     window.location.href = '/';
   } catch (err) {
     console.error(err.stack);
