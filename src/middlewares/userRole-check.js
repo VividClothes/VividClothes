@@ -1,5 +1,3 @@
-import jwt from 'jsonwebtoken';
-
 async function userRoleCheck(req, res, next) {
     try {
         const userRole = req.currentUserRole;

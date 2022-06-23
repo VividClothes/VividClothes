@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { userService } from '../services';
 import { checkBody, loginRequired, userRoleCheck, validateSignup, validateCredential } from '../middlewares';
-// import generateRandomPassword from '../utils/generate-random-password';
+import passport from 'passport';
 
 const userRouter = Router();
 
@@ -16,38 +16,38 @@ userRouter.post(
             const { fullName, email, password } = req.body;
 
             // 위 데이터를 유저 db에 추가하기 - 회원가입 완료 시 자동 로그인(jwt 토큰 반환)
-            const loginData = await userService.addUser({
+            await userService.addUser({
                 fullName,
                 email,
                 password,
             });
 
-            res.status(201).json(loginData);
+            next();
         } catch (error) {
+            next(error);
+        }
+    },
+    // 회원가입 완료 후 로그인 진행
+    passport.authenticate('local', { session: false }),
+    async (req, res, next) => {
+        try{
+            res.status(200).json(req.token);
+        }catch(error){
             next(error);
         }
     }
 );
 
-// 로그인 api
+// 로컬 로그인
 userRouter.post(
     '/login',
     checkBody,
     validateCredential, // 이메일 유효성 검사 미들웨어
+    passport.authenticate('local', { session: false }), // passport로 로컬 로그인
     async (req, res, next) => {
-        try {
-            // req (request) 에서 데이터 가져오기
-            const { email, password } = req.body;
-
-            // 로그인 진행 (로그인 성공 시 jwt 토큰을 프론트에 보내 줌)
-            const loginData = await userService.getUserToken({
-                email,
-                password,
-            });
-
-            // jwt 토큰을 프론트에 보냄 (jwt 토큰은, 문자열임)
-            res.status(200).json(loginData);
-        } catch (error) {
+        try{
+            res.status(200).json(req.token);
+        }catch(error){
             next(error);
         }
     }
@@ -90,7 +90,7 @@ userRouter.get('/user',
     }
 );
 
-// 사용자 정보 수정 - admin은 개별 사용자의 role 변경 가능하도록 수정
+// 사용자 정보 수정 - admin은 개별 사용자의 role 변경 가능하도록 수정?
 userRouter.patch(
     '/users',
     checkBody,
@@ -149,29 +149,6 @@ userRouter.delete('/user',
         } catch (error) {
             next(error);
         }
-    }
-);
-
-// 비밀번호 찾기 - 구현 필요
-userRouter.post(
-    '/reset-password',
-    checkBody,
-    async (req, res) => {
-        const { email } = req.body;
-
-        // 유저 정보 검색
-        const userInfo = await userService.getUser({ email });
-
-        // 랜덤 비밀번호 생성
-        const passwordToken = generateRandomPassword();
-        const data = {
-            passwordToken,
-            email: userInfo.email,
-            ttl: 300, //ttl 값 설정 (5분)
-        };
-        // 5. 인증 코드 테이블에 데이터 입력
-        // 예) db.EmailAuth.create(data);
-        userService.createAuth(data);
     }
 );
 
