@@ -1,6 +1,7 @@
-// import passport from 'passport';
-// import kakao from './kakao';
+import passport from "passport";
+import local from './strategies/local-strategy';
 
-// module.exports = ()=>{
-//     kakao();
-// }
+module.exports = () => {
+    // local strategy 사용
+    passport.use(local);
+}
