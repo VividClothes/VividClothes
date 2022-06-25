@@ -16,12 +16,11 @@ const getCookieValue = (cookie) => {
 
 const [token, userRole, hashedEmail] = getCookieValue(document.cookie);
 
-localStorage.setItem('token', token);
-localStorage.setItem('role', userRole);
-localStorage.setItem('hashedEmail', hashedEmail);
-
 // indexedDB 생성
 if (token) {
+    localStorage.setItem('token', token);
+    localStorage.setItem('role', userRole);
+    localStorage.setItem('hashedEmail', hashedEmail);
     loginQuery(hashedEmail)
         .then((res) => {
             if(res) window.location.href = '/';
