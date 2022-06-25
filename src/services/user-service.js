@@ -1,5 +1,6 @@
 import { userModel } from '../db';
 import bcrypt from 'bcrypt';
+import axios from 'axios';
 
 class UserService {
     constructor(userModel) {
@@ -47,6 +48,18 @@ class UserService {
 
         // db에 저장
         await this.userModel.create(newUserInfo);
+
+        // 로그인 api 호출
+        const res = await axios({
+            method: 'post',
+            url: 'http://localhost:5000/api/login',
+            data: {
+                email,
+                password
+            }
+        });
+
+        return res.data;
     }
 
     // 전체 유저 목록 출력
