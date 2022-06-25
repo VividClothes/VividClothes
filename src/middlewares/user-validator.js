@@ -16,6 +16,10 @@ export const validateCredential = [
         .normalizeEmail()
         .notEmpty()
         .withMessage('invalid email'),
+    body('password')
+        .isLength({ min: 4 })
+        .notEmpty()
+        .withMessage('invalid password'),
     validate,
 ];
 
@@ -27,5 +31,9 @@ export const validateSignup = [
         .normalizeEmail()
         .notEmpty()
         .withMessage('invalid email'),
+    body('password')
+        .isLength({ min: 4 })
+        .notEmpty()
+        .withMessage('invalid password'),
     validate,
 ];

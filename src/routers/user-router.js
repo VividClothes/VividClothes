@@ -9,30 +9,21 @@ const userRouter = Router();
 userRouter.post(
     '/register',
     checkBody,
-    validateSignup, // 이메일 유효성 검사 미들웨어
+    validateSignup, // 유효성 검사 미들웨어
     async (req, res, next) => {
         try {
             // req (request)의 body 에서 데이터 가져오기
             const { fullName, email, password } = req.body;
 
             // 위 데이터를 유저 db에 추가하기 - 회원가입 완료 시 자동 로그인(jwt 토큰 반환)
-            await userService.addUser({
+            const loginData = await userService.addUser({
                 fullName,
                 email,
                 password,
             });
 
-            next();
+            res.status(201).json(loginData);
         } catch (error) {
-            next(error);
-        }
-    },
-    // 회원가입 완료 후 로그인 진행
-    passport.authenticate('local', { session: false }),
-    async (req, res, next) => {
-        try{
-            res.status(200).json(req.token);
-        }catch(error){
             next(error);
         }
     }
@@ -42,16 +33,59 @@ userRouter.post(
 userRouter.post(
     '/login',
     checkBody,
-    validateCredential, // 이메일 유효성 검사 미들웨어
-    passport.authenticate('local', { session: false }), // passport로 로컬 로그인
-    async (req, res, next) => {
-        try{
-            res.status(200).json(req.token);
-        }catch(error){
-            next(error);
-        }
+    validateCredential, // 유효성 검사 미들웨어
+    (req, res, next) => {
+        // passport로 로컬 로그인
+        passport.authenticate(
+            'local',
+            { session: false },
+            // custom callback 함수
+            (err, loginData) => {
+                if (err) {
+                    return next(err);
+                }
+                return res.status(200).json(loginData);
+            }
+        )(req, res, next);
     }
 );
+
+// 카카오 로그인 - 인가 코드 받기
+userRouter.get(
+    '/login/kakao',
+    passport.authenticate('kakao', {
+        failureRedirect: '/login',
+        session: false
+    })
+);
+
+// 카카오 로그인 콜백 - 토큰 받기
+userRouter.get(
+    '/login/kakao/callback',
+    (req, res, next) => {
+        // passport로 카카오 로그인
+        passport.authenticate(
+            'kakao',
+            {
+                failureRedirect: '/login',
+                session: false
+            },
+            // custom callback 함수
+            (err, loginData) => {
+                if (err) {
+                    return next(err);
+                }
+
+                // 쿠키에 데이터 저장 후 redirect
+                res.cookie('token', loginData.token);
+                res.cookie('userRole', loginData.userRole);
+                res.cookie('hashedEmail', loginData.hashedEmail);
+                
+                return res.redirect('/auth');
+            }
+        )(req, res, next);
+    }
+)
 
 // 전체 유저 목록을 가져옴 (배열 형태임)
 // 미들웨어로 loginRequired를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
