@@ -1,6 +1,5 @@
 import { Strategy } from "passport-kakao";
 import { userModel } from '../../db';
-import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 
 // jwt secretKey Setting
@@ -30,7 +29,7 @@ const kakao = new Strategy(config, async (accessToken, refreshToken, profile, do
         }
 
         // 이메일 암호화
-        const hashedEmail = await bcrypt.hash(user.email, 10);
+        const hashedEmail = crypto.createHash('sha512').update(email).digest('base64');
 
         // 유저 id와 role을 jwt 토큰에 담음
         const token = jwt.sign(
