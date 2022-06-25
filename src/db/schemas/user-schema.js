@@ -12,7 +12,7 @@ const UserSchema = new Schema(
         },
         password: {
             type: String,
-            required: true,
+            required: false,    // 소셜로그인의 경우 비밀번호 미입력
         },
         phoneNumber: {
             type: String,
@@ -29,6 +29,10 @@ const UserSchema = new Schema(
                     _id: false,
                 }
             ),
+            required: false,
+        },
+        SNS:{
+            type: Object,
             required: false,
         },
         role: {

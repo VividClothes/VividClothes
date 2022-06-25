@@ -1,5 +1,6 @@
 import cors from 'cors';
 import express from 'express';
+import cookieParser from 'cookie-parser';
 import {
   viewsRouter,
   userRouter,
@@ -23,6 +24,10 @@ app.use(express.json());
 // Content-Type: application/x-www-form-urlencoded 형태의 데이터를 인식하고 핸들링할 수 있게 함.
 app.use(express.urlencoded({ extended: false }));
 
+// 쿠키 사용
+app.use(cookieParser());
+
+// passport 사용
 require('./passport')();
 app.use(passport.initialize());
 

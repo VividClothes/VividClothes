@@ -3,14 +3,14 @@ import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { userService } from "../../services";
 
+// jwt secretKey Setting
+const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
+
 // 로컬 로그인에 사용할 필드 설정
 const config = {
     usernameField: 'email',
     passwordField: 'password'
 };
-
-// jwt secretKey Setting
-const secretKey = process.env.JWT_SECRET_KEY || 'secret-key';
 
 // 로컬 strategy
 const local = new Strategy(config, async (email, password, done) => {

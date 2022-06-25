@@ -50,6 +50,43 @@ userRouter.post(
     }
 );
 
+// 카카오 로그인 - 인가 코드 받기
+userRouter.get(
+    '/login/kakao',
+    passport.authenticate('kakao', {
+        failureRedirect: '/login',
+        session: false
+    })
+);
+
+// 카카오 로그인 콜백 - 토큰 받기
+userRouter.get(
+    '/login/kakao/callback',
+    (req, res, next) => {
+        // passport로 카카오 로그인
+        passport.authenticate(
+            'kakao',
+            {
+                failureRedirect: '/login',
+                session: false
+            },
+            // custom callback 함수
+            (err, loginData) => {
+                if (err) {
+                    return next(err);
+                }
+
+                // 쿠키에 데이터 저장 후 redirect
+                res.cookie('token', loginData.token);
+                res.cookie('userRole', loginData.userRole);
+                res.cookie('hashedEmail', loginData.hashedEmail);
+                
+                return res.redirect('/auth');
+            }
+        )(req, res, next);
+    }
+)
+
 // 전체 유저 목록을 가져옴 (배열 형태임)
 // 미들웨어로 loginRequired를 썼음 (이로써, jwt 토큰이 없으면 사용 불가한 라우팅이 됨)
 // userRoleCheck 미들웨어로 admin이 아니면 접근할 수 없도록 제한
