@@ -22,16 +22,11 @@ localStorage.setItem('hashedEmail', hashedEmail);
 
 // indexedDB 생성
 if (token) {
-    loginQuery(hashedEmail);
-
-    setTimeout(() => {
-        alert(`정상적으로 로그인되었습니다.`);
-        window.location.href = '/';
-    }, 50)
-    
+    loginQuery(hashedEmail)
+        .then((res) => {
+            if(res) window.location.href = '/';
+        });
 } else {
-    setTimeout(() => {
-        alert('카카오 로그인에 실패하였습니다. 다시 시도 해주세요');
-        window.location.href = '/login';
-    }, 50)
+    alert('카카오 로그인에 실패하였습니다. 다시 시도 해주세요');
+    window.location.href = '/login';
 }
