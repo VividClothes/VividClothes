@@ -2,7 +2,7 @@ import headerNavAdmin from './header-nav-admin.js';
 import headerNavUser from './header-nav-user.js';
 
 const notLoginHeaderNav = () => /* html */ `
-<ul class="flex-style">
+<ul class="flex-style desktop">
   <li>
     <a class="link" href="/login">로그인</a>
     <span class="span-dash">/</span>
@@ -11,10 +11,19 @@ const notLoginHeaderNav = () => /* html */ `
     <a class="link" href="/register">회원가입</a>
   </li>
 </ul>
+
+<ul class="flex-style mobile-nav">
+  <li>
+    <a class="link" href="/login"><i class="fa-solid fa-arrow-right-to-bracket"></i></a>
+  </li>
+  <li>
+    <a class="link" href="/register"><i class="fa-solid fa-user-plus"></i></a>
+  </li>
+</ul>
 `;
 
 const loginHeaderNav = (config, dropdownContent) => /* html */ `
-  <ul class="flex-style">
+  <ul class="flex-style desktop">
     <li>
       <a class="link" href="/profile">회원정보</a>
       <span class="span-dash">/</span>
@@ -39,6 +48,33 @@ const loginHeaderNav = (config, dropdownContent) => /* html */ `
       <a class="logout link" href="#" role="button">로그아웃</a>
     </li>
   </ul>
+
+  <ul class="flex-style mobile-nav">
+    <li>
+      <a class="link" href="/profile"><i class="fa-solid fa-circle-info"></i></a>
+    </li>
+
+    <li id="nav-mid">
+      <div class="dropdown">
+      <span class="dropdown-trigger link" role="button">
+        ${
+          config === '관리자 설정'
+            ? '<i class="fa-solid fa-gear"></i>'
+            : '<i class="fa-solid fa-user"></i>'
+        }
+      </span>
+      <div class="dropdown-menu" id="dropdown-menu3" role="menu">
+        <div class="dropdown-content">
+          ${dropdownContent()}
+        </div class="dropdown-content">
+      </div>
+      </div>
+    </li>
+
+    <li>
+      <a class="logout link" href="#" role="button"><i class="fa-solid fa-arrow-right-from-bracket"></i></a>
+    </li>
+  </ul>
 `;
 
 const createHeaderNav = (props) => {
@@ -60,21 +96,21 @@ function addHeaderNavEventListener() {
 }
 
 function dropdownEventListener() {
-  const dropdownTrigger = headerNav.querySelector('.dropdown-trigger');
-  const dropdownMenu = headerNav.querySelector('.dropdown-menu');
+  const dropdownTriggers = headerNav.querySelectorAll('.dropdown-trigger');
+  const dropdownMenus = headerNav.querySelectorAll('.dropdown-menu');
 
-  if (!dropdownTrigger) return;
+  if (!dropdownTriggers) return;
 
-  const dropdownHandler = () => {
-    dropdownTrigger.classList.toggle('clicked');
-    dropdownMenu.classList.toggle('show');
-  };
-
-  dropdownTrigger.addEventListener('click', dropdownHandler);
+  dropdownTriggers.forEach((el, i) => {
+    el.addEventListener('click', () => {
+      el.classList.toggle('clicked');
+      dropdownMenus[i].classList.toggle('show');
+    });
+  });
 }
 
 function logoutEventListener() {
-  const logoutBtn = headerNav.querySelector('.logout');
+  const logoutBtn = headerNav.querySelectorAll('.logout');
 
   if (!logoutBtn) return;
 
@@ -86,7 +122,9 @@ function logoutEventListener() {
     window.location.href = '/';
   };
 
-  logoutBtn.addEventListener('click', (e) => logoutHandler(e));
+  logoutBtn.forEach((el) => {
+    el.addEventListener('click', (e) => logoutHandler(e));
+  });
 }
 
 export { headerNav, addHeaderNavEventListener, createHeaderNav };

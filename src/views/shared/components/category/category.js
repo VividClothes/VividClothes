@@ -100,9 +100,9 @@ function dropdownEventListener(component) {
 }
 
 function logoutEventListener(component) {
-  const logoutBtn = component.querySelector('.logout');
+  const logoutBtns = component.querySelectorAll('.logout');
 
-  if (!logoutBtn) return;
+  if (!logoutBtns) return;
 
   const logoutHandler = (e) => {
     e.preventDefault();
@@ -112,7 +112,9 @@ function logoutEventListener(component) {
     window.location.href = '/';
   };
 
-  logoutBtn.addEventListener('click', (e) => logoutHandler(e));
+  logoutBtns.forEach((el) => {
+    el.addEventListener('click', (e) => logoutHandler(e));
+  });
 }
 
 export { createCategory, addCategoryListener };
