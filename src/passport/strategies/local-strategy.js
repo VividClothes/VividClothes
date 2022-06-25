@@ -1,5 +1,5 @@
 import { Strategy } from "passport-local";
-import bcrypt from 'bcrypt';
+import crypto from 'crypto';
 import jwt from 'jsonwebtoken';
 import { userService } from "../../services";
 
@@ -19,7 +19,7 @@ const local = new Strategy(config, async (email, password, done) => {
         const user = await userService.checkUser({ email }, password);
 
         // 이메일 암호화
-        const hashedEmail = await bcrypt.hash(email, 10);
+        const hashedEmail = crypto.createHash('sha512').update(email).digest('base64');
 
         // 유저 id와 role을 jwt 토큰에 담음
         const token = jwt.sign(
