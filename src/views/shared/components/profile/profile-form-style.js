@@ -1,17 +1,17 @@
 const profileStyle = /* html */ `
 <style>
 
-h4 {
+.user-info-title {
   color: #f0a500;
-  margin: 15px 0;
-  font-size: 20.5px;
+  margin: 10px 0;
+  font-size: 17.5px;
   font-weight: bold;
   font-family: 'Roboto', 'Noto Sans KR', sans-serif;
 }
 
-h4 > span {
+.user-info-title > span {
   color: #f0a500;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: bold;
 }
 
@@ -102,9 +102,9 @@ input {
   transition: background-color 0.3s;
 }
 
-  .user-info-edit-btn:hover {
-    background-color: black;
-  }
+.user-info-edit-btn:hover {
+  background-color: black;
+}
 
 input:focus {
   outline: 0;
@@ -168,8 +168,8 @@ input:focus + .input-icon:after {
 }
 .user-info-container {
   max-width: 38em;
-  padding: 1em 3em 2em 3em;
-  margin: 0em auto;
+  padding: 10px 15px;
+  margin: 0 auto;
   background-color: #fff;
   border-radius: 4.2px;
   box-shadow: 0px 3px 10px -2px rgba(0, 0, 0, 0.2);
@@ -188,7 +188,26 @@ input:focus + .input-icon:after {
 
 .user-info-label {
   font-style: italic;
+  font-size: 15px;
   margin-bottom: 8px;
+}
+
+@media screen and (min-width: 768px) {
+  .user-info-container {
+    padding: 16px 30px;
+  }
+
+  .user-info-title {
+    font-size: 20.5px;
+  }
+
+  .user-info-title > span {
+    font-size: 14px;
+  }
+
+  .user-info-label {
+    font-size: 16px;
+  }
 }
 </style>
 `;
