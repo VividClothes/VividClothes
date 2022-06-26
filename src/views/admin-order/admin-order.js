@@ -6,8 +6,6 @@ import { addComponentEvents } from '/components-event.js';
 
 // Components
 import { header, addHeaderEventListener } from '/header/header.js';
-import { createAdminTab } from '/admin-tab/admin-tab.js';
-import { adminOrderTabData } from '/admin-tab/admin-tab-data.js';
 import { createAdminOrderList, addAdminOrderListener } from '/admin-order/admin-order-list.js';
 import { createCategory, addCategoryListener } from '/category/category.js';
 import layout from '/layout/layout.js';

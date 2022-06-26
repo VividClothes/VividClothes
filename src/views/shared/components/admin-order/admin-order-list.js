@@ -6,70 +6,73 @@ const createAdminOrderList = (orders) => /* html */ `
   ${adminOrderListStyle}
   <main>
     <div class="basket">
-      <div class="basket-labels">
-        <ul class="order-table">
-          <li class="order-number">주문정보</li>
-          <li class="order-product">상품</li>
-          <li class="order-price">가격</li>
-          <li class="order-quantity">수량</li>
-          <li class="order-state">배송상태</li>
-          <li class="order-total">총 가격</li>
-        </ul>
-      </div>
     ${orders
       .map((order) => /* html */ {
         const { _id, orderer, createdAt } = order;
         const date = new Date(createdAt);
 
-        const convertedDate = `${date.getFullYear()}년 ${date.getMonth()}월 ${date.getDay()}일`;
+        const convertedDate = `${date.getFullYear()}년 ${
+          date.getMonth() + 1
+        }월 ${date.getDate()}일`;
 
         return /* html */ `
         <div class="order-content">
-          <div class="order-number order-side-content flex-box">
-            <span>${_id}</span>
-            <span>${orderer ? orderer.email : ''}</span>
-            <span>${convertedDate}</span>
-            <button data-orderid="${_id}" class="order-cancel-btn">주문취소</button>
-        </div>
-        <div class="order-center">
-        ${order.products
-          .map(
-            (product) => /* html */ `
-
-          ${product.product
+          <div class="order-title">
+            <span class="orderer">주문내역</span>
+            <span class="orderer-id">${orderer ? orderer.email : ''}</span>
+            <span class="order-number">${_id}</span>
+          </div>
+          <div class="order-btns">
+            <div class="order-state-info"> ${createOrderState(order.state, _id)}</div>
+          </div>
+          <div class="order-center">
+    
+          <ul class="order-table">
+            <li class="order-product">상품</li>
+            <li class="order-price">가격</li>
+            <li class="order-quantity">수량</li>
+          </ul>
+          <hr>
+          ${order.products
             .map(
-              ({ _id, imagePath, productName, price }) => /* html */ `
-              <div class="order-info">
-                <div class="order-product-info">
-                  <div class="order-image-container">
+              (product) => /* html */ `
+  
+            ${product.product
+              .map(
+                ({ _id, imagePath, productName, price }) => /* html */ `
+                <div class="order-info">
+                  <div class="order-product-info">
+                    <div class="order-image-container">
+                      <a href="/product/?id=${_id}">
+                        <img src="${imagePath[0]}" alt="${productName}" />
+                      </a>
+                    </div>
+  
+                  <div class="order-product-name-container flex-box">
                     <a href="/product/?id=${_id}">
-                      <img src="${imagePath[0]}" alt="${productName}" />
+                      <span>${productName}</span>
                     </a>
-                  </div>
-
-                <div class="order-product-name-container flex-box">
-                  <a href="/product/?id=${_id}">
-                    <span>${productName}</span>
-                  </a>
-                </diV>
-              </div>
-              
+                  </diV>
+                </div>
               <div class="order-price-info flex-box"><span>${price.toLocaleString()}</span></div>
               <div class="order-quantity-info flex-box"><span>${product.quantity}</span></div>
             </div>
           `
+              )
+              .join('')}
+        `
             )
             .join('')}
-        `
-          )
-          .join('')}
       
       </div>
-      <div class="order-state-info order-side-content flex-box"> ${createOrderState(
-        order.state,
-        _id
-      )}</div> 
-      <div class="order-total-info order-side-content flex-box">${order.priceTotal.toLocaleString()}원</div>
+      <div class="order-side-content-container">
+        <div class="order-side-content flex-box">
+          <span>📅 ${convertedDate}</span>
+          <div class="order-total-info order-side-content flex-box">총 금액: ${order.priceTotal.toLocaleString()}원</div>
+          <button data-orderid="${_id}" class="order-cancel-btn">주문취소</button> 
+        </div>
+      </div>
+
       </div>`;
       })
       .join('')}
