@@ -54,8 +54,7 @@ userRouter.post(
 userRouter.get(
     '/login/kakao',
     passport.authenticate('kakao', {
-        failureRedirect: '/login',
-        session: false
+        failureRedirect: '/login'
     })
 );
 
@@ -66,6 +65,41 @@ userRouter.get(
         // passport로 카카오 로그인
         passport.authenticate(
             'kakao',
+            {
+                failureRedirect: '/login',
+                session: false
+            },
+            // custom callback 함수
+            (err, loginData) => {
+                if (err) {
+                    return next(err);
+                }
+
+                // 쿠키에 데이터 저장 후 redirect
+                res.cookie('token', loginData.token);
+                res.cookie('userRole', loginData.userRole);
+                res.cookie('hashedEmail', loginData.hashedEmail);
+                
+                return res.redirect('/auth');
+            }
+        )(req, res, next);
+    }
+)
+
+// 구글 로그인
+userRouter.get(
+    '/login/google',
+    passport.authenticate('google', {
+        failureRedirect: '/login'
+    })
+);
+
+// 구글 로그인 콜백
+userRouter.get(
+    '/login/google/callback',
+    (req, res, next) => {
+        passport.authenticate(
+            'google',
             {
                 failureRedirect: '/login',
                 session: false
