@@ -186,13 +186,16 @@ hr {
 @media (max-width: 550px) {
   .grid {
     display: grid;
-    grid-template-columns: repeat(1, 1fr);
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 5px;
+    column-gap: 10px;
   }
 
   .products-layout {
     display: flex;
-    width: 88%;
+    width: 100%;
     margin: 80px auto;
+    padding: 10px;
   }
 }
 
