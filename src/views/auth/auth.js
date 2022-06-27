@@ -26,6 +26,6 @@ if (token) {
             if(res) window.location.href = '/';
         });
 } else {
-    alert('카카오 로그인에 실패하였습니다. 다시 시도 해주세요');
+    alert('로그인에 실패하였습니다. 다시 시도 해주세요');
     window.location.href = '/login';
 }
