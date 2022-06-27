@@ -63,15 +63,6 @@ class Profile {
 
   createTitleSectionLeft() {
     return /* html */ `
-      <style>
-        .delete-user-btn {
-          background-color: bisque;
-          padding: 8px 12px;
-          border-radius: 10px;
-          font-weight: bold;
-          color: black;
-        }
-      </style>
       <div class="delete-wrapper">
         <a href="#" class="delete-user-btn">회원탈퇴</a>
       </div>

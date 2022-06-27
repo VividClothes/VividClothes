@@ -7,14 +7,14 @@ const titleSection = (props) => {
   return /* html */ `
   ${titleSectionStyle(title)}
   <div class="title-section-container">
-    <h2 class="title-section-title is-2">
-      ${title} / <span class="is-italic is-capitalized is-size-4">${subTitle}</span>
+    <h2 class="title-section-title">
+      ${title} / <span class="title-section-subtitle">${subTitle}</span>
     </h2>
     <div class="title-section-left-side">
       ${extraContent ? extraContent() : ''}
     </div>
   </div>
-  <hr>
+  <hr class="title-section-hr">
   `;
 };
 

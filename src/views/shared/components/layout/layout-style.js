@@ -1,22 +1,21 @@
 const layoutStyle = /* html */ `
   <style>
     #layout {
-      width: 70%;
-      margin: 30px auto;
-      padding: 30px;
+      width: 90vw;
+      margin: 15px auto;
     }
     
-    @media (max-width: 768px) {
+    @media screen and (min-width: 768px) {
       #layout {
-        width: 90%;
+        width: 85vw;
         margin: 20px auto;
       }
     }
     
-    @media (min-width: 768px) and (max-width: 1024px) {
+    @media screen and (min-width: 1024px) {
       #layout {
-        width: 80%;
-        margin: 20px auto;
+        width: 75vw;
+        margin: 30px auto;
       }
     }
   </style>

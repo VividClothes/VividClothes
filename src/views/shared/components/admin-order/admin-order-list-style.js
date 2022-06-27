@@ -27,9 +27,7 @@ main {
 }
 
 .order-table {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+  display: flex;
 }
 
 .order-table li {
@@ -42,40 +40,65 @@ main {
   justify-content: center;
 }
 
-.order-number {
-  width: 20%;
+.order-center > hr {
+  margin: 0;
 }
+
 .order-product {
-  width: 30%;
+  width: 58%;
 }
 
 .order-price {
-  width: 10%;
+  width: 20%;
 }
 
 .order-quantity {
-  width: 10%;
-  margin-left: 9px;
+  width: 22%;
 }
 
 .order-state {
-  width: 15%;
   margin-left: 7px;
 }
 
 .order-total {
-  width: 10%;
   margin-left: 7px;
 }
 
 .order-content {
   display: flex;
+  flex-direction: column;
+  margin: 4px;
+  padding: 10px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+  margin-bottom: 20px;
+}
+
+.order-content > .order-title {
+  display: flex;
+  flex-direction: column;
+}
+
+.order-content > .order-btns {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  align-items: flex-end;
+}
+
+.order-cancel-btn {
+  padding: 6px 18px;
+  border: none;
+  color: white;
+  background-color: rgb(49, 49, 49);
+}
+
+.order-cancel-btn:hover {
+  background-color: rgb(64, 64, 64);
 }
 
 .order-center {
   display: flex;
   flex-direction: column;
-  width: 55%;
 }
 
 .flex-box {
@@ -84,17 +107,23 @@ main {
   justify-content: center;
 }
 
+.order-side-content-container {
+  display: flex;
+  height: 100%;
+  justify-content: center;
+}
+
 .order-side-content {
   display: flex;
   flex-direction: column;
-  border-bottom: 1px solid #ccc;
-  border-left: 1px solid #ccc;
-  border-right: 1px solid #ccc;
+  align-self: flex-end;
+  gap: 5px;
 }
 
 .order-info {
   display: flex;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid rgba(0,0,0,0.25);
+  margin-bottom: 10px;
 }
 
 .order-product-info {
@@ -114,12 +143,9 @@ main {
   width: 22%;
 }
 
-.order-state-info {
-  width: 15%;
-}
-
-.order-total-info {
-  width: 13%;
+.orderer {
+  font-size: 17px;
+  font-weight: bold;
 }
 
 .order-image-container {
@@ -138,6 +164,15 @@ main {
   display: flex;
   align-items: center;
   width: 100%;
+}
+
+@media screen and (min-width: 1024px) {
+  .basket {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 35px;
+    column-gap: 35px;
+  }
 }
 
   </style>

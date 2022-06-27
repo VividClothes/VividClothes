@@ -1,7 +1,15 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
 
+* {
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  color: #3d3d3d;
+}
+
 .a-link {
-  color: rgb(40, 40, 40);
   font-family: 'Roboto', 'Noto Sans KR', sans-serif;
 }
 

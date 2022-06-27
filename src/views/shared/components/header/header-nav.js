@@ -119,6 +119,10 @@ function logoutEventListener() {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('hashedEmail');
+    deleteCookie('token');
+    deleteCookie('userRole');
+    deleteCookie('hashedEmail');
+
     window.location.href = '/';
   };
 
@@ -126,5 +130,10 @@ function logoutEventListener() {
     el.addEventListener('click', (e) => logoutHandler(e));
   });
 }
+
+//쿠기 값 삭제
+const deleteCookie = (key) => {
+  document.cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
+};
 
 export { headerNav, addHeaderNavEventListener, createHeaderNav };
