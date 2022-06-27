@@ -17,13 +17,14 @@ const config = {
 const kakao = new Strategy(config, async (accessToken, refreshToken, profile, done) => {
     try {
         const { provider, id, username } = profile;
+        // 사용자가 email 정보 제공에 동의하지 않았을 경우 kakao+id로 이메일 지정
+        const email = profile._json.kakao_account.email || provider + id;
 
         let user = await userModel.findOneUser({ $or: [{ email: email }, { SNS: { 'kakao': id } }] });
         if (!user) {
             // user가 없으면 새 user 생성
             user = await userModel.create({
-                // 사용자가 email 정보 제공에 동의하지 않았을 경우 kakao+id로 이메일 지정
-                email: profile._json.kakao_account.email || provider + id,
+                email: email,
                 fullName: username,
                 SNS: {
                     kakao: id
