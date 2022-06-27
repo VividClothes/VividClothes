@@ -24,6 +24,7 @@ const emailInput = document.querySelector('#emailInput');
 const passwordInput = document.querySelector('#passwordInput');
 const localSubmitButton = document.querySelector('#localSubmitButton');
 const kakaoSubmitButton = document.querySelector('#kakaoSubmitButton');
+const googleSubmitButton = document.querySelector('#googleSubmitButton');
 
 
 addAllEvents();
@@ -32,8 +33,14 @@ addAllEvents();
 function addAllEvents() {
   localSubmitButton.addEventListener('click', handleLocalSubmit);
   kakaoSubmitButton.addEventListener('click', handleKakaoSubmit);
+  googleSubmitButton.addEventListener('click', handleGoogleSubmit);
 }
 
+async function handleGoogleSubmit(e) {
+    e.preventDefault();
+
+    window.location.href = `/api/login/google`;
+}
 
 async function handleKakaoSubmit(e) {
   e.preventDefault();
