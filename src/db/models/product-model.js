@@ -53,7 +53,7 @@ export class ProductModel {
             ])
             .sort('-product.orderCount -product.createAt')
             .limit(count);
-        Category.populate(products, 'product.category');
+        await Category.populate(products, 'product.category');
 
         return products;
     }
