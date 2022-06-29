@@ -88,7 +88,6 @@ export const makeProductCardHTML = ({ productId, productName, price, imagePath, 
           </div>
 
           <div class="contents">
-            <p class="font-15">${info}</p>
             <p class="subtitle"><i class="fa-solid fa-won-sign"></i> ${price.toLocaleString()}</p>
           </div>
         </div>
