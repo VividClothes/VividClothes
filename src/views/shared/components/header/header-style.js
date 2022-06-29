@@ -1,5 +1,19 @@
 const headerStyle = /* html */ `
 <style>
+
+body {
+  padding-top: 65px;
+  z-index:1;
+}
+
+header {
+  position: fixed;
+  z-index:2;
+  top: 0;
+  left: 0;
+  right: 0;
+}
+
 .flex-style .desktop {
   display: none
 }
