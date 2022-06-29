@@ -1,6 +1,7 @@
 import * as Api from '/api.js';
 import categoryStyle from '/category/category-style.js';
 import { createHeaderNav } from '/header/header-nav.js';
+import { deleteCookie } from '/useful-functions.js';
 
 const createCategory = async (props) => {
   const categories = !props ? await Api.get('/category/list') : props.categories;
@@ -109,6 +110,9 @@ function logoutEventListener(component) {
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('hashedEmail');
+    deleteCookie('token');
+    deleteCookie('userRole');
+    deleteCookie('hashedEmail');
     window.location.href = '/';
   };
 

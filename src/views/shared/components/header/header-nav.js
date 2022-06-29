@@ -1,5 +1,6 @@
 import headerNavAdmin from './header-nav-admin.js';
 import headerNavUser from './header-nav-user.js';
+import { deleteCookie } from '/useful-functions.js';
 
 const notLoginHeaderNav = () => /* html */ `
 <ul class="flex-style desktop">
@@ -130,10 +131,5 @@ function logoutEventListener() {
     el.addEventListener('click', (e) => logoutHandler(e));
   });
 }
-
-//쿠기 값 삭제
-const deleteCookie = (key) => {
-  document.cookie = key + '=; expires=Thu, 01 Jan 1970 00:00:01 GMT;';
-};
 
 export { headerNav, addHeaderNavEventListener, createHeaderNav };

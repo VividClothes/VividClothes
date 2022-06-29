@@ -14,6 +14,7 @@
 
 .login-form-box {
   width: 30rem;
+  box-shadow: none;
 }
 
 .login-form-box .title {
