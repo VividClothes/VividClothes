@@ -36,8 +36,8 @@ productRouter.post('/register',
     }
 );
 
-// 전체 상품 목록 가져옴
-productRouter.get('/list', async (req, res, next) => {
+// 홈화면에 표시할 최신순 전체 상품 목록 가져옴
+productRouter.get('/main/recent', async (req, res, next) => {
     try {
         const page = Number(req.query.page || 1);
         const perPage = Number(req.query.perPage || 10);
@@ -50,7 +50,7 @@ productRouter.get('/list', async (req, res, next) => {
     }
 });
 
-// 홈화면에 표시할 상품 목록 가져옴(인기 상위 4개, 신상품 8개)
+// 홈화면에 표시할 상품 목록 가져옴(인기 상위 4개)
 productRouter.get('/main', async (req, res, next) => {
     try {
         const products = await productService.getPopularAndRecent();
