@@ -1,20 +1,18 @@
 # <img src="https://user-images.githubusercontent.com/84328632/176653941-c730c299-3063-4bff-986b-d97cca58a7df.png" alt="vivid-clothes-favicon" width="25" height="25" margin-right="10px" /> Vivid Clothes
 
-> 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_** > https://vivid-clothes.herokuapp.com/
+> 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_**
+>
+> https://vivid-clothes.herokuapp.com/**
 
 <br />
 
 ## 📜 개요 (Outline)
 
----
-
-**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다.
+**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다. 엘리스 측의 구현 요구사항에 따라, Express.js를 기반으로 MPA(Multi Page Application)를 구현하였습니다.
 
 <br />
 
 ## 🔨 기술 스택 (Tech stack)
-
----
 
 임시 작성
 
@@ -35,9 +33,11 @@
 
 ## 📝 서비스 기능 (Feature)
 
----
+<br />
 
-### 1. 요약
+### _1. 한 눈에 보기_
+
+<br />
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84328632/176696367-2b518b2d-8027-4e48-85ec-1378f770776f.PNG" alt="feature-summary" />
@@ -45,14 +45,18 @@
 
 <br />
 
-### 2. 예시
+### _2. 기능 예시_
+
+<br />
 
 <p align="center">
-<img src="https://user-images.githubusercontent.com/84328632/176737536-cfc10efa-059c-4526-9ca3-57a58fef2c7d.png" alt="feature-detail1">
+<img src="https://user-images.githubusercontent.com/84328632/176744054-11c8d691-2101-4b24-88c1-af07242a8f87.png" alt="feature-detail1">
 </p>
 
+<br />
+
 <p align="center">
-<img src="https://user-images.githubusercontent.com/84328632/176737745-39933c16-4db9-4ab0-98ea-f75d8bb71b11.png" alt="feature-detail2">
+<img src="https://user-images.githubusercontent.com/84328632/176744182-05d1b9d7-9a93-4d9f-836d-8183b1258a28.png" alt="feature-detail2">
 </p>
 
 <br />
@@ -60,15 +64,14 @@
 ### 3. 추가 기능
 
 - 무한 스크롤(Infinite Scroll) 💡
+- 소셜 로그인(Social Login) 🙂
 - 페이지네이션(Pagination) 📑
 - 검색 기능(Search) 🔍
-- 반응형 📱
+- 반응형(모바일 퍼스트) 📱
 
 <br />
 
 ## 👩🏼‍🤝‍🧑🏽 팀원 (Team)
-
----
 
 | 이름   | 역할            |
 | ------ | --------------- |
