@@ -40,7 +40,7 @@ const recipientArray = [recipient, phone, postcode, address1, address2];
 
 // 상품 아이디 배열 - 결제하기 클릭하면 indexedDB에서 지워야함
 const productIdArray = [];
-
+const sizeColorArray = []; // 장바구니는 id가 다름
 
 
 (async () => {
@@ -74,6 +74,7 @@ const productIdArray = [];
             buyProducts.forEach((product) => {
                 itemsBody.insertAdjacentHTML('beforeend', makeItemHTML(product));
                 productIdArray.push(product.productId);
+                sizeColorArray.push(`${product.size}${product.color}`);
             })
             /*********************************************************************/
 
@@ -115,8 +116,9 @@ const productIdArray = [];
                     
                     // 주문 완료한 상품 indexedDB에서 삭제
                     const transaction = db.transaction(storeName, 'readwrite');
-                    productIdArray.forEach(item => {
-                        transaction.objectStore(storeName).delete(item);
+                    productIdArray.forEach((item, i) => {
+                        if (storeName === 'cart') transaction.objectStore(storeName).delete(`${item}${sizeColorArray[i]}`);
+                        else transaction.objectStore(storeName).delete(item);
                     })
 
 
