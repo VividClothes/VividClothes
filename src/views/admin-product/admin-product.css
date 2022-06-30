@@ -67,6 +67,10 @@
   font-size: 15px;
 }
 
+.select:not(.is-multiple):not(.is-loading)::after {
+  z-index: 1;
+}
+
 .contents {
   padding-right: 15px;
   padding-left: 15px;
