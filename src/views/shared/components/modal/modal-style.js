@@ -5,9 +5,9 @@ const modalStlye = /* html */ `
     z-index: 100;
     top: 50%;
     left: 50%;
-    min-width: 550px;
-    max-height: 450px;
-    padding: 40px 50px;
+    width: 100vw;
+    height: 100vh;
+    padding: 10px;
     background-color: #f4f7f6;
     visibility: hidden;
     opacity: 0;
@@ -131,6 +131,7 @@ const modalStlye = /* html */ `
     justify-content: center;
     align-items: center;
     font-weight: bold;
+    font-size: 14px;
     height: 40px;
     background-color: #ccc;
     margin-top: 3px;
@@ -169,6 +170,57 @@ const modalStlye = /* html */ `
   input[type="number"]::-webkit-inner-spin-button {
     -webkit-appearance: none;
     margin: 0;
+  }
+
+  @media screen and (min-width: 500px) {
+    .modal-layout {
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    width: 450px;
+    max-height: 450px;
+    padding: 20px;
+    background-color: #f4f7f6;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, -45%);
+    transition: all 0.3s;
+    overflow-y: scroll;
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+    .show-modal {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
+
+  @media screen and (min-width: 768px) {
+    .modal-layout {
+    position: fixed;
+    z-index: 100;
+    top: 50%;
+    left: 50%;
+    width: 550px;
+    max-height: 450px;
+    padding: 40px 50px;
+    background-color: #f4f7f6;
+    visibility: hidden;
+    opacity: 0;
+    transform: translate(-50%, -45%);
+    transition: all 0.3s;
+    overflow-y: scroll;
+    font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+  }
+
+    .show-modal {
+    visibility: visible;
+    opacity: 1;
+    transform: translate(-50%, -50%);
+  }
   }
 </style>
 `;
