@@ -60,3 +60,8 @@ yarn start
 본 프로젝트에서 제공하는 모든 코드 등의는 저작권법에 의해 보호받는 ㈜엘리스의 자산이며, 무단 사용 및 도용, 복제 및 배포를 금합니다.
 Copyright 2022 엘리스 Inc. All rights reserved.
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73643088/176641462-bd61a147-7f05-4f34-9255-de695d66cae5.gif" width="30%" height="30%">
+  <img src="https://user-images.githubusercontent.com/73643088/176641464-9f1fbaf9-5fda-43ec-a9f8-af22426dc9a1.gif" width="30%" height="30%">
+  <img src="https://user-images.githubusercontent.com/73643088/176641452-959f8ac8-adb0-4e33-a641-7b0900379b54.gif" width="30%" height="30%">
+</p>
