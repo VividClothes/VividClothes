@@ -56,26 +56,6 @@ export const maskingFunc = {
 			return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*').replace(/.{6}$/, "******");
 		}
 	},
-
-	name(str) {
-		let originStr = str;
-		let maskingStr;
-		let strLength;
-
-		if (this.checkNull(originStr) == true) {
-			return originStr;
-		}
-
-		strLength = originStr.length;
-
-		if (strLength < 3) {
-			maskingStr = originStr.replace(/(?<=.{1})./gi, "*");
-		} else {
-			maskingStr = originStr.replace(/(?<=.{2})./gi, "*");
-		}
-
-		return maskingStr;
-	}
 }
 
 // 날짜 전처리
