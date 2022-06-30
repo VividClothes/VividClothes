@@ -14,7 +14,8 @@ export const validateEmail = (email) => {
 
 // 숫자에 쉼표를 추가함. (10000 -> 10,000)
 export const addCommas = (n) => {
-	return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+	return n;
+	// return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
 
 // 13,000원, 2개 등의 문자열에서 쉼표, 글자 등 제외 후 숫자만 뺴냄
@@ -40,22 +41,21 @@ export const maskingFunc = {
 	},
 
 	email(str) {
-		return str;
-		// let originStr = str;
-		// let emailStr = originStr.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
-		// let strLength;
+		let originStr = str;
+		let emailStr = originStr.match(/([a-zA-Z0-9._-]+@[a-zA-Z0-9._-]+\.[a-zA-Z0-9._-]+)/gi);
+		let strLength;
 
-		// if (this.checkNull(originStr) == true || this.checkNull(emailStr) == true) {
-		// 	return originStr;
-		// } else {
-		// 	strLength = emailStr.toString().split('@')[0].length - 3;
+		if (this.checkNull(originStr) == true || this.checkNull(emailStr) == true) {
+			return originStr;
+		} else {
+			strLength = emailStr.toString().split('@')[0].length - 3;
 
-		// 	// ex1) abcdefg12345@naver.com => ab**********@naver.com
-		// 	// return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
+			// ex1) abcdefg12345@naver.com => ab**********@naver.com
+			// return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*');
 
-		// 	// ex2) abcdefg12345@naver.com => ab**********@nav******
-		// 	return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*').replace(/.{6}$/, "******");
-		// }
+			// ex2) abcdefg12345@naver.com => ab**********@nav******
+			return originStr.toString().replace(new RegExp('.(?=.{0,' + strLength + '}@)', 'g'), '*').replace(/.{6}$/, "******");
+		}
 	},
 
 	name(str) {
@@ -76,7 +76,7 @@ export const maskingFunc = {
 		// 	maskingStr = originStr.replace(/(?<=.{2})./gi, "*");
 		// }
 
-		return maskingStr;
+		// return maskingStr;
 	}
 }
 
