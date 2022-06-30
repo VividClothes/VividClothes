@@ -132,6 +132,10 @@ header {
 }
 
 @media screen and (min-width: 768px) {
+  body {
+    padding-top: 80px;
+  }
+
   .flex-style .desktop {
     display: flex;
   }
@@ -182,6 +186,10 @@ header {
 }
 
 @media screen and (min-width: 1024px) {
+  body {
+    padding-top: 90px;
+  }
+
   .flex-style {
     flex-direction: row;
     height: 90px;
