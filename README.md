@@ -60,8 +60,22 @@ yarn start
 본 프로젝트에서 제공하는 모든 코드 등의는 저작권법에 의해 보호받는 ㈜엘리스의 자산이며, 무단 사용 및 도용, 복제 및 배포를 금합니다.
 Copyright 2022 엘리스 Inc. All rights reserved.
 
+
+### 이미지
+![홈 인기 상품](https://user-images.githubusercontent.com/73643088/176643220-cbad8b28-0b66-4ef0-ace0-c56f5fa79df8.gif)
+![홈 신상품 무한 스크롤](https://user-images.githubusercontent.com/73643088/176643247-5d17789e-d47d-4f87-805a-9c166eb486f5.gif)
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73643088/176641462-bd61a147-7f05-4f34-9255-de695d66cae5.gif" width="30%" height="30%">
-  <img src="https://user-images.githubusercontent.com/73643088/176641464-9f1fbaf9-5fda-43ec-a9f8-af22426dc9a1.gif" width="30%" height="30%">
-  <img src="https://user-images.githubusercontent.com/73643088/176641452-959f8ac8-adb0-4e33-a641-7b0900379b54.gif" width="30%" height="30%">
+  <img src="https://user-images.githubusercontent.com/73643088/176641462-bd61a147-7f05-4f34-9255-de695d66cae5.gif" width="33%" height="33%" alt="로컬 로그인">
+  <img src="https://user-images.githubusercontent.com/73643088/176641464-9f1fbaf9-5fda-43ec-a9f8-af22426dc9a1.gif" width="33%" height="33%" alt="카카오 로그인">
+  <img src="https://user-images.githubusercontent.com/73643088/176641452-959f8ac8-adb0-4e33-a641-7b0900379b54.gif" width="33%" height="33%" alt="구글 로그인">
+</p>
+
+![상품 선택](https://user-images.githubusercontent.com/73643088/176643292-3f424dee-37c6-436e-961f-2e8834abdcfd.gif)
+![장바구니 주문](https://user-images.githubusercontent.com/73643088/176643303-64d9c197-1f06-42f2-bcb8-75b7d9028af2.gif)
+![리뷰 작성](https://user-images.githubusercontent.com/73643088/176643309-44db1cfa-be8c-4b29-bf23-54d2a0e84d25.gif)
+![검색](https://user-images.githubusercontent.com/73643088/176643313-bbaa72d6-ed54-4f6c-8b57-bc93129610de.gif)
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/73643088/176643317-379e816c-4cf9-4ed2-a064-7670c0712255.gif" width="33%" height="33%" alt="홈 반응형">
+  <img src="https://user-images.githubusercontent.com/73643088/176643323-4d58bbb6-8ad3-400c-866c-63fe42aa9fdc.gif" width="33%" height="33%" alt="상품 상세 반응형">
+  <img src="https://user-images.githubusercontent.com/73643088/176643325-b32fb12d-1f45-4231-8fed-5930f72b3da2.gif" width="33%" height="33%" alt="주문 내역 반응형">
 </p>
