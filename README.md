@@ -1,6 +1,6 @@
 # <img src="https://user-images.githubusercontent.com/84328632/176653941-c730c299-3063-4bff-986b-d97cca58a7df.png" alt="vivid-clothes-favicon" width="25" height="25" margin-right="10px" /> Vivid Clothes
 
-> ## 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_**
+> ### 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_**
 >
 > https://vivid-clothes.herokuapp.com
 
@@ -21,6 +21,7 @@
 ## 🎬 미리 보기 (Preiview)
 
   <br />
+
   <p align="center">
    <img src="https://user-images.githubusercontent.com/73643088/176643317-379e816c-4cf9-4ed2-a064-7670c0712255.gif" alt="홈 반응형" width="50%">
   </p>
@@ -41,8 +42,6 @@
 <img src="https://user-images.githubusercontent.com/84328632/176696367-2b518b2d-8027-4e48-85ec-1378f770776f.PNG" alt="feature-summary" />
 <p>
 
-<br />
-
 ### _2. 기능 예시_
 
 <p align="center">
@@ -54,8 +53,6 @@
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84328632/176744182-05d1b9d7-9a93-4d9f-836d-8183b1258a28.png" alt="feature-detail2">
 </p>
-
-<br />
 
 ### 3. 추가 기능
 
