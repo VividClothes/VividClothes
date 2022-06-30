@@ -1,81 +1,78 @@
-# 쇼핑몰 웹 서비스 프로젝트
+# <img src="https://user-images.githubusercontent.com/84328632/176653941-c730c299-3063-4bff-986b-d97cca58a7df.png" alt="vivid-clothes-favicon" width="25" height="25" margin-right="10px" /> Vivid Clothes
 
-제품들을 조회하고, 장바구니에 추가하고, 또 주문을 할 수 있는 쇼핑몰 웹 서비스 제작 프로젝트입니다. <br />
-**웹 구현 예시** (링크는 프로젝트 기간에만 유효합니다)
+> 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_** > https://vivid-clothes.herokuapp.com/
 
-### http://shopping-demo.elicecoding.com/
+<br />
 
-<br>
-
-** 핵심 기능은 하기입니다. (이외에도 더 있으며, 추가 안내 될 프로젝트 평가기준표에서 구체화될 예정입니다.) <br>
-1. 회원가입, 로그인, 회원정보 수정 등 **유저 정보 관련 CRUD** 
-2. **제품 목록**을 조회 및, **제품 상세 정보**를 조회 가능함. 
-3. 장바구니에 제품을 추가할 수 있으며, **장바구니에서 CRUD** 작업이 가능함.
-4. 장바구니는 서버 DB가 아닌, 프론트 단에서 저장 및 관리됨 (localStorage, indexedDB 등)
-5. 장바구니에서 주문을 진행하며, **주문 완료 후 조회 및 삭제**가 가능함.
-
-## 주요 사용 기술
-
-### 1. 프론트엔드
-
-- **Vanilla javascript**, html, css (**Bulma css**)
-- Font-awesome 
-- Daum 도로명 주소 api 
-- 이외
-
-### 2. 백엔드 
-
-- **Express** (nodemon, babel-node로 실행됩니다.)
-- Mongodb, Mongoose
-- cors
-- 이외
-
-## 폴더 구조
-- 프론트: `src/views` 폴더 
-- 백: src/views 이외 폴더 전체
-- 실행: **프론트, 백 동시에, express로 실행**
-
-
-
-## 설치 방법
-
-1. **.env 파일 설정 (MONGODB_URL 환경변수를, 개인 로컬 혹은 Atlas 서버 URL로 설정해야 함)**
-
-2. express 실행
-
-```bash
-# npm 을 쓰는 경우 
-npm install
-npm run start
-
-# yarn 을 쓰는 경우
-yarn
-yarn start
-```
-
-<br>
+## 📜 개요 (Outline)
 
 ---
 
-본 프로젝트에서 제공하는 모든 코드 등의는 저작권법에 의해 보호받는 ㈜엘리스의 자산이며, 무단 사용 및 도용, 복제 및 배포를 금합니다.
-Copyright 2022 엘리스 Inc. All rights reserved.
+**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다.
 
+<br />
 
-### 이미지
-![홈 인기 상품](https://user-images.githubusercontent.com/73643088/176643220-cbad8b28-0b66-4ef0-ace0-c56f5fa79df8.gif)
-![홈 신상품 무한 스크롤](https://user-images.githubusercontent.com/73643088/176643247-5d17789e-d47d-4f87-805a-9c166eb486f5.gif)
+## 🔨 기술 스택 (Tech stack)
+
+---
+
+임시 작성
+
+<br />
+
+## 🎬 미리 보기 (Preiview)
+
+  <br />
+  <p align="center">
+   <img src="https://user-images.githubusercontent.com/73643088/176643317-379e816c-4cf9-4ed2-a064-7670c0712255.gif" alt="홈 반응형" width="50%">
+  </p>
+  <br />
+  <p align="center">
+    <img src="https://user-images.githubusercontent.com/73643088/176643292-3f424dee-37c6-436e-961f-2e8834abdcfd.gif" width="50%" alt="상품 선택">
+  </p>
+
+<br />
+
+## 📝 서비스 기능 (Feature)
+
+---
+
+### 1. 요약
+
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73643088/176641462-bd61a147-7f05-4f34-9255-de695d66cae5.gif" width="33%" height="33%" alt="로컬 로그인">
-  <img src="https://user-images.githubusercontent.com/73643088/176641464-9f1fbaf9-5fda-43ec-a9f8-af22426dc9a1.gif" width="33%" height="33%" alt="카카오 로그인">
-  <img src="https://user-images.githubusercontent.com/73643088/176641452-959f8ac8-adb0-4e33-a641-7b0900379b54.gif" width="33%" height="33%" alt="구글 로그인">
+<img src="https://user-images.githubusercontent.com/84328632/176696367-2b518b2d-8027-4e48-85ec-1378f770776f.PNG" alt="feature-summary" />
+<p>
+
+<br />
+
+### 2. 예시
+
+<p align="center">
+<img src="https://user-images.githubusercontent.com/84328632/176737536-cfc10efa-059c-4526-9ca3-57a58fef2c7d.png" alt="feature-detail1">
 </p>
 
-![상품 선택](https://user-images.githubusercontent.com/73643088/176643292-3f424dee-37c6-436e-961f-2e8834abdcfd.gif)
-![장바구니 주문](https://user-images.githubusercontent.com/73643088/176643303-64d9c197-1f06-42f2-bcb8-75b7d9028af2.gif)
-![리뷰 작성](https://user-images.githubusercontent.com/73643088/176643309-44db1cfa-be8c-4b29-bf23-54d2a0e84d25.gif)
-![검색](https://user-images.githubusercontent.com/73643088/176643313-bbaa72d6-ed54-4f6c-8b57-bc93129610de.gif)
 <p align="center">
-  <img src="https://user-images.githubusercontent.com/73643088/176643317-379e816c-4cf9-4ed2-a064-7670c0712255.gif" width="33%" height="33%" alt="홈 반응형">
-  <img src="https://user-images.githubusercontent.com/73643088/176643323-4d58bbb6-8ad3-400c-866c-63fe42aa9fdc.gif" width="33%" height="33%" alt="상품 상세 반응형">
-  <img src="https://user-images.githubusercontent.com/73643088/176643325-b32fb12d-1f45-4231-8fed-5930f72b3da2.gif" width="33%" height="33%" alt="주문 내역 반응형">
+<img src="https://user-images.githubusercontent.com/84328632/176737745-39933c16-4db9-4ab0-98ea-f75d8bb71b11.png" alt="feature-detail2">
 </p>
+
+<br />
+
+### 3. 추가 기능
+
+- 무한 스크롤(Infinite Scroll) 💡
+- 페이지네이션(Pagination) 📑
+- 검색 기능(Search) 🔍
+- 반응형 📱
+
+<br />
+
+## 👩🏼‍🤝‍🧑🏽 팀원 (Team)
+
+---
+
+| 이름   | 역할            |
+| ------ | --------------- |
+| 이찬   | 팀장/프론트엔트 |
+| 원용재 | 프론트엔드      |
+| 전가영 | 백엔드          |
+| 황시원 | 백엔드          |
