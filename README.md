@@ -2,13 +2,13 @@
 
 > 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_**
 >
-> https://vivid-clothes.herokuapp.com/**
+> https://vivid-clothes.herokuapp.com
 
 <br />
 
 ## 📜 개요 (Outline)
 
-**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다. 엘리스 측의 구현 요구사항에 따라, Express.js를 기반으로 MPA(Multi Page Application)를 구현하였습니다.
+**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다. 엘리스 측의 구현 요구사항에 따라, **Express.js**를 기반으로 **MPA(Multi Page Application)**를 구현하였습니다.
 
 <br />
 
@@ -33,8 +33,6 @@
 
 ## 📝 서비스 기능 (Feature)
 
-<br />
-
 ### _1. 한 눈에 보기_
 
 <br />
@@ -46,8 +44,6 @@
 <br />
 
 ### _2. 기능 예시_
-
-<br />
 
 <p align="center">
 <img src="https://user-images.githubusercontent.com/84328632/176744054-11c8d691-2101-4b24-88c1-af07242a8f87.png" alt="feature-detail1">
@@ -67,7 +63,7 @@
 - 소셜 로그인(Social Login) 🙂
 - 페이지네이션(Pagination) 📑
 - 검색 기능(Search) 🔍
-- 반응형(모바일 퍼스트) 📱
+- 반응형(Mobile First) 📱
 
 <br />
 
