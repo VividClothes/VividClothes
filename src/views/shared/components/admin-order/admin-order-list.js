@@ -50,12 +50,14 @@ const createAdminOrderList = (orders) => /* html */ `
   
                   <div class="order-product-name-container flex-box">
                     <a href="/product/?id=${_id}">
-                      <span>${productName}</span>
+                      <span class="order-name">${productName}</span>
                     </a>
                   </diV>
                 </div>
-              <div class="order-price-info flex-box"><span>${price.toLocaleString()}</span></div>
-              <div class="order-quantity-info flex-box"><span>${product.quantity}</span></div>
+              <div class="order-price-info flex-box"><span class="order-name">${price.toLocaleString()}</span></div>
+              <div class="order-quantity-info flex-box"><span class="order-name">${
+                product.quantity
+              }</span></div>
             </div>
           `
               )

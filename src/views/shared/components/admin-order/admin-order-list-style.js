@@ -87,7 +87,9 @@ main {
 
 .order-cancel-btn {
   padding: 6px 18px;
+  font-size: 15px;
   border: none;
+  border-radius: 3px;
   color: white;
   background-color: rgb(49, 49, 49);
 }
@@ -105,6 +107,10 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.order-name {
+  font-size: 12px;
 }
 
 .order-side-content-container {
@@ -166,12 +172,21 @@ main {
   width: 100%;
 }
 
+@media screen and (min-width: 550px) {
+  .order-name {
+    font-size: 15px;
+  }
+}
+
 @media screen and (min-width: 1024px) {
   .basket {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     row-gap: 35px;
     column-gap: 35px;
+  }
+  .order-name {
+    font-size: 15px;
   }
 }
 
