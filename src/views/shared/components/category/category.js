@@ -1,6 +1,7 @@
 import * as Api from '/api.js';
 import categoryStyle from '/category/category-style.js';
 import { createHeaderNav } from '/header/header-nav.js';
+import { deleteCookie } from '/useful-functions.js';
 
 const createCategory = async (props) => {
   const categories = !props ? await Api.get('/category/list') : props.categories;
@@ -100,19 +101,24 @@ function dropdownEventListener(component) {
 }
 
 function logoutEventListener(component) {
-  const logoutBtn = component.querySelector('.logout');
+  const logoutBtns = component.querySelectorAll('.logout');
 
-  if (!logoutBtn) return;
+  if (!logoutBtns) return;
 
   const logoutHandler = (e) => {
     e.preventDefault();
     localStorage.removeItem('token');
     localStorage.removeItem('role');
     localStorage.removeItem('hashedEmail');
+    deleteCookie('token');
+    deleteCookie('userRole');
+    deleteCookie('hashedEmail');
     window.location.href = '/';
   };
 
-  logoutBtn.addEventListener('click', (e) => logoutHandler(e));
+  logoutBtns.forEach((el) => {
+    el.addEventListener('click', (e) => logoutHandler(e));
+  });
 }
 
 export { createCategory, addCategoryListener };

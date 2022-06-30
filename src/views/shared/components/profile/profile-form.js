@@ -8,7 +8,7 @@ const createProfile = (props) => {
   <div class="user-info-container">
     <form class="user-info-form">
       <div class="row">
-        <h4>${fullName}<span>  님의 기본 정보</span></h4>
+        <h4 class="user-info-title">${fullName}<span>  님의 기본 정보</span></h4>
         <div class="tooltip-wrapper">
           <label class="user-info-label">◾  Email</label>
           <span class="tooltip">해당 영역은 수정하실 수 없습니다.</span>

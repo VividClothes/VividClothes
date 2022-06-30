@@ -45,6 +45,10 @@ const categoryStyle = /* html */ `
   height: 100%;
 }
 
+.sidebar-links .mobile-nav {
+  display: none;
+}
+
 .sidebar-links .flex-style .span-dash {
   display: none;
 }
@@ -143,6 +147,12 @@ const categoryStyle = /* html */ `
 
 .mobile-search .searchQuerySubmit:hover {
   cursor: pointer;
+}
+
+@media screen and (min-width: 425px) {
+  .sidebar-links .flex-style {
+    display: none;
+}
 }
 
 @media screen and (min-width: 768px) {

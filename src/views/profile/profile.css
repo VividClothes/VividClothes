@@ -1,8 +1,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;700&family=Roboto:wght@400;700&family=Rancho&display=swap');
 
-.a-link {
-  color: rgb(40, 40, 40);
+* {
+  box-sizing: border-box;
+}
+
+body {
   font-family: 'Roboto', 'Noto Sans KR', sans-serif;
+  color: #3d3d3d;
 }
 
 .cart-status-container {
@@ -12,7 +16,6 @@
 .card {
   position: relative;
   height: 100%;
-  font-family: 'Roboto', 'Noto Sans KR', sans-serif;
 }
 
 .button-container {
@@ -21,4 +24,25 @@
   left: 0;
   padding: 10px;
   font-size: 14px;
+}
+
+.delete-user-btn {
+  background-color: rgb(192, 45, 37);
+  padding: 8px 12px;
+  border-radius: 7px;
+  font-size: 14px;
+  color: rgb(255, 255, 255);
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  transition: background-color 0.3s ease;
+}
+
+.delete-user-btn:hover {
+  background-color: rgb(200, 63, 63);
+  color: rgb(255, 255, 255);
+}
+
+@media screen and (min-width: 768px) {
+  .delete-user-btn {
+    font-size: 15px;
+  }
 }

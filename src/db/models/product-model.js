@@ -30,9 +30,9 @@ export class ProductModel {
         return createdNewProduct;
     }
 
-    // 모든 상품 조회
+    // 모든 상품 최신순 조회
     async findAll(page, perPage) {
-        const products = pagination(page, perPage, Product, {}, select, sort);
+        const products = pagination(page, perPage, Product, {}, {}, { createdAt: -1 });
 
         return products;
     }
@@ -42,28 +42,18 @@ export class ProductModel {
         const products = await Product
             .aggregate([
                 {
-                    $sort: {orderCount: -1, createdAt: -1}
+                    $sort: sort
                 },
                 {
                     $group: {
                         _id: '$category',
-                        product: {$first: "$$ROOT"}
+                        product: { $first: "$$ROOT" }
                     }
                 }
             ])
             .sort('-product.orderCount -product.createAt')
             .limit(count);
-        Category.populate(products, 'product.category');
-
-        return products;
-    }
-
-    // 최신 n개 상품 조회
-    async findRecent(count) {
-        const products = await Product.find({})
-            .sort('-createdAt')
-            .limit(count)
-            .populate(populate);
+        await Category.populate(products, 'product.category');
 
         return products;
     }
@@ -89,7 +79,7 @@ export class ProductModel {
     async findByKeyword(keyword, page, perPage) {
         const filter = { $text: { $search: keyword } };
         const sort = { score: { $meta: 'textScore' } };
-        
+
         const products = pagination(page, perPage, Product, filter, {}, sort);
 
         return products;

@@ -16,19 +16,18 @@ class ProductService {
         return createdNewProduct;
     }
 
-    // 전체 상품 조회
+    // 전체 상품 최신순 조회
     async getProducts(page, perPage) {
         const products = await this.productModel.findAll(page, perPage);
 
         return products;
     }
 
-    // 홈화면 상품 조회(인기 상품 및 최신 상품)
+    // 홈화면 인기 상품 조회
     async getPopularAndRecent() {
         const popularProducts = await this.productModel.findPopular(4);
-        const recentProducts = await this.productModel.findRecent(40);
 
-        return { popularProducts, recentProducts };
+        return popularProducts;
     }
 
     // 카테고리별 상품 조회
