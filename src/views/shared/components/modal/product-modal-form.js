@@ -133,7 +133,7 @@ const TagsHTML = (tagName, tagType) => {
 
 const imgUploadBtn = () => /* html */ `
   <div class="img-upload-btn-container" style="display: flex; justify-content: flex-end; width: 100%;">
-    <button class="upload-btn" style="cursor: pointer; border-radius: 4px; background-color: #474747; border: 0; padding: 10px; color: white;">이미지 업로드</button>
+    <button class="upload-btn" style="cursor: pointer; border-radius: 4px; background-color: #474747; border: 0; padding: 10px; color: white; font-size: 14px">이미지 업로드</button>
   </div> 
   `;
 
