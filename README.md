@@ -1,6 +1,6 @@
 # <img src="https://user-images.githubusercontent.com/84328632/176653941-c730c299-3063-4bff-986b-d97cca58a7df.png" alt="vivid-clothes-favicon" width="25" height="25" margin-right="10px" /> Vivid Clothes
 
-> 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_**
+> ## 생활 속 생생함을 더하는 의류 쇼핑몰, **_Vivid Clothes_**
 >
 > https://vivid-clothes.herokuapp.com
 
