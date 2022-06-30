@@ -14,7 +14,7 @@ const productGrid = async (props = {}) => {
   let createPageUrl = (page) => `/admin-product?page=${page}`;
 
   if (!category || category === 'default') {
-    products = await Api.get('/product', `list?page=${page}&perPage=${perPage}`);
+    products = await Api.get('/product', `main/recent?page=${page}&perPage=${perPage}`);
   } else {
     products = await Api.get(`/product`, `category/${category}?page=${page}&perPage=${perPage}`);
     createPageUrl = (page) => `/admin-product?category=${category}&page=${page}`;

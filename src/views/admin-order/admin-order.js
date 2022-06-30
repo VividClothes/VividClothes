@@ -25,6 +25,7 @@ class AdminOrder {
     this.layout = document.getElementById('layout');
     this.titleSection = document.getElementById('title-section');
     this.orderList = document.getElementById('order-list');
+    this.pagination = document.getElementById('pagination');
   }
 
   async createDOM() {
@@ -61,9 +62,7 @@ class AdminOrder {
       pageUrl: (page) => `/admin-order?page=${page}`,
     };
 
-    document
-      .getElementById('pagination')
-      .insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
+    this.pagination.insertAdjacentHTML('afterbegin', await createPaginationBar({ data: pageData }));
 
     this.orderList.insertAdjacentHTML('afterbegin', createAdminOrderList(orders.datas));
   }
@@ -73,6 +72,7 @@ class AdminOrder {
     addCategoryListener(this.category);
     addComponentEvents(this.titleSection);
     addAdminOrderListener(this.orderList);
+    addPaginationBarListener(this.pagination);
   }
 
   async render() {
