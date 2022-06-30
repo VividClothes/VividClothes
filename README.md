@@ -14,7 +14,21 @@
 
 ## 🔨 기술 스택 (Tech stack)
 
-임시 작성
+<br />
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84328632/176751654-7ca0331f-efdb-4884-b328-a36a6ce60c9a.png" alt="tech-stack" width="60%">
+</p>
+
+<br />
+
+## 💫 프로젝트 흐름도 (Project Flow)
+
+<br />
+
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/84328632/176752226-8bc8bbe5-c9ff-4f07-a6fa-149495d47009.png" alt="tech-stack" width="60%">
+</p>
 
 <br />
 
@@ -23,11 +37,11 @@
   <br />
 
   <p align="center">
-   <img src="https://user-images.githubusercontent.com/73643088/176643317-379e816c-4cf9-4ed2-a064-7670c0712255.gif" alt="홈 반응형" width="50%">
+   <img src="https://user-images.githubusercontent.com/73643088/176643317-379e816c-4cf9-4ed2-a064-7670c0712255.gif" alt="home-responsive" width="50%">
   </p>
   <br />
   <p align="center">
-    <img src="https://user-images.githubusercontent.com/73643088/176643292-3f424dee-37c6-436e-961f-2e8834abdcfd.gif" width="50%" alt="상품 선택">
+    <img src="https://user-images.githubusercontent.com/73643088/176643292-3f424dee-37c6-436e-961f-2e8834abdcfd.gif" width="50%" alt="choose-product">
   </p>
 
 <br />
