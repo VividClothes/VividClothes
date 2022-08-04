@@ -8,7 +8,8 @@
 
 ## 📜 개요 (Outline)
 
-**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다. 엘리스 측의 구현 요구사항에 따라, **Express.js**를 기반으로 **MPA(Multi Page Application)** 를 구현하였습니다.
+**엘리스 SW 엔지니어 트랙 2기** 프로젝트 과제로서, 실제 서비스 운영이 아닌 기능 구현에 초점을 맞춘 데모 웹 어플리케이션입니다. 엘리스 측의 구현 요구사항에 따라, **Express.js**를 기반으로 **MPA(Multi Page Application)** 를 구현하였습니다.   
+_엘리스 프로젝트 기간(5/23 ~ 6/5)에는 [GitLab](https://kdt-gitlab.elice.io/sw_track/class_02_seoul/web_project/team15/shopping-mall)에서 진행하고 이후 GitHub으로 이전해 진행했습니다._
 
 <br />
 
