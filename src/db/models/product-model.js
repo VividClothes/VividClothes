@@ -22,6 +22,8 @@ const populate = {
     select: 'categoryName'
 };
 
+const CLOUDFRONT_DOMAIN = process.env.CLOUDFRONT_DOMAIN;
+
 export class ProductModel {
     // 새 상품 등록
     async create(productInfo) {
@@ -32,14 +34,27 @@ export class ProductModel {
 
     // 모든 상품 최신순 조회
     async findAll(page, perPage) {
-        const products = pagination(page, perPage, Product, {}, {}, { createdAt: -1 });
+        const products = await pagination(page, perPage, Product, {}, {}, { createdAt: -1 });
+
+        // imagePath에 cloudfront 도메인 연결
+        products.datas =  products.datas.map(data => {
+            const newImagePath = data.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+            })
+            data.imagePath = newImagePath;
+
+            return data;
+        })
 
         return products;
     }
 
     // n개 카테고리별 Best 상품 조회
     async findPopular(count) {
-        const products = await Product
+        let products = await Product
             .aggregate([
                 {
                     $sort: sort
@@ -54,15 +69,38 @@ export class ProductModel {
             .sort('-product.orderCount -product.createAt')
             .limit(count);
         await Category.populate(products, 'product.category');
+        
+        products = products.map(item => {
+            const newImagePath = item.product.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+            })
+            item.product.imagePath = newImagePath;
+
+            return item;
+        })
 
         return products;
     }
 
     // 카테고리별 상품 출력
-    findByCategory(category, page, perPage) {
+    async findByCategory(category, page, perPage) {
         const filter = { category };
 
-        const products = pagination(page, perPage, Product, filter, select, sort);
+        const products = await pagination(page, perPage, Product, filter, select, sort);
+        products.datas =  products.datas.map(data => {
+            const newImagePath = data.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+            })
+            data.imagePath = newImagePath;
+
+            return data;
+        })
 
         return products;
     }
@@ -71,6 +109,14 @@ export class ProductModel {
     async findById(productId) {
         const product = await Product.findOne({ _id: productId })
             .populate(populate);
+        
+        const newImagePath = product.imagePath.map(imgPath => {
+            if(imgPath.includes('http')){
+                return imgPath;
+            }
+            return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+        })
+        product.imagePath = newImagePath;
 
         return product;
     }
@@ -80,7 +126,18 @@ export class ProductModel {
         const filter = { $text: { $search: keyword } };
         const sort = { score: { $meta: 'textScore' } };
 
-        const products = pagination(page, perPage, Product, filter, {}, sort);
+        const products = await pagination(page, perPage, Product, filter, {}, sort);
+        products.datas =  products.datas.map(data => {
+            const newImagePath = data.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+            })
+            data.imagePath = newImagePath;
+
+            return data;
+        })
 
         return products;
     }

@@ -9,8 +9,8 @@ imageRouter.post(
   imageUpload.array('images'),
   async (req, res, next) => {
     try {
-      // req.files에서 이미지 경로만 가져옴
-      const imagePath = req.files.map((image) => image.location);
+      // req.files에서 key값만 가져옴
+      const imagePath = req.files.map((image) => image.key);
 
       res.status(200).json(imagePath);
     } catch (error) {
