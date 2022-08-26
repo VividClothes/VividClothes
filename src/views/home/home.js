@@ -23,20 +23,21 @@ let [timer, page, perPage] = [null, 1, getPerPage(window.innerWidth)];
 
 
 (async () => {
+  const [categories, best_result, recent_result] = await Promise.all([
+    Api.get('/category/list'),
+    Api.get('/product/main'),
+    Api.get('/product/main/recent', `?page=${page}&perPage=${perPage}`)
+  ])
 
   /***************************헤더*************************************/
   nav.insertAdjacentElement('afterbegin', header);
-  const categories = await Api.get('/category/list');
   navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
   addHeaderEventListener();
   addCategoryListener(navCategory);
   /*******************************************************************/
   
 
-  /**************************이미지 슬라이드*******************************/
-  const best_result = await Api.get('/product/main');
-  const recent_result = await Api.get('/product/main/recent', `?page=${page}&perPage=${perPage}`)
-  
+  /**************************이미지 슬라이드*******************************/  
   const bestItems = getBestItems(best_result);
   const recentItems = getRecentItems(recent_result.datas);
 

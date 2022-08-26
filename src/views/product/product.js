@@ -16,20 +16,9 @@ import {
   makeItemContainerHTML
 } from '/product/handler-functions.js';
 
-
-/***************************헤더*************************************/
+/******************************필요 요소*****************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async () => {
-  nav.insertAdjacentElement('afterbegin', header);
-  const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
-  addHeaderEventListener();
-  addCategoryListener(navCategory);
-})();
-/*******************************************************************/
-
-/****************************요소 모음**********************************/
 const imageContainer = document.querySelector('.image-container');
 const mainImage = document.querySelector('.main-image');
 const productName = document.querySelector('.product-name');
@@ -52,18 +41,36 @@ const nextBox = document.querySelector('.next-box');
 const reviewContainerTitle = document.querySelector('.review-container-title');
 const reviewBody = document.querySelector('.review-container-helper');
 const pagination = document.getElementById('pagination');
-/*********************************************************************/
 
 const selectedSizeColor = { size: '', color: '' };
 let optionKeys = [];
+/*******************************************************************/
 
 
-/****************************렌더링**********************************/
+
 (async () => {
   const urlParams = new URLSearchParams(window.location.search);
   const productID = urlParams.get('id');
+  const page = urlParams.get('page');
+  const perPage = 5;
+  const [categories, results, reviewResult] = await Promise.all([
+    Api.get('/category/list'),
+    Api.get(`/product/id`, `${productID}`),
+    Api.get(
+      `/review/product`,
+      `${productID}?page=${page}&perPage=${perPage}`
+    )
+  ]);
 
-  let results = await Api.get(`/product/id`, `${productID}`);
+  /***************************헤더*************************************/
+  nav.insertAdjacentElement('afterbegin', header);
+  //const categories = await Api.get('/category/list');
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+  /*******************************************************************/
+
+  /****************************렌더링**********************************/
   const result = results.product;
 
   mainImage.src = `${result.imagePath[0]}`;
@@ -164,14 +171,6 @@ let optionKeys = [];
 
   /************************리뷰 렌더링**************************/
   const reviews = results.reviews.datas;
-
-  const page = urlParams.get('page');
-  const perPage = 5;
-
-  const reviewResult = await Api.get(
-    `/review/product`,
-    `${productID}?page=${page}&perPage=${perPage}`
-  );
 
   const pageData = {
     page: reviewResult.page,

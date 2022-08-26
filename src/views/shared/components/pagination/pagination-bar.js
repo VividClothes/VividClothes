@@ -4,13 +4,10 @@ import paginateUtil from '/pagination/pagination-util.js';
 
 const createPaginationBar = async (props) => {
   const { page, perPage, totalPage, pageUrl } = props.data;
-  console.log(props.data);
 
   const maxSize = 5;
 
   const { pages } = paginateUtil(totalPage * perPage, page, perPage, maxSize);
-
-  console.log(pages);
 
   const backUrl = page - 1 === 0 ? page : page - 1;
   const frontUrl = page + 1 >= totalPage ? page : page + 1;
@@ -53,18 +50,14 @@ function addPaginationBarListener(component) {
 
 function onClickLeftArrow(component) {
   const leftBtn = component.querySelector('.page-left-btn');
-  console.log(leftBtn);
   leftBtn.addEventListener('click', (e) => {
-    console.log(e.target.dataset);
     window.location.href = `${e.target.dataset.prev}`;
   });
 }
 
 function onClickRightArrow(component) {
   const rightBtn = component.querySelector('.page-right-btn');
-  console.log(rightBtn);
   rightBtn.addEventListener('click', (e) => {
-    console.log(e.target.dataset);
     window.location.href = `${e.target.dataset.next}`;
   });
 }
