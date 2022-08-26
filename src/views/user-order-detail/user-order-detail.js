@@ -51,7 +51,7 @@ exitButton.addEventListener("click", close);
 
   const [categories, ordersInfo] = await Promise.all([
     Api.get('/category/list'),
-    await Api.get(`/order/${orderId}`)
+    Api.get(`/order/${orderId}`)
   ]);
 
   /***************************헤더*************************************/
