@@ -228,10 +228,10 @@ function getOrderItems(orders) {
         size: item.option.size,
         color: item.option.color,
         quantity: item.quantity,
-        priceSum: item.quantity * item.product[0].price,
-        imagePath: item.product[0].imagePath[0],
-        productName: item.product[0].productName,
-        productId: item.product[0]._id,
+        priceSum: item.quantity * item.product.price,
+        imagePath: item.product.imagePath[0],
+        productName: item.product.productName,
+        productId: item.product._id,
         hasReview: item.hasReview,
         orderProductId: item._id
       }

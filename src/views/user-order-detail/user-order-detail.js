@@ -154,13 +154,13 @@ function getProducts(ordersInfo) {
 
   ordersInfo.products.forEach((order) => {
     const item = {
-      productName: order.product[0].productName,
-      imagePath: order.product[0].imagePath[0],
+      productName: order.product.productName,
+      imagePath: order.product.imagePath[0],
       size: order.option.size,
       color: order.option.color,
       quantity: order.quantity,
-      priceSum: order.quantity * order.product[0].price,
-      productId: order.product[0]._id,
+      priceSum: order.quantity * order.product.price,
+      productId: order.product._id,
       hasReview: order.hasReview,
       orderProductId: order._id
     };
