@@ -42,7 +42,7 @@ export class ProductModel {
                 if(imgPath.includes('http')){
                     return imgPath;
                 }
-                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=300&f=webp`;
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=400&f=webp`;
             })
             data.imagePath = newImagePath;
 
