@@ -42,7 +42,7 @@ export class ProductModel {
                 if(imgPath.includes('http')){
                     return imgPath;
                 }
-                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=400&f=webp`;
             })
             data.imagePath = newImagePath;
 
@@ -75,7 +75,7 @@ export class ProductModel {
                 if(imgPath.includes('http')){
                     return imgPath;
                 }
-                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=768&f=webp`;
             })
             item.product.imagePath = newImagePath;
 
@@ -95,7 +95,7 @@ export class ProductModel {
                 if(imgPath.includes('http')){
                     return imgPath;
                 }
-                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=400&f=webp`;
             })
             data.imagePath = newImagePath;
 
@@ -114,7 +114,7 @@ export class ProductModel {
             if(imgPath.includes('http')){
                 return imgPath;
             }
-            return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+            return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=768&f=webp`;
         })
         product.imagePath = newImagePath;
 
@@ -132,7 +132,7 @@ export class ProductModel {
                 if(imgPath.includes('http')){
                     return imgPath;
                 }
-                return `${CLOUDFRONT_DOMAIN}/${imgPath}?f=webp`;
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=400&f=webp`;
             })
             data.imagePath = newImagePath;
 

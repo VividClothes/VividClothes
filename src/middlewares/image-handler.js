@@ -11,17 +11,17 @@ const imageUpload = multer({
         key: function(req, file, cb){
             const fileName = `${Date.now()}.jpg`;
             cb(null, fileName)
-        },
-        fileFilter(req, file, cb) {
-            // 확장자가 이미지 파일이 아닐 경우 에러
-            const extension = file.mimetype.split('/')[1];
-            if (!['png', 'jpg', 'jpeg', 'gif', 'bmp'].includes(extension)) {
-                return cb(new Error('이미지 파일을 등록해 주세요.'));
-            }
-    
-            return cb(null, true);
-        },
-    })
+        }
+    }),
+    fileFilter(req, file, cb) {
+        // 확장자가 이미지 파일이 아닐 경우 에러
+        const extension = file.mimetype.split('/')[1];
+        if (!['png', 'jpg', 'jpeg', 'gif', 'bmp'].includes(extension)) {
+            return cb(new Error('이미지 파일을 등록해 주세요.'));
+        }
+
+        return cb(null, true);
+    },
 });
 
 export { imageUpload };

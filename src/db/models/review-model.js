@@ -22,6 +22,8 @@ const populate = [
     }
 ];
 
+const CLOUDFRONT_DOMAIN = process.env.CLOUDFRONT_DOMAIN;
+
 export class ReviewModel {
     // 새 리뷰 등록
     async create(reviewInfo) {
@@ -31,19 +33,57 @@ export class ReviewModel {
     }
 
     // 유저별 리뷰 조회
-    findByUser(userId, page, perPage) {
+    async findByUser(userId, page, perPage) {
         const filter = { writer: userId };
 
-        const reviews = pagination(page, perPage, Review, filter, {}, sort, populate);
+        const reviews = await pagination(page, perPage, Review, filter, {}, sort, populate);
+
+        reviews.datas = reviews.datas.map(data => {
+            // 상품 사진
+            data.productId.imagePath = data.productId.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+            })
+
+            // 리뷰 사진
+            data.imagePath = data.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+            })
+            return data;
+        })
 
         return reviews;
     }
 
     // 상품별 리뷰 조회
-    findByProduct(productId, page, perPage) {
+    async findByProduct(productId, page, perPage) {
         const filter = { productId };
 
-        const reviews = pagination(page, perPage, Review, filter, {}, sort, populate);
+        const reviews = await pagination(page, perPage, Review, filter, {}, sort, populate);
+        
+        reviews.datas = reviews.datas.map(data => {
+            // 상품 사진
+            data.productId.imagePath = data.productId.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+            })
+
+            // 리뷰 사진
+            data.imagePath = data.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+            })
+            return data;
+        })
 
         return reviews;
     }
@@ -52,6 +92,22 @@ export class ReviewModel {
     async findById(reviewId) {
         const review = await Review.findOne({ _id: reviewId })
             .populate(populate);
+        
+        // 상품 사진
+        review.productId.imagePath = review.productId.imagePath.map(imgPath => {
+            if(imgPath.includes('http')){
+                return imgPath;
+            }
+            return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+        })
+
+        // 리뷰 사진
+        review.imagePath = review.imagePath.map(imgPath => {
+            if(imgPath.includes('http')){
+                return imgPath;
+            }
+            return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+        })
 
         return review;
     }
