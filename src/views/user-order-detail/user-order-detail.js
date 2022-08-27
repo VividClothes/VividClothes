@@ -1,24 +1,12 @@
 import { addCommas, convertToNumber } from '/useful-functions.js';
 import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
-import { createCategory, addCategoryListener} from '/category/category.js';
-
-
-/***************************헤더*************************************/
-const nav = document.getElementById('header');
-const navCategory = document.getElementById('category');
-(async() => {
-  nav.insertAdjacentElement('afterbegin', header);
-  const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
-  addHeaderEventListener();
-  addCategoryListener(navCategory);
-})();
-/*******************************************************************/
-
+import { createCategory, addCategoryListener } from '/category/category.js';
 
 
 /****************************요소 모음**********************************/
+const nav = document.getElementById('header');
+const navCategory = document.getElementById('category');
 const orderDate = document.querySelector('.order-date');
 const recipient = document.querySelector('.recipient');
 const phoneNumber = document.querySelector('.phone');
@@ -42,7 +30,6 @@ let orderProductId = 0;
 /*********************************************************************/
 
 
-
 /****************************모달**********************************/
 const open = (e, index, orderItems) => {
   modal.classList.remove("hidden");
@@ -58,135 +45,136 @@ exitButton.addEventListener("click", close);
 /*********************************************************************/
 
 
-
 (async () => {
-    
-    /*****************************쿼리스트링 값 추출*************************/
-    const urlParams = new URLSearchParams(window.location.search);
-    const orderId = urlParams.get('id');
-    /**********************************************************************/
+  const urlParams = new URLSearchParams(window.location.search);
+  const orderId = urlParams.get('id');
 
-    const ordersInfo = await Api.get(`/order/${orderId}`);
-    const orderItems = getProducts(ordersInfo);
-    const orderState = ordersInfo.state;
-    console.log(orderItems)
+  const [categories, ordersInfo] = await Promise.all([
+    Api.get('/category/list'),
+    Api.get(`/order/${orderId}`)
+  ]);
 
-    // 수령인 정보 설정
-    setRecipientInfo(ordersInfo);
-    
-
-
-    // 구매 상품 리스트 삽입
-    orderItems.forEach((item) => {
-        itemsBody.insertAdjacentHTML('beforeend', makeItemHTML(item, orderState));
-      })
-
-      
-
-    // 최종 결제 금액 표시
-    setPaymentPrice(orderItems);
+  /***************************헤더*************************************/
+  nav.insertAdjacentElement('afterbegin', header);
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+  /*******************************************************************/
 
 
+  const orderItems = getProducts(ordersInfo);
+  const orderState = ordersInfo.state;
 
-    // 취소 및 후기 링크 이벤트 추가
-    const stateBoxes = itemsBody.getElementsByClassName('order-state-box');
-    orderItems.forEach((item, index) => {
+  // 수령인 정보 설정
+  setRecipientInfo(ordersInfo);
 
-      // 1. 상품 준비중 - 취소링크
-      if (orderState ===  PREPARE) {
-        const cancelLink = stateBoxes[index].querySelector('.order-state-link');
-        cancelLink.addEventListener('click', async (e) => {
-          e.preventDefault();
-          const realCancel = confirm('상품 주문을 취소하시겠습니까?');
+  // 구매 상품 리스트 삽입
+  orderItems.forEach((item) => {
+    itemsBody.insertAdjacentHTML('beforeend', makeItemHTML(item, orderState));
+  })
 
-          if(realCancel) {
-            await Api.patch(`/order/${orderId}/product/${item.orderProductId}/cancel`);
-            alert('상품 주문이 취소되었습니다.');
+  // 최종 결제 금액 표시
+  setPaymentPrice(orderItems);
 
-            if (orderItems.length === 1) {
-              window.location.href = '/user-order-list';
-            }
-            else {
-              window.location.reload();
-            }
+  // 취소 및 후기 링크 이벤트 추가
+  const stateBoxes = itemsBody.getElementsByClassName('order-state-box');
+  orderItems.forEach((item, index) => {
+
+    // 1. 상품 준비중 - 취소링크
+    if (orderState === PREPARE) {
+      const cancelLink = stateBoxes[index].querySelector('.order-state-link');
+      cancelLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const realCancel = confirm('상품 주문을 취소하시겠습니까?');
+
+        if (realCancel) {
+          await Api.patch(`/order/${orderId}/product/${item.orderProductId}/cancel`);
+          alert('상품 주문이 취소되었습니다.');
+
+          if (orderItems.length === 1) {
+            window.location.href = '/user-order-list';
           }
-        })
-      }
+          else {
+            window.location.reload();
+          }
+        }
+      })
+    }
 
-      // 2. 배송 완료 - 후기 링크
-      else if(orderState === COMPLETE) {
-        const reviewLink = stateBoxes[index].querySelector('.order-state-link'); 
-        //console.log(item)
-        if (item.hasReview) {
-          reviewLink.textContent = '후기 작성완료';
-          reviewLink.style.textDecoration = 'none';
-          reviewLink.style.color = '#bbb';
-        }
-        else {
-          reviewLink.addEventListener('click', (e) => open(e, index, orderItems));
-        }
+    // 2. 배송 완료 - 후기 링크
+    else if (orderState === COMPLETE) {
+      const reviewLink = stateBoxes[index].querySelector('.order-state-link');
+      //console.log(item)
+      if (item.hasReview) {
+        reviewLink.textContent = '후기 작성완료';
+        reviewLink.style.textDecoration = 'none';
+        reviewLink.style.color = '#bbb';
       }
-    })
+      else {
+        reviewLink.addEventListener('click', (e) => open(e, index, orderItems));
+      }
+    }
+  })
 })()
 
 
 // 수령인 정보 설정 함수
 function setRecipientInfo(ordersInfo) {
-    const orderDateText = getDate(ordersInfo.createdAt);
-    const recipientText = ordersInfo.recipient;
-    const phoneNumberText = ordersInfo.phoneNumber;
-    const addressText = getAddress(ordersInfo.address);
+  const orderDateText = getDate(ordersInfo.createdAt);
+  const recipientText = ordersInfo.recipient;
+  const phoneNumberText = ordersInfo.phoneNumber;
+  const addressText = getAddress(ordersInfo.address);
 
-    orderDate.textContent = orderDateText;
-    recipient.textContent = recipientText;
-    phoneNumber.textContent = phoneNumberText;
-    address.textContent = addressText;
+  orderDate.textContent = orderDateText;
+  recipient.textContent = recipientText;
+  phoneNumber.textContent = phoneNumberText;
+  address.textContent = addressText;
 }
 
 
 // 날짜 전처리
 function getDate(orderDate) {
-    let [ date, time ] = orderDate.split('T');
-    date = date.replaceAll('-', '.');
-    time = time.split('.')[0]
-    return `${date} ${time}`;
+  let [date, time] = orderDate.split('T');
+  date = date.replaceAll('-', '.');
+  time = time.split('.')[0]
+  return `${date} ${time}`;
 }
 
 
 // 주소 전처리
 function getAddress(address) {
-    const { postalCode, address1, address2 } = address;
-    return `(${postalCode}) ${address1} ${address2}`;
+  const { postalCode, address1, address2 } = address;
+  return `(${postalCode}) ${address1} ${address2}`;
 }
 
 
 // 응답 데이터로 구매 상품 데이터s 전처리
 function getProducts(ordersInfo) {
-    const items = [];
-    
-    ordersInfo.products.forEach((order) => {
-        const item = {
-            productName: order.product[0].productName,
-            imagePath: order.product[0].imagePath[0],
-            size: order.option.size,
-            color: order.option.color,
-            quantity: order.quantity,
-            priceSum: order.quantity * order.product[0].price,
-            productId: order.product[0]._id,
-            hasReview: order.hasReview,
-            orderProductId: order._id
-        };
+  const items = [];
 
-        items.push(item);
-    })
+  ordersInfo.products.forEach((order) => {
+    const item = {
+      productName: order.product.productName,
+      imagePath: order.product.imagePath[0],
+      size: order.option.size,
+      color: order.option.color,
+      quantity: order.quantity,
+      priceSum: order.quantity * order.product.price,
+      productId: order.product._id,
+      hasReview: order.hasReview,
+      orderProductId: order._id
+    };
 
-    return items;
+    items.push(item);
+  })
+
+  return items;
 }
 
 
 // 구매 상품 HTML 생성 함수
 function makeItemHTML(item, orderState) {
-    return `
+  return `
     <div class="item-container">
         <div class="product-name-options">
             <div class="image-box"
@@ -233,11 +221,11 @@ function stateComponent(state) {
 
 
 function setPaymentPrice(items) {
-    const totalPrice = items.reduce((sum, item) => {
-      return sum + item.priceSum;
-    }, 0);
+  const totalPrice = items.reduce((sum, item) => {
+    return sum + item.priceSum;
+  }, 0);
 
-    paymentPrice.textContent = `${addCommas(totalPrice)}원`;
+  paymentPrice.textContent = `${addCommas(totalPrice)}원`;
 }
 
 
@@ -253,7 +241,7 @@ registerButton.addEventListener('click', async (e) => {
   if (rate === -1) {
     alert('별점을 남겨주세요.');
   }
-  
+
   else if (!contentValue.value) {
     alert('리뷰 내용을 입력해주세요');
   }
@@ -263,7 +251,7 @@ registerButton.addEventListener('click', async (e) => {
     const orderId = urlParams.get('id');
 
     const formData = new FormData();
-    
+
     for (const file of inputFile.files) {
       formData.append("images", file);
     }
@@ -274,7 +262,7 @@ registerButton.addEventListener('click', async (e) => {
     });
 
     const imagePath = await res.json();
-    
+
     const reqBody = {
       orderProductId,
       content: contentValue.value,
@@ -282,13 +270,12 @@ registerButton.addEventListener('click', async (e) => {
       imagePath
     }
 
-    console.log(reqBody);
     await Api.post(`/review/register/${orderId}`, reqBody);
-    
+
     alert('리뷰 등록이 완료되었습니다.');
     window.location.reload();
   }
-  
+
 })
 
 

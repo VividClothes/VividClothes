@@ -4,22 +4,9 @@ import { header, addHeaderEventListener } from '/header/header.js';
 import { createCategory, addCategoryListener} from '/category/category.js';
 
 
-/***************************헤더*************************************/
+/****************************요소 모음**********************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async() => {
-  nav.insertAdjacentElement('afterbegin', header);
-  const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
-  addHeaderEventListener();
-  addCategoryListener(navCategory);
-})();
-/*******************************************************************/
-
-
-
-
-/****************************요소 모음**********************************/
 const itemsBody = document.querySelector('.items-body');
 const productPrepareLink = document.querySelector('.product-prepare-link');
 const productDeliveryLink = document.querySelector('.product-delivery-link');
@@ -41,8 +28,6 @@ let orderProductId = 0;
 let orderId = 0;
 /*********************************************************************/
 
-
-
 /****************************모달**********************************/
 const open = (e, item) => {
   modal.classList.remove("hidden");
@@ -59,15 +44,22 @@ exitButton.addEventListener("click", close);
 /*********************************************************************/
 
 
+/***************************헤더*************************************/
+(async() => {
+  const [categories, orders] = await Promise.all([
+    Api.get('/category/list'),
+    Api.get(`/order/mylist`)
+  ]);
 
-(async () => {
+  nav.insertAdjacentElement('afterbegin', header);
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+
   // 데이터 불러오기
-  const orders = await Api.get(`/order/mylist`);
   let orderItems = getOrderItems(orders.datas);
   const urlParams = new URLSearchParams(window.location.search);
   const listType = urlParams.get('type');
-  console.log(orders)
-  console.log(orderItems);
   
   // 상품 준비중, 상품 배송중, 배송 완료 텍스트 및 개수 표시
   setStateLinkText(orderItems);
@@ -104,8 +96,6 @@ exitButton.addEventListener("click", close);
 
     // 취소 및 후기 링크 이벤트 추가
     const stateBoxes = itemsBody.getElementsByClassName('order-state-box');
-    //console.log(stateBoxes);
-    //console.log(orderItems);
     orderItems.forEach((item, index) => {
 
       // 1. 상품 준비중 - 취소링크
@@ -238,10 +228,10 @@ function getOrderItems(orders) {
         size: item.option.size,
         color: item.option.color,
         quantity: item.quantity,
-        priceSum: item.quantity * item.product[0].price,
-        imagePath: item.product[0].imagePath[0],
-        productName: item.product[0].productName,
-        productId: item.product[0]._id,
+        priceSum: item.quantity * item.product.price,
+        imagePath: item.product.imagePath[0],
+        productName: item.product.productName,
+        productId: item.product._id,
         hasReview: item.hasReview,
         orderProductId: item._id
       }
@@ -295,7 +285,6 @@ registerButton.addEventListener('click', async (e) => {
       imagePath
     }
 
-    console.log(reqBody);
     await Api.post(`/review/register/${orderId}`, reqBody);
     
     alert('리뷰 등록이 완료되었습니다.');
@@ -303,7 +292,6 @@ registerButton.addEventListener('click', async (e) => {
   }
   
 })
-
 
 
 inputFile.addEventListener('change', (event) => {

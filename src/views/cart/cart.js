@@ -3,22 +3,9 @@ import * as Api from '/api.js';
 import { header, addHeaderEventListener } from '/header/header.js';
 import { createCategory, addCategoryListener} from '/category/category.js';
 
-
-/***************************헤더*************************************/
+/****************************요소 모음**********************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async() => {
-  nav.insertAdjacentElement('afterbegin', header);
-  const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
-  addHeaderEventListener();
-  addCategoryListener(navCategory);
-})();
-/*******************************************************************/
-
-
-
-/****************************요소 모음**********************************/
 const itemsBody = document.querySelector('.items-body');
 const headerItemNumber = document.querySelector('.header-item-number');
 const checkAll = document.querySelector('.check-all');
@@ -26,15 +13,22 @@ const totalPriceSum = document.querySelector('.total-price-sum');
 const deleteAllButton = document.querySelector('.delete-all-button');
 const deleteCheckedButton = document.querySelector('.delete-checked-button');
 const orderButton = document.querySelector('.order-button');
-/*********************************************************************/
-
 
 // 상품 아이디 배열, 체크 인덱스 배열
 const productIdArray = [];
 const isCheckedArray = [];
+/*********************************************************************/
 
 
-(async () => {
+(async() => {
+  /***************************헤더*************************************/
+  nav.insertAdjacentElement('afterbegin', header);
+  const categories = await Api.get('/category/list');
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+  /*******************************************************************/
+
   const hashedEmail = localStorage.getItem('hashedEmail');
   const onRequest = indexedDB.open(hashedEmail, 1);
   onRequest.onsuccess = () => { 
@@ -66,8 +60,6 @@ const isCheckedArray = [];
           })
           setItemHeaderContent(cartProducts);
 
-          console.log(productIdArray);
-          console.log(isCheckedArray);
           // 이미지 박스 이벤트 추가
           const imageBoxes = itemsBody.getElementsByClassName('image-box');
           Array.from(imageBoxes)

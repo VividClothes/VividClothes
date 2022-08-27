@@ -32,6 +32,8 @@ const populate = [
     }
 ];
 
+const CLOUDFRONT_DOMAIN = process.env.CLOUDFRONT_DOMAIN;
+
 export class OrderModel {
     // 주문 추가
     async create(orderInfo) {
@@ -41,17 +43,44 @@ export class OrderModel {
     }
 
     // 모든 주문 조회
-    findAll(page, perPage) {
-        const orders = pagination(page, perPage, Order, {}, select, sort, populate);
+    async findAll(page, perPage) {
+        const orders = await pagination(page, perPage, Order, {}, select, sort, populate);
+        
+        // imagePath에 cloudfront 도메인 연결
+        orders.datas =  orders.datas.map(data => {
+            data.products = data.products.map(p => {
+                p.product.imagePath = p.product.imagePath.map(imgPath => {
+                    if(imgPath.includes('http')){
+                        return imgPath;
+                    }
+                    return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+                })
+                return p;
+            })
+            return data;
+        })
 
         return orders;
     }
 
     // 유저별 주문 조회
-    findByUser(userId, page, perPage) {
+    async findByUser(userId, page, perPage) {
         const filter = { orderer: userId };
 
-        const orders = pagination(page, perPage, Order, filter, select, sort, populate);
+        const orders = await pagination(page, perPage, Order, filter, select, sort, populate);
+        
+        orders.datas =  orders.datas.map(data => {
+            data.products = data.products.map(p => {
+                p.product.imagePath = p.product.imagePath.map(imgPath => {
+                    if(imgPath.includes('http')){
+                        return imgPath;
+                    }
+                    return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+                })
+                return p;
+            })
+            return data;
+        })
 
         return orders;
     }
@@ -60,6 +89,16 @@ export class OrderModel {
     async findById(orderId) {
         const order = await Order.findOne({ _id: orderId })
             .populate(populate);
+        
+        order.products = order.products.map(p => {
+            p.product.imagePath = p.product.imagePath.map(imgPath => {
+                if(imgPath.includes('http')){
+                    return imgPath;
+                }
+                return `${CLOUDFRONT_DOMAIN}/${imgPath}?w=80&h=80&f=webp`;
+            })
+            return p;
+        })
 
         return order;
     }

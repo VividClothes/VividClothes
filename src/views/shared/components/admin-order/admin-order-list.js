@@ -1,6 +1,6 @@
-import * as Api from '/api.js';
+import * as Api from "/api.js";
 
-import adminOrderListStyle from '/admin-order/admin-order-list-style.js';
+import adminOrderListStyle from "/admin-order/admin-order-list-style.js";
 
 const createAdminOrderList = (orders) => /* html */ `
   ${adminOrderListStyle}
@@ -19,11 +19,14 @@ const createAdminOrderList = (orders) => /* html */ `
         <div class="order-content">
           <div class="order-title">
             <span class="orderer">주문내역</span>
-            <span class="orderer-id">${orderer ? orderer.email : ''}</span>
+            <span class="orderer-id">${orderer ? orderer.email : ""}</span>
             <span class="order-number">${_id}</span>
           </div>
           <div class="order-btns">
-            <div class="order-state-info"> ${createOrderState(order.state, _id)}</div>
+            <div class="order-state-info"> ${createOrderState(
+              order.state,
+              _id
+            )}</div>
           </div>
           <div class="order-center">
     
@@ -35,36 +38,29 @@ const createAdminOrderList = (orders) => /* html */ `
           <hr>
           ${order.products
             .map(
-              (product) => /* html */ `
-  
-            ${product.product
-              .map(
-                ({ _id, imagePath, productName, price }) => /* html */ `
+              ({ product, quantity }) => /* html */ `
                 <div class="order-info">
                   <div class="order-product-info">
                     <div class="order-image-container">
-                      <a href="/product/?id=${_id}">
-                        <img src="${imagePath[0]}" alt="${productName}" />
+                      <a href="/product/?id=${product._id}">
+                        <img src="${product.imagePath[0]}" alt="${
+                product.productName
+              }" />
                       </a>
                     </div>
   
                   <div class="order-product-name-container flex-box">
-                    <a href="/product/?id=${_id}">
-                      <span class="order-name">${productName}</span>
+                    <a href="/product/?id=${product._id}">
+                      <span class="order-name">${product.productName}</span>
                     </a>
                   </diV>
                 </div>
-              <div class="order-price-info flex-box"><span class="order-name">${price.toLocaleString()}</span></div>
-              <div class="order-quantity-info flex-box"><span class="order-name">${
-                product.quantity
-              }</span></div>
+              <div class="order-price-info flex-box"><span class="order-name">${product.price.toLocaleString()}</span></div>
+              <div class="order-quantity-info flex-box"><span class="order-name">${quantity}</span></div>
             </div>
           `
-              )
-              .join('')}
-        `
             )
-            .join('')}
+            .join("")}
       
       </div>
       <div class="order-side-content-container">
@@ -77,7 +73,7 @@ const createAdminOrderList = (orders) => /* html */ `
 
       </div>`;
       })
-      .join('')}
+      .join("")}
     
   </main>  
 `;
@@ -88,7 +84,7 @@ function addAdminOrderListener(component) {
 }
 
 function createOrderState(orderState, orderId) {
-  const optionValues = ['상품 준비중', '상품 배송중', '배송 완료'];
+  const optionValues = ["상품 준비중", "상품 배송중", "배송 완료"];
   const filtered = optionValues.filter((op) => op !== orderState);
   return /* html */ `
       <div class="select">
@@ -100,17 +96,17 @@ function createOrderState(orderState, orderId) {
             <option value="${option}">${option}</option>
           `
             )
-            .join('')}
+            .join("")}
         </select>
       </div>
     `;
 }
 
 function onClickCancelBtn(component) {
-  const cancelBtn = component.querySelectorAll('.order-cancel-btn');
+  const cancelBtn = component.querySelectorAll(".order-cancel-btn");
 
   Array.from(cancelBtn).forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
+    btn.addEventListener("click", async (e) => {
       const orderId = e.target.dataset.orderid;
       await Api.delete(`/order/cancel`, `${orderId}`);
       window.location.reload();
@@ -119,27 +115,27 @@ function onClickCancelBtn(component) {
 }
 
 async function addSelectCategoryEvent(component) {
-  const selectBox = component.querySelectorAll('.select-box');
+  const selectBox = component.querySelectorAll(".select-box");
 
   Array.from(selectBox).forEach((select) => {
-    select.addEventListener('change', async (e) => {
+    select.addEventListener("change", async (e) => {
       const orderId = e.target.dataset.orderid;
       console.log(e.target);
       let data = 0;
 
       switch (e.target.value) {
-        case '상품 준비중':
+        case "상품 준비중":
           data = 0;
           break;
-        case '상품 배송중':
+        case "상품 배송중":
           data = 1;
           break;
-        case '배송 완료':
+        case "배송 완료":
           data = 2;
           break;
       }
 
-      await Api.patch('/order/update', `${orderId}`, { stateCode: data });
+      await Api.patch("/order/update", `${orderId}`, { stateCode: data });
       window.location.reload();
     });
   });

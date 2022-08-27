@@ -4,19 +4,9 @@ import { createCategory, addCategoryListener } from '/category/category.js';
 import { createPaginationBar, addPaginationBarListener } from '/pagination/pagination-bar.js';
 import { getDate } from '/useful-functions.js';
 
-/***************************헤더*************************************/
+/*****************************요소모음*******************************/
 const nav = document.getElementById('header');
 const navCategory = document.getElementById('category');
-(async () => {
-  nav.insertAdjacentElement('afterbegin', header);
-  const categories = await Api.get('/category/list');
-  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
-  addHeaderEventListener();
-  addCategoryListener(navCategory);
-})();
-/*******************************************************************/
-
-/*****************************요소모음*******************************/
 const reviewBody = document.querySelector('.review-container-helper');
 const modal = document.querySelector('.modal');
 const modalBackground = document.querySelector('.modal-background');
@@ -47,12 +37,22 @@ exitButton.addEventListener('click', close);
 /*********************************************************************/
 
 (async () => {
-  /**** 페이지 네이션 ****/
   const urlParams = new URLSearchParams(window.location.search);
   const page = urlParams.get('page');
   const perPage = 5;
+  const [categories, results] = await Promise.all([
+    Api.get('/category/list'),
+    Api.get('/review', `list?page=${page}&perPage=${perPage}`)
+  ]);
 
-  const results = await Api.get('/review', `list?page=${page}&perPage=${perPage}`);
+  /***************************헤더*************************************/
+  nav.insertAdjacentElement('afterbegin', header);
+  navCategory.insertAdjacentHTML('afterbegin', await createCategory({ categories }));
+  addHeaderEventListener();
+  addCategoryListener(navCategory);
+  /*******************************************************************/
+
+  /**** 페이지 네이션 ****/
   const reviews = results.datas;
 
   const pageData = {

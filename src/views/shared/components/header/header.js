@@ -71,7 +71,6 @@ searchProductButton.addEventListener('click', (e) => {
 
 searchQuerySubmit.addEventListener('keyup', (e) => {
   e.preventDefault();
-  console.log(1);
   if (window.event.keyCode == 13) {
     const searchInput = header.querySelector('#searchQueryInput').value;
     if (!searchInput) {
